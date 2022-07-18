@@ -21,7 +21,7 @@ public class CarController {
 
     @GetMapping
     public String getCar(Model model){
-        model.addAttribute("cars",carService.getTopCars());
+        model.addAttribute("cars",carService.getCarsWithWebContent());
         return "car";
     }
 }

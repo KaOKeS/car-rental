@@ -18,4 +18,8 @@ public class CarService {
     public List<Car> getTopCars(){
         return carRepository.findAll();
     }
+
+    public List<Car> getCarsWithWebContent(){
+        return carRepository.getCarsWithWebContent();
+    }
 }

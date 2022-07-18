@@ -87,9 +87,9 @@
                     <div class="card-body text-center py-4">
                         <h4 class="card-title">Top choice #1</h4>
                         <p class="lead car-subtitle">In sport category car</p>
-                        <p class="display-5 my-4 text-primary fw-bold"> <span th:text="${#numbers.formatDecimal(cars[5].price,2,2,'POINT')}"></span><i class="bi bi-currency-euro"></i></p>
-                        <p><img src="images/cars/jaguar-ftype-id6-200x120.png" alt="Jaguar F-Type"></p>
-                        <p class="card-text mx-5 text-muted d-none d-md-block">Lorem ipsum dolor, sit amet consectetur adipisicing elit.</p>
+                        <p class="display-5 my-4 text-primary fw-bold"> <span th:text="${#numbers.formatDecimal(cars[2].price,2,2,'POINT')}"></span><i class="bi bi-currency-euro"></i></p>
+                        <p><img th:src="${cars[2].webContent.imagePath}" alt="Jaguar F-Type"></p>
+                        <p class="card-text mx-5 text-muted d-none d-md-block" th:text="${cars[2].webContent.description}">Lorem ipsum dolor, sit amet consectetur adipisicing elit.</p>
                         <a href="#" class="btn btn-outline-primary btn-lg mt-3">Rent now!</a>
                     </div>
                 </div>
@@ -102,8 +102,23 @@
                         <h4 class="card-title">Top choice #1</h4>
                         <p class="lead car-subtitle">In family category cars</p>
                         <p class="display-4 my-4 text-primary fw-bold"><span th:text="${#numbers.formatDecimal(cars[0].price,2,2,'POINT')}"></span><i class="bi bi-currency-euro"></i></p>
-                        <p><img src="images/cars/ford-mondeo-id1-200x120.png" alt="Ford Mondeo"></p>
-                        <p class="card-text mx-5 text-muted d-none d-md-block">Lorem ipsum dolor, sit amet consectetur adipisicing elit.</p>
+                        <p><img th:src="${cars[0].webContent.imagePath}" alt="Ford Mondeo"></p>
+                        <p>
+                            <h3 id="demo" onclick="myFunction()">Click me to change my color.</h3>
+                            <script>
+                                var x = 0;
+                                function myFunction() {
+                                  if (x%2==0) {
+                                    document.getElementById("demo").style.color = "red";
+                                    x++;
+                                  }else{
+                                    document.getElementById("demo").style.color = "black";
+                                    x++;
+                                  }
+                                }
+                            </script>
+                        </p>
+                        <p class="card-text mx-5 text-muted d-none d-md-block" th:text="${cars[0].webContent.description}">Lorem ipsum dolor, sit amet consectetur adipisicing elit.</p>
                         <a href="#" class="btn btn-outline-primary btn-lg mt-3">Rent now!</a>
                     </div>
                 </div>
@@ -114,9 +129,9 @@
                     <div class="card-body text-center py-4">
                         <h4 class="card-title">Top choice #1</h4>
                         <p class="lead car-subtitle">In transport category car</p>
-                        <p class="display-5 my-4 text-primary fw-bold"><span th:text="${#numbers.formatDecimal(cars[8].price,2,2,'POINT')}"></span><i class="bi bi-currency-euro"></i></p>
-                        <p><img src="images/cars/peugeot-trafic-id9-200x120.png" alt="Peugeot Trafic"></p>
-                        <p class="card-text mx-5 text-muted d-none d-md-block">Lorem ipsum dolor, sit amet consectetur adipisicing elit.</p>
+                        <p class="display-5 my-4 text-primary fw-bold"><span th:text="${#numbers.formatDecimal(cars[3].price,2,2,'POINT')}"></span><i class="bi bi-currency-euro"></i></p>
+                        <p><img th:src="${cars[3].webContent.imagePath}" alt="Peugeot Trafic"></p>
+                        <p class="card-text mx-5 text-muted d-none d-md-block" th:text="${cars[3].webContent.description}">Lorem ipsum dolor, sit amet consectetur adipisicing elit.</p>
                         <a href="#" class="btn btn-outline-primary btn-lg mt-3">Rent now!</a>
                     </div>
                 </div>

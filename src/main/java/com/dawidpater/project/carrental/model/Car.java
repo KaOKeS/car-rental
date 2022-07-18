@@ -24,11 +24,13 @@ public class Car {
     @Column(name="deleted")
     private boolean deleted;
 
+    @OneToOne(mappedBy = "car", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private WebContent webContent;
+
     public Car() {
     }
 
-    public Car(long id, String type, String brand, int hp, String model, byte sittingPlaces, double price, boolean deleted) {
-        this.id = id;
+    public Car(String type, String brand, int hp, String model, byte sittingPlaces, double price, boolean deleted) {
         this.type = type;
         this.brand = brand;
         this.hp = hp;
@@ -36,6 +38,21 @@ public class Car {
         this.sittingPlaces = sittingPlaces;
         this.price = price;
         this.deleted = deleted;
+    }
+
+    @Override
+    public String toString() {
+        return "Car{" +
+                "id=" + id +
+                ", type='" + type + '\'' +
+                ", brand='" + brand + '\'' +
+                ", hp=" + hp +
+                ", model='" + model + '\'' +
+                ", sittingPlaces=" + sittingPlaces +
+                ", price=" + price +
+                ", deleted=" + deleted +
+                ", webContent=" + webContent +
+                '}';
     }
 
     public long getId() {
@@ -100,5 +117,13 @@ public class Car {
 
     public void setDeleted(boolean deleted) {
         this.deleted = deleted;
+    }
+
+    public WebContent getWebContent() {
+        return webContent;
+    }
+
+    public void setWebContent(WebContent webContent) {
+        this.webContent = webContent;
     }
 }
