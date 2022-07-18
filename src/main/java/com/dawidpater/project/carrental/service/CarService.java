@@ -15,10 +15,6 @@ public class CarService {
         this.carRepository = carRepository;
     }
 
-    public List<Car> getTopCars(){
-        return carRepository.findAll();
-    }
-
     public List<Car> getCarsWithWebContent(){
         return carRepository.getCarsWithWebContent();
     }
