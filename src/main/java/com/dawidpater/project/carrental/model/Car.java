@@ -1,13 +1,27 @@
-package com.dawidpater.project.carrental.models;
+package com.dawidpater.project.carrental.model;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "car")
 public class Car {
+    @Id
+    @Column(name="id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @Column(name="class")
     private String type;
+    @Column(name="brand")
     private String brand;
+    @Column(name="hp")
     private int hp;
+    @Column(name="model")
     private String model;
+    @Column(name="sitting_places")
     private byte sittingPlaces;
+    @Column(name="rent_price")
     private double price;
+    @Column(name="deleted")
     private boolean deleted;
 
     public Car() {
