@@ -1,10 +1,9 @@
 package com.dawidpater.project.carrental.service;
 
-import com.dawidpater.project.carrental.model.Car;
-import com.dawidpater.project.carrental.model.CarRepository;
+import com.dawidpater.project.carrental.entity.Car;
+import com.dawidpater.project.carrental.repository.CarRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service

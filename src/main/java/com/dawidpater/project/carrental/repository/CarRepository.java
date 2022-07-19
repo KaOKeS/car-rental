@@ -1,5 +1,6 @@
-package com.dawidpater.project.carrental.model;
+package com.dawidpater.project.carrental.repository;
 
+import com.dawidpater.project.carrental.entity.Car;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

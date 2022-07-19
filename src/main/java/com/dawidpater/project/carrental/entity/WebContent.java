@@ -1,4 +1,4 @@
-package com.dawidpater.project.carrental.model;
+package com.dawidpater.project.carrental.entity;
 
 import javax.persistence.*;
 

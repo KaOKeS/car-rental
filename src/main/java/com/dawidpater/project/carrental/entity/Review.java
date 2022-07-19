@@ -1,4 +1,4 @@
-package com.dawidpater.project.carrental.model;
+package com.dawidpater.project.carrental.entity;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -10,26 +10,23 @@ public class Review {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-    @Column(name = "user_id")
-    private Long userId;
-    @Column(name = "car_id")
-    private Long carId;
     @Column(name = "content")
     private String content;
     @Column(name = "rate")
     private Float rate;
     @Column(name = "date")
     private LocalDateTime date;
+    @OneToOne(mappedBy = "review", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Rental rental;
 
     public Review() {
     }
 
-    public Review(Long userId, Long carId, String content, Float rate, LocalDateTime date) {
-        this.userId = userId;
-        this.carId = carId;
+    public Review(String content, Float rate, LocalDateTime date, Rental rental) {
         this.content = content;
         this.rate = rate;
         this.date = date;
+        this.rental = rental;
     }
 
     public Long getId() {
@@ -38,22 +35,6 @@ public class Review {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public Long getCarId() {
-        return carId;
-    }
-
-    public void setCarId(Long carId) {
-        this.carId = carId;
     }
 
     public String getContent() {
@@ -78,5 +59,13 @@ public class Review {
 
     public void setDate(LocalDateTime date) {
         this.date = date;
+    }
+
+    public Rental getRental() {
+        return rental;
+    }
+
+    public void setRental(Rental rental) {
+        this.rental = rental;
     }
 }

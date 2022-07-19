@@ -106,14 +106,14 @@
                         <p>
                             <h3 id="demo" onclick="myFunction()">Click me to change my color.</h3>
                             <script>
-                                var x = 0;
+                                var y = 0;
                                 function myFunction() {
-                                  if (x%2==0) {
+                                  if (y%2==0) {
                                     document.getElementById("demo").style.color = "red";
-                                    x++;
+                                    y++;
                                   }else{
                                     document.getElementById("demo").style.color = "black";
-                                    x++;
+                                    y++;
                                   }
                                 }
                             </script>
@@ -237,7 +237,7 @@
                         </div>
                         <h5 class="mb-1" th:text="${review.content}">A must-buy for every aspiring web dev</h5>
                         <p class="mb-1 small text-muted"  th:text="${cars[0].toString()}">Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur error veniam sit expedita est illo maiores neque quos nesciunt, reprehenderit autem odio commodi labore praesentium voluptate repellat in id quisquam.</p>
-                        <small>Review by <span th:text="${review.userId}">Author Name</span></small>
+                        <small>Review by <span th:text="${review}">Author Name</span></small>
                     </div>
                 </div>
             </div>

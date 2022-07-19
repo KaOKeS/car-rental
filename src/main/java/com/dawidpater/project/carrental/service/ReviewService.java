@@ -1,9 +1,7 @@
 package com.dawidpater.project.carrental.service;
 
-import com.dawidpater.project.carrental.model.Car;
-import com.dawidpater.project.carrental.model.CarRepository;
-import com.dawidpater.project.carrental.model.Review;
-import com.dawidpater.project.carrental.model.ReviewRepository;
+import com.dawidpater.project.carrental.entity.Review;
+import com.dawidpater.project.carrental.repository.*;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -26,6 +24,6 @@ public class ReviewService {
     }
 
     public Review save(){
-        return reviewRepository.save(new Review(1L,2L,"elo",4.5F,LocalDateTime.now()));
+        return reviewRepository.save(new Review("elo",4.5F,LocalDateTime.now(),null));
     }
 }
