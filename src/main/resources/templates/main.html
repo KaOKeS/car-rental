@@ -212,66 +212,32 @@
 
         <div class="row justify-content-center my-5">
             <div class="col-lg-8">
-                <div class="list-group">
+                <div class="list-group" th:each="review: ${reviews}">
                     <div class="list-group-item py-3">
-                        <div class="pb-2">
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star"></i>
+                        <div class="pb-2" th:id="'review' + ${review.id}">
+                            <script th:inline="javascript">
+                                var x=[[${review.rate}]];
+                                var index=4;
+                                while(index>=0){
+                                    var second = document.getElementById("review[[${review.id}]]");
+                                    if(x>0.8){
+                                        second.innerHTML += "<i class=\"bi bi-star-fill text-primary\"></i>";
+                                    }
+                                    else if(x>0.4){
+                                        second.innerHTML += "<i class=\"bi bi-star-half text-primary\"></i>";
+                                    }
+                                    else{
+                                        second.innerHTML += "<i class=\"bi bi-star text-primary\"></i>";
+                                    }
+                                    index--;
+                                    x--;
+                                }
+                                second.innerHTML += "<span class=\"small text-primary\"> " + "[[${review.rate}]]" + "</span>";
+                            </script>
                         </div>
-                        <h5 class="mb-1">A must-buy for every aspiring web dev</h5>
-                        <p class="mb-1">Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur error veniam sit expedita est illo maiores neque quos nesciunt, reprehenderit autem odio commodi labore praesentium voluptate repellat in id quisquam.</p>
-                        <small>Review by Mario</small>
-                    </div>
-                    <div class="list-group-item py-3">
-                        <div class="pb-2">
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                        </div>
-                        <h5 class="mb-1">A must-buy for every aspiring web dev</h5>
-                        <p class="mb-1">Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur error veniam sit expedita est illo maiores neque quos nesciunt, reprehenderit autem odio commodi labore praesentium voluptate repellat in id quisquam.</p>
-                        <small>Review by Mario</small>
-                    </div>
-                    <div class="list-group-item py-3">
-                        <div class="pb-2">
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-half"></i>
-                        </div>
-                        <h5 class="mb-1">A must-buy for every aspiring web dev</h5>
-                        <p class="mb-1">Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur error veniam sit expedita est illo maiores neque quos nesciunt, reprehenderit autem odio commodi labore praesentium voluptate repellat in id quisquam.</p>
-                        <small>Review by Mario</small>
-                    </div>
-                    <div class="list-group-item py-3">
-                        <div class="pb-2">
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                        </div>
-                        <h5 class="mb-1">A must-buy for every aspiring web dev</h5>
-                        <p class="mb-1">Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur error veniam sit expedita est illo maiores neque quos nesciunt, reprehenderit autem odio commodi labore praesentium voluptate repellat in id quisquam.</p>
-                        <small>Review by Mario</small>
-                    </div>
-                    <div class="list-group-item py-3">
-                        <div class="pb-2">
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-fill"></i>
-                            <i class="bi bi-star-half"></i>
-                        </div>
-                        <h5 class="mb-1">A must-buy for every aspiring web dev</h5>
-                        <p class="mb-1">Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur error veniam sit expedita est illo maiores neque quos nesciunt, reprehenderit autem odio commodi labore praesentium voluptate repellat in id quisquam.</p>
-                        <small>Review by Mario</small>
+                        <h5 class="mb-1" th:text="${review.content}">A must-buy for every aspiring web dev</h5>
+                        <p class="mb-1 small text-muted"  th:text="${cars[0].toString()}">Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur error veniam sit expedita est illo maiores neque quos nesciunt, reprehenderit autem odio commodi labore praesentium voluptate repellat in id quisquam.</p>
+                        <small>Review by <span th:text="${review.userId}">Author Name</span></small>
                     </div>
                 </div>
             </div>

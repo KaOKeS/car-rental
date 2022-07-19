@@ -13,6 +13,10 @@ public class Car {
     private String type;
     @Column(name="brand")
     private String brand;
+    @Column(name="fuel")
+    private String fuel;
+    @Column(name="engine")
+    private String engine;
     @Column(name="hp")
     private int hp;
     @Column(name="model")
@@ -30,29 +34,29 @@ public class Car {
     public Car() {
     }
 
-    public Car(String type, String brand, int hp, String model, byte sittingPlaces, double price, boolean deleted) {
+    public Car(long id, String type, String brand, String fuel, String engine, int hp, String model, byte sittingPlaces, double price, boolean deleted, WebContent webContent) {
+        this.id = id;
         this.type = type;
         this.brand = brand;
+        this.fuel = fuel;
+        this.engine = engine;
         this.hp = hp;
         this.model = model;
         this.sittingPlaces = sittingPlaces;
         this.price = price;
         this.deleted = deleted;
+        this.webContent = webContent;
     }
 
     @Override
     public String toString() {
-        return "Car{" +
-                "id=" + id +
-                ", type='" + type + '\'' +
-                ", brand='" + brand + '\'' +
-                ", hp=" + hp +
-                ", model='" + model + '\'' +
-                ", sittingPlaces=" + sittingPlaces +
-                ", price=" + price +
-                ", deleted=" + deleted +
-                ", webContent=" + webContent +
-                '}';
+        return  brand.substring(0,1).toUpperCase() + brand.substring(1) + ' ' +
+                model.substring(0,1).toUpperCase() + model.substring(1) + " - " +
+                " Engine: " + engine +
+                " Fuel: " + fuel +
+                " Hp:" + hp +
+                " Type: " + type +
+                " Sitting Places: " + sittingPlaces;
     }
 
     public long getId() {

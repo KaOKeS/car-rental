@@ -21,7 +21,7 @@ public class MainPageController {
     @GetMapping
     public String getCar(Model model){
         model.addAttribute("cars",carService.getCarsWithWebContent());
-        model.addAttribute("reviews",reviewService.findAll());
+        model.addAttribute("reviews",reviewService.getFiveLatestReviews());
         return "main";
     }
 }

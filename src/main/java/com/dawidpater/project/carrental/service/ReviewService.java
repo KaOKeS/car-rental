@@ -21,6 +21,10 @@ public class ReviewService {
         return reviewRepository.findAll();
     }
 
+    public List<Review> getFiveLatestReviews(){
+        return reviewRepository.getFiveLatestReviews();
+    }
+
     public Review save(){
         return reviewRepository.save(new Review(1L,2L,"elo",4.5F,LocalDateTime.now()));
     }
