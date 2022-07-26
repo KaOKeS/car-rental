@@ -16,11 +16,11 @@ public class Rental {
     private LocalDateTime startDate;
     @Column(name = "end_date")
     private LocalDateTime endDate;
-    @OneToOne(mappedBy = "rental", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "rental", fetch = FetchType.LAZY)
     private Review review;
-    @OneToMany(mappedBy = "rental", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "rental", fetch = FetchType.LAZY)
     private Set<UserRental> userRentals;
-    @OneToMany(mappedBy = "car", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "car", fetch = FetchType.LAZY)
     private Set<CarRental> carRentals;
 
     public Rental() {

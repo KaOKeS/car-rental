@@ -16,7 +16,7 @@ public class Review {
     private Float rate;
     @Column(name = "date")
     private LocalDateTime date;
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "rental_id")
     private Rental rental;
 

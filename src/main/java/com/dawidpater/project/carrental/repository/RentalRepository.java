@@ -10,10 +10,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface RentalRepository extends JpaRepository<Rental,Long> {
-    @Query(value = "SELECT * FROM rental r " +
-            "JOIN rental_car rc ON r.id = rc.rental_id " +
-            "JOIN car c ON c.id=rc.car_id"
-            ,nativeQuery = true)
-    List<Rental> getRentalsCars();
+public interface RentalRepository extends JpaRepository<CarRental,Long> {
+
 }

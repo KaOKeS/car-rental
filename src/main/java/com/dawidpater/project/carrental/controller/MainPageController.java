@@ -23,9 +23,8 @@ public class MainPageController {
 
     @GetMapping
     public String writeMainPage(Model model){
-        //model.addAttribute("cars",carService.getCarsWithWebContent());
-        //model.addAttribute("reviews",reviewService.getFiveLatestReviewsWithUsersAndCars());
-        model.addAttribute("getRentalsCars",rentalService.getRentalsCars());
+        model.addAttribute("cars",carService.getCarsWithWebContent());
+        model.addAttribute("reviews",reviewService.getFiveLatestReviewsWithUsersAndCars());
         return "main";
     }
 }

@@ -17,9 +17,9 @@ public class CarService {
 
     public List<Car> getCarsWithWebContent(){
         List<Car> topCars = new ArrayList<>();
-        topCars.add(carRepository.getBestCarOfClassWithWebContent("family"));
-        topCars.add(carRepository.getBestCarOfClassWithWebContent("transport"));
-        topCars.add(carRepository.getBestCarOfClassWithWebContent("sport"));
+        topCars.add(carRepository.getBestCarOfRequestedTypeWithWebContent("family"));
+        topCars.add(carRepository.getBestCarOfRequestedTypeWithWebContent("transport"));
+        topCars.add(carRepository.getBestCarOfRequestedTypeWithWebContent("sport"));
         return topCars;
     }
 }

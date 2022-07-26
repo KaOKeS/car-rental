@@ -37,10 +37,10 @@ public class User {
     private String documentId;
     @Column(name = "blocked")
     private Boolean blocked;
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "role_id")
     private Role role;
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Set<UserRental> userRental;
 
     public User() {
@@ -51,26 +51,6 @@ public class User {
                 String address, String zip, LocalDateTime birthDate, String phone,
                 String documentId, Boolean blocked, Role role, Set<UserRental> userRental) {
         this.id = id;
-        this.username = username;
-        this.email = email;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.country = country;
-        this.city = city;
-        this.address = address;
-        this.zip = zip;
-        this.birthDate = birthDate;
-        this.phone = phone;
-        this.documentId = documentId;
-        this.blocked = blocked;
-        this.role = role;
-        this.userRental = userRental;
-    }
-
-    public User(String username, String email, String firstName, String lastName,
-                String country, String city, String address, String zip,
-                LocalDateTime birthDate, String phone, String documentId, Boolean blocked,
-                Role role, Set<UserRental> userRental) {
         this.username = username;
         this.email = email;
         this.firstName = firstName;

@@ -32,9 +32,9 @@ public class Car {
     private boolean deleted;
     @Column(name="rate")
     private float rate;
-    @OneToOne(mappedBy = "car", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "car", fetch = FetchType.LAZY)
     private WebContent webContent;
-    @OneToMany(mappedBy = "car", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "car", fetch = FetchType.LAZY)
     private Set<CarRental> carRentals;
 
     public Car() {

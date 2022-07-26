@@ -13,18 +13,12 @@ public class WebContent {
     private String description;
     @Column(name = "image_path")
     private String imagePath;
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "car_id")
     private Car car;
 
     public WebContent(Long id, String description, String imagePath, Car car) {
         this.id = id;
-        this.description = description;
-        this.imagePath = imagePath;
-        this.car = car;
-    }
-
-    public WebContent(String description, String imagePath, Car car) {
         this.description = description;
         this.imagePath = imagePath;
         this.car = car;
