@@ -1,6 +1,7 @@
 package com.dawidpater.project.carrental.entity;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "webcontent")
@@ -57,5 +58,13 @@ public class WebContent {
 
     public void setCar(Car car) {
         this.car = car;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        WebContent that = (WebContent) o;
+        return Objects.equals(id, that.id);
     }
 }

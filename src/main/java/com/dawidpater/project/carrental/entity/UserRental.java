@@ -1,6 +1,7 @@
 package com.dawidpater.project.carrental.entity;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "user_rental")
@@ -47,5 +48,13 @@ public class UserRental {
 
     public void setRental(Rental rental) {
         this.rental = rental;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserRental that = (UserRental) o;
+        return Objects.equals(id, that.id);
     }
 }

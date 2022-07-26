@@ -3,6 +3,7 @@ package com.dawidpater.project.carrental.entity;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -82,5 +83,13 @@ public class Rental {
 
     public void setCarRentals(Set<CarRental> carRentals) {
         this.carRentals = carRentals;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Rental rental = (Rental) o;
+        return Objects.equals(id, rental.id);
     }
 }

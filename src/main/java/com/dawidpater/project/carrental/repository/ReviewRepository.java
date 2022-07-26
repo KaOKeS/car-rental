@@ -5,7 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
-import java.util.Set;
 
 public interface ReviewRepository extends JpaRepository<Review,Long> {
     @Query(value = "SELECT review,r,cr,c,ur,u FROM Review review " +
@@ -14,7 +13,7 @@ public interface ReviewRepository extends JpaRepository<Review,Long> {
             "JOIN FETCH cr.car c " +
             "JOIN FETCH r.userRentals ur " +
             "JOIN FETCH ur.user u")
-    Set<Review> getFiveLatestReviewsWithUsersAndCars();
+    List<Review> getFiveLatestReviewsWithUsersAndCars();
 
 //    SELECT * FROM review
 //    JOIN rental r ON review.rental_id=r.id

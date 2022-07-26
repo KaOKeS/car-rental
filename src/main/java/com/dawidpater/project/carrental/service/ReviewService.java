@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class ReviewService {
@@ -16,7 +15,7 @@ public class ReviewService {
         this.reviewRepository = reviewRepository;
     }
 
-    public Set<Review> getFiveLatestReviewsWithUsersAndCars(){
+    public List<Review> getFiveLatestReviewsWithUsersAndCars(){
         return reviewRepository.getFiveLatestReviewsWithUsersAndCars();
     }
 

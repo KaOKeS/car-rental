@@ -2,6 +2,7 @@ package com.dawidpater.project.carrental.entity;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
 @Table(name = "review")
@@ -69,5 +70,13 @@ public class Review {
 
     public void setRental(Rental rental) {
         this.rental = rental;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Review review = (Review) o;
+        return Objects.equals(id, review.id);
     }
 }
