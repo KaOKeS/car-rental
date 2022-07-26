@@ -19,11 +19,15 @@ public class ReviewService {
         return reviewRepository.findAll();
     }
 
-    public List<Review> getFiveLatestReviews(){
-        return reviewRepository.getFiveLatestReviews();
+    public List<Review> getFiveLatestReviewsWithUsersAndCars(){
+        return reviewRepository.getFiveLatestReviewsWithUsersAndCars();
     }
 
     public Review save(){
-        return reviewRepository.save(new Review("elo",4.5F,LocalDateTime.now(),null));
+        Review review = new Review();
+        review.setContent("elo");
+        review.setRate(4.5F);
+        review.setDate(LocalDateTime.now());
+        return review;
     }
 }

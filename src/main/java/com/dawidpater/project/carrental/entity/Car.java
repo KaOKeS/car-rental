@@ -1,6 +1,9 @@
 package com.dawidpater.project.carrental.entity;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "car")
@@ -27,14 +30,20 @@ public class Car {
     private double price;
     @Column(name="deleted")
     private boolean deleted;
-
-    @OneToOne(mappedBy = "car", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @Column(name="rate")
+    private float rate;
+    @OneToOne(mappedBy = "car", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private WebContent webContent;
+    @OneToMany(mappedBy = "car", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<CarRental> carRentals;
 
     public Car() {
     }
 
-    public Car(long id, String type, String brand, String fuel, String engine, int hp, String model, byte sittingPlaces, double price, boolean deleted, WebContent webContent) {
+    public Car(long id, String type, String brand, String fuel,
+               String engine, int hp, String model, byte sittingPlaces,
+               double price, boolean deleted, float rate, WebContent webContent,
+               Set<CarRental> carRentals) {
         this.id = id;
         this.type = type;
         this.brand = brand;
@@ -45,7 +54,9 @@ public class Car {
         this.sittingPlaces = sittingPlaces;
         this.price = price;
         this.deleted = deleted;
+        this.rate = rate;
         this.webContent = webContent;
+        this.carRentals = carRentals;
     }
 
     @Override
@@ -129,5 +140,37 @@ public class Car {
 
     public void setWebContent(WebContent webContent) {
         this.webContent = webContent;
+    }
+
+    public String getFuel() {
+        return fuel;
+    }
+
+    public void setFuel(String fuel) {
+        this.fuel = fuel;
+    }
+
+    public String getEngine() {
+        return engine;
+    }
+
+    public void setEngine(String engine) {
+        this.engine = engine;
+    }
+
+    public Set<CarRental> getCarRentals() {
+        return carRentals;
+    }
+
+    public void setCarRentals(Set<CarRental> carRentals) {
+        this.carRentals = carRentals;
+    }
+
+    public float getRate() {
+        return rate;
+    }
+
+    public void setRate(float rate) {
+        this.rate = rate;
     }
 }

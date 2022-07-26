@@ -1,6 +1,5 @@
 package com.dawidpater.project.carrental.controller;
 
-import com.dawidpater.project.carrental.repository.RentalRepository;
 import com.dawidpater.project.carrental.service.CarService;
 import com.dawidpater.project.carrental.service.RentalService;
 import com.dawidpater.project.carrental.service.ReviewService;
@@ -23,10 +22,10 @@ public class MainPageController {
     }
 
     @GetMapping
-    public String getCar(Model model){
-        model.addAttribute("cars",carService.getCarsWithWebContent());
-        model.addAttribute("reviews",reviewService.getFiveLatestReviews());
-        model.addAttribute("rentals",rentalService.getRentalsWithUsers());
+    public String writeMainPage(Model model){
+        //model.addAttribute("cars",carService.getCarsWithWebContent());
+        //model.addAttribute("reviews",reviewService.getFiveLatestReviewsWithUsersAndCars());
+        model.addAttribute("getRentalsCars",rentalService.getRentalsCars());
         return "main";
     }
 }

@@ -4,6 +4,7 @@ import com.dawidpater.project.carrental.entity.Car;
 import com.dawidpater.project.carrental.repository.CarRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -15,6 +16,10 @@ public class CarService {
     }
 
     public List<Car> getCarsWithWebContent(){
-        return carRepository.getCarsWithWebContent();
+        List<Car> topCars = new ArrayList<>();
+        topCars.add(carRepository.getBestCarOfClassWithWebContent("family"));
+        topCars.add(carRepository.getBestCarOfClassWithWebContent("transport"));
+        topCars.add(carRepository.getBestCarOfClassWithWebContent("sport"));
+        return topCars;
     }
 }

@@ -2,7 +2,9 @@ package com.dawidpater.project.carrental.entity;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "user")
@@ -38,16 +40,17 @@ public class User {
     @OneToOne
     @JoinColumn(name = "role_id")
     private Role role;
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private List<UserRental> userRental;
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<UserRental> userRental;
 
     public User() {
     }
 
-    public User(String username, String email, String firstName,
-                String lastName, String country, String city, String address,
-                String zip, LocalDateTime birthDate, String phone, String documentId,
-                Boolean blocked, Role role) {
+    public User(Long id, String username, String email, String firstName,
+                String lastName, String country, String city,
+                String address, String zip, LocalDateTime birthDate, String phone,
+                String documentId, Boolean blocked, Role role, Set<UserRental> userRental) {
+        this.id = id;
         this.username = username;
         this.email = email;
         this.firstName = firstName;
@@ -61,6 +64,27 @@ public class User {
         this.documentId = documentId;
         this.blocked = blocked;
         this.role = role;
+        this.userRental = userRental;
+    }
+
+    public User(String username, String email, String firstName, String lastName,
+                String country, String city, String address, String zip,
+                LocalDateTime birthDate, String phone, String documentId, Boolean blocked,
+                Role role, Set<UserRental> userRental) {
+        this.username = username;
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.country = country;
+        this.city = city;
+        this.address = address;
+        this.zip = zip;
+        this.birthDate = birthDate;
+        this.phone = phone;
+        this.documentId = documentId;
+        this.blocked = blocked;
+        this.role = role;
+        this.userRental = userRental;
     }
 
     public Long getId() {
@@ -173,5 +197,13 @@ public class User {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public Set<UserRental> getUserRental() {
+        return userRental;
+    }
+
+    public void setUserRental(Set<UserRental> userRental) {
+        this.userRental = userRental;
     }
 }

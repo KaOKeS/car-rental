@@ -3,6 +3,7 @@ package com.dawidpater.project.carrental.entity;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "rental")
@@ -15,20 +16,24 @@ public class Rental {
     private LocalDateTime startDate;
     @Column(name = "end_date")
     private LocalDateTime endDate;
-    @OneToOne
-    @JoinColumn(name = "id")
+    @OneToOne(mappedBy = "rental", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Review review;
-    @OneToMany(mappedBy = "rental", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private List<UserRental> userRental;
+    @OneToMany(mappedBy = "rental", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<UserRental> userRentals;
+    @OneToMany(mappedBy = "car", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<CarRental> carRentals;
 
     public Rental() {
     }
 
-    public Rental(LocalDateTime startDate, LocalDateTime endDate, Review review, List<UserRental> userRental) {
+    public Rental(Long id, LocalDateTime startDate, LocalDateTime endDate,
+                  Review review, Set<UserRental> userRentals, Set<CarRental> carRentals) {
+        this.id = id;
         this.startDate = startDate;
         this.endDate = endDate;
         this.review = review;
-        this.userRental = userRental;
+        this.userRentals = userRentals;
+        this.carRentals = carRentals;
     }
 
     public Long getId() {
@@ -63,11 +68,19 @@ public class Rental {
         this.review = review;
     }
 
-    public List<UserRental> getUserRental() {
-        return userRental;
+    public Set<UserRental> getUserRentals() {
+        return userRentals;
     }
 
-    public void setUserRental(List<UserRental> userRental) {
-        this.userRental = userRental;
+    public void setUserRentals(Set<UserRental> userRentals) {
+        this.userRentals = userRentals;
+    }
+
+    public Set<CarRental> getCarRentals() {
+        return carRentals;
+    }
+
+    public void setCarRentals(Set<CarRental> carRentals) {
+        this.carRentals = carRentals;
     }
 }

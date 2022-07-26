@@ -129,9 +129,9 @@
                     <div class="card-body text-center py-4">
                         <h4 class="card-title">Top choice #1</h4>
                         <p class="lead car-subtitle">In transport category car</p>
-                        <p class="display-5 my-4 text-primary fw-bold"><span th:text="${#numbers.formatDecimal(cars[3].price,2,2,'POINT')}"></span><i class="bi bi-currency-euro"></i></p>
-                        <p><img th:src="${cars[3].webContent.imagePath}" alt="Peugeot Trafic"></p>
-                        <p class="card-text mx-5 text-muted d-none d-md-block" th:text="${cars[3].webContent.description}">Lorem ipsum dolor, sit amet consectetur adipisicing elit.</p>
+                        <p class="display-5 my-4 text-primary fw-bold"><span th:text="${#numbers.formatDecimal(cars[1].price,2,2,'POINT')}"></span><i class="bi bi-currency-euro"></i></p>
+                        <p><img th:src="${cars[1].webContent.imagePath}" alt="Peugeot Trafic"></p>
+                        <p class="card-text mx-5 text-muted d-none d-md-block" th:text="${cars[1].webContent.description}">Lorem ipsum dolor, sit amet consectetur adipisicing elit.</p>
                         <a href="#" class="btn btn-outline-primary btn-lg mt-3">Rent now!</a>
                     </div>
                 </div>
@@ -236,8 +236,8 @@
                             </script>
                         </div>
                         <h5 class="mb-1" th:text="${review.content}">A must-buy for every aspiring web dev</h5>
-                        <p class="mb-1 small text-muted"  th:text="${cars[0].toString()}">Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur error veniam sit expedita est illo maiores neque quos nesciunt, reprehenderit autem odio commodi labore praesentium voluptate repellat in id quisquam.</p>
-                        <small>Review by <span th:text="${rentals[1].userRental[0].user.username}">Author Name</span></small>
+                        <p class="mb-1 small text-muted"  th:text="${rentals[0].carRentals[0].car}">Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur error veniam sit expedita est illo maiores neque quos nesciunt, reprehenderit autem odio commodi labore praesentium voluptate repellat in id quisquam.</p>
+                        <small>Review by <span th:text="${rentals[1].userRentals[0].user.username}">Author Name</span></small>
                     </div>
                 </div>
             </div>

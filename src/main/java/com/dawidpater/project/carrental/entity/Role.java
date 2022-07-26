@@ -11,13 +11,14 @@ public class Role {
     private Long id;
     @Column(name = "role")
     private String role;
-    @OneToOne(mappedBy = "role", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "role", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private User user;
 
     public Role() {
     }
 
-    public Role(String role, User user) {
+    public Role(Long id, String role, User user) {
+        this.id = id;
         this.role = role;
         this.user = user;
     }

@@ -16,13 +16,15 @@ public class Review {
     private Float rate;
     @Column(name = "date")
     private LocalDateTime date;
-    @OneToOne(mappedBy = "review", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToOne
+    @JoinColumn(name = "rental_id")
     private Rental rental;
 
     public Review() {
     }
 
-    public Review(String content, Float rate, LocalDateTime date, Rental rental) {
+    public Review(Long id, String content, Float rate, LocalDateTime date, Rental rental) {
+        this.id = id;
         this.content = content;
         this.rate = rate;
         this.date = date;

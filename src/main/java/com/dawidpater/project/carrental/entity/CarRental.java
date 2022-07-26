@@ -3,26 +3,26 @@ package com.dawidpater.project.carrental.entity;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "user_rental")
-public class UserRental {
+@Table(name = "rental_car")
+public class CarRental {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
-    @ManyToOne
     @JoinColumn(name = "rental_id")
     private Rental rental;
+    @ManyToOne
+    @JoinColumn(name = "car_id")
+    private Car car;
 
-    public UserRental() {
+    public CarRental() {
     }
 
-    public UserRental(Long id, User user, Rental rental) {
+    public CarRental(Long id, Rental rental, Car car) {
         this.id = id;
-        this.user = user;
         this.rental = rental;
+        this.car = car;
     }
 
     public Long getId() {
@@ -33,19 +33,19 @@ public class UserRental {
         this.id = id;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
     public Rental getRental() {
         return rental;
     }
 
     public void setRental(Rental rental) {
         this.rental = rental;
+    }
+
+    public Car getCar() {
+        return car;
+    }
+
+    public void setCar(Car car) {
+        this.car = car;
     }
 }

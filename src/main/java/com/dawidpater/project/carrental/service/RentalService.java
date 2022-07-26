@@ -1,6 +1,7 @@
 package com.dawidpater.project.carrental.service;
 
 import com.dawidpater.project.carrental.entity.Car;
+import com.dawidpater.project.carrental.entity.CarRental;
 import com.dawidpater.project.carrental.entity.Rental;
 import com.dawidpater.project.carrental.repository.CarRepository;
 import com.dawidpater.project.carrental.repository.RentalRepository;
@@ -16,7 +17,7 @@ public class RentalService {
         this.rentalRepository = rentalRepository;
     }
 
-    public List<Rental> getRentalsWithUsers(){
-        return rentalRepository.getRentalsWithUsers();
+    public List<Rental> getRentalsCars(){
+        return rentalRepository.getRentalsCars();
     }
 }
