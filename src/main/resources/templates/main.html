@@ -13,46 +13,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css">
 </head>
 <body>
-<!-- navbar-->
-<nav class="navbar navbar-expand-sm navbar-light fixed-top">
-    <div class="container-lg">
-        <a href="#intro" class="navbar-brand">
-                <span class="fw-bold text-secondary">
-                    <img src="images/Muscle-Car-Chevrolet-Camaro-SS-icon.png" alt="menu-icon">
-                    Take That Car
-                </span>
-        </a>
-        <!-- toggle button fr mobile nav-->
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                data-bs-target="#main-nav" aria-controls="main-nav" aria-expanded="false"
-                aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <!-- navbar links-->
-        <div class="collapse navbar-collapse justify-content-end align-center" id="main-nav">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a href="#about" class="nav-link">About the rental</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#reviews" class="nav-link">Reviews</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#contact" class="nav-link">Get in touch</a>
-                </li>
-                <!-- hide since small-->
-                <li class="nav-item ms-2 d-none d-sm-inline">
-                    <a href="#rent" class="btn btn-secondary">Rent</a>
-                </li>
-                <!-- display since small-->
-                <li class="nav-item d-sm-none">
-                    <a href="#rent" class="nav-link">Rent</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
+<div th:insert="navbar"></div>
 
 <!-- main image & intro text-->
 <section id="intro">
@@ -353,7 +314,7 @@
     tooltips.forEach(t => {
       new bootstrap.Tooltip(t)
     })
-  </script>
+</script>
 
 </body>
 <footer>
