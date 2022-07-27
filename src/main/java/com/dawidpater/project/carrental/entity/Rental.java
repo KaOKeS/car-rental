@@ -1,13 +1,17 @@
 package com.dawidpater.project.carrental.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
 
 @Entity
 @Table(name = "rental")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Rental {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,78 +22,11 @@ public class Rental {
     @Column(name = "end_date")
     private LocalDateTime endDate;
     @OneToOne(mappedBy = "rental", fetch = FetchType.LAZY)
-    private Review review;
-    @OneToMany(mappedBy = "rental", fetch = FetchType.LAZY)
-    private Set<UserRental> userRentals;
-    @OneToMany(mappedBy = "car", fetch = FetchType.LAZY)
-    private Set<CarRental> carRentals;
-
-    public Rental() {
-    }
-
-    public Rental(Long id, LocalDateTime startDate, LocalDateTime endDate,
-                  Review review, Set<UserRental> userRentals, Set<CarRental> carRentals) {
-        this.id = id;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.review = review;
-        this.userRentals = userRentals;
-        this.carRentals = carRentals;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public LocalDateTime getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(LocalDateTime startDate) {
-        this.startDate = startDate;
-    }
-
-    public LocalDateTime getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(LocalDateTime endDate) {
-        this.endDate = endDate;
-    }
-
-    public Review getReview() {
-        return review;
-    }
-
-    public void setReview(Review review) {
-        this.review = review;
-    }
-
-    public Set<UserRental> getUserRentals() {
-        return userRentals;
-    }
-
-    public void setUserRentals(Set<UserRental> userRentals) {
-        this.userRentals = userRentals;
-    }
-
-    public Set<CarRental> getCarRentals() {
-        return carRentals;
-    }
-
-    public void setCarRentals(Set<CarRental> carRentals) {
-        this.carRentals = carRentals;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Rental rental = (Rental) o;
-        return Objects.equals(id, rental.id);
-    }
+    private Feedback feedback;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "car_id")
+    private Car car;
 }

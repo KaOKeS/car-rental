@@ -15,7 +15,7 @@ public class CarService {
         this.carRepository = carRepository;
     }
 
-    public List<Car> getCarsWithWebContent(){
+    public List<Car> getBestCarFromEachType(){
         List<Car> topCars = new ArrayList<>();
         topCars.add(carRepository.getBestCarOfRequestedTypeWithWebContent("family"));
         topCars.add(carRepository.getBestCarOfRequestedTypeWithWebContent("transport"));

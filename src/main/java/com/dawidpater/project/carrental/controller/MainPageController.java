@@ -1,8 +1,8 @@
 package com.dawidpater.project.carrental.controller;
 
 import com.dawidpater.project.carrental.service.CarService;
-import com.dawidpater.project.carrental.service.RentalService;
-import com.dawidpater.project.carrental.service.ReviewService;
+import com.dawidpater.project.carrental.service.FeedbackService;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,21 +10,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/main")
+@AllArgsConstructor
 public class MainPageController {
     private final CarService carService;
-    private final ReviewService reviewService;
-    private final RentalService rentalService;
-
-    public MainPageController(CarService carService, ReviewService reviewService, RentalService rentalService) {
-        this.carService = carService;
-        this.reviewService = reviewService;
-        this.rentalService = rentalService;
-    }
+    private final FeedbackService feedbackService;
 
     @GetMapping
     public String writeMainPage(Model model){
-        model.addAttribute("cars",carService.getCarsWithWebContent());
-        model.addAttribute("reviews",reviewService.getFiveLatestReviewsWithUsersAndCars());
+        model.addAttribute("cars",carService.getBestCarFromEachType());
+        model.addAttribute("feedbacks",feedbackService.getLatestReviewsLimitedTo(5));
         return "main";
     }
 }

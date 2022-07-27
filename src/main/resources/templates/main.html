@@ -212,14 +212,14 @@
 
         <div class="row justify-content-center my-5">
             <div class="col-lg-8">
-                <div class="list-group" th:each="review: ${reviews}">
+                <div class="list-group" th:each="feedback: ${feedbacks}">
                     <div class="list-group-item py-3">
-                        <div class="pb-2" th:id="'review' + ${review.id}">
+                        <div class="pb-2" th:id="'feedback' + ${feedback.id}">
                             <script th:inline="javascript">
-                                var x=[[${review.rate}]];
+                                var x=[[${feedback.rate}]];
                                 var index=4;
                                 while(index>=0){
-                                    var second = document.getElementById("review[[${review.id}]]");
+                                    var second = document.getElementById("feedback[[${feedback.id}]]");
                                     if(x>0.8){
                                         second.innerHTML += "<i class=\"bi bi-star-fill text-primary\"></i>";
                                     }
@@ -232,12 +232,12 @@
                                     index--;
                                     x--;
                                 }
-                                second.innerHTML += "<span class=\"small text-primary\"> " + "[[${review.rate}]]" + "</span>";
+                                second.innerHTML += "<span class=\"small text-primary\"> " + "[[${feedback.rate}]]" + "</span>";
                             </script>
                         </div>
-                        <h5 class="mb-1" th:text="${review.content}">A must-buy for every aspiring web dev</h5>
-                        <p class="mb-1 small text-muted"  th:text="${review.rental.carRentals[0].car}">Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur error veniam sit expedita est illo maiores neque quos nesciunt, reprehenderit autem odio commodi labore praesentium voluptate repellat in id quisquam.</p>
-                        <small>Review by <span th:text="${review.rental.userRentals[0].user.username}">Author Name</span></small>
+                        <h5 class="mb-1" th:text="${feedback.content}">A must-buy for every aspiring web dev</h5>
+                        <p class="mb-1 small text-muted"  th:text="${feedback.rental.car}">Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur error veniam sit expedita est illo maiores neque quos nesciunt, reprehenderit autem odio commodi labore praesentium voluptate repellat in id quisquam.</p>
+                        <small>Review by <span th:text="${feedback.rental.user.username}">Author Name</span></small>
                     </div>
                 </div>
             </div>

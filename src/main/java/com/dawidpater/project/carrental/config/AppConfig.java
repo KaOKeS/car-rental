@@ -11,16 +11,12 @@ public class AppConfig {
         return new Car();
     }
     @Bean
-    public CarRental carRental(){
-        return new CarRental();
-    }
-    @Bean
     public Rental rental(){
         return new Rental();
     }
     @Bean
-    public Review review(){
-        return new Review();
+    public Feedback review(){
+        return new Feedback();
     }
     @Bean
     public Role role(){
@@ -29,10 +25,6 @@ public class AppConfig {
     @Bean
     public User user(){
         return new User();
-    }
-    @Bean
-    public UserRental userRental(){
-        return new UserRental();
     }
     @Bean
     public WebContent webContent(){
