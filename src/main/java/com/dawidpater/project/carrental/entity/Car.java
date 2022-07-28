@@ -19,18 +19,18 @@ public @Data class Car {
     @Column(name="id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @Column(name="class")
-    private String type;
     @Column(name="brand")
     private String brand;
-    @Column(name="fuel")
-    private String fuel;
+    @Column(name="model")
+    private String model;
     @Column(name="engine")
     private String engine;
     @Column(name="hp")
     private int hp;
-    @Column(name="model")
-    private String model;
+    @Column(name="fuel")
+    private String fuel;
+    @Column(name="class")
+    private String type;
     @Column(name="sitting_places")
     private byte sittingPlaces;
     @Column(name="rent_price")
@@ -40,6 +40,7 @@ public @Data class Car {
     @Column(name="rate")
     private float rate;
     @JsonIgnore
+    @ToString.Exclude
     @OneToOne(mappedBy = "car", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private WebContent webContent;
     @JsonIgnore

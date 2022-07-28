@@ -13,32 +13,33 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css">
 </head>
 <body>
-<div th:insert="navbar"></div>
+<div th:insert="../static/navbar"></div>
 <!-- cars display-->
-<table>
-    <!-- table headers-->
-    <tr>
-        <th>Brand</th>
-        <th>Model</th>
-        <th>Engine</th>
-        <th>HP</th>
-        <th>Fuel</th>
-        <th>Type</th>
-        <th>Sitting places</th>
-        <th>Price</th>
-    </tr>
-    <!-- table data-->
-    <tr th:each="car:${cars}">
-        <td th:text="${car.brand}">Brand</td>
-        <td th:text="${car.model}">Model</td>
-        <td th:text="${car.engine}">Engine</td>
-        <td th:text="${car.hp}">HP</td>
-        <td th:text="${car.fuel}">Fuel</td>
-        <td th:text="${car.type}">Type</td>
-        <td th:text="${car.sittingPlaces}">Sitting places</td>
-        <td th:text="${car.price}">Price</td>
-    </tr>
-</table>
+<!-- load JS functions-->
+<script src="/js/functions.js"></script>
+<div class="container">
+    <table class="table table-striped table-hover ">
+        <thead>
+            <tr class="">
+              <th scope="col">Brand</th>
+              <th scope="col">Model</th>
+              <th scope="col">Engine</th>
+              <th scope="col">HP</th>
+              <th scope="col">Fuel</th>
+              <th scope="col">Type</th>
+              <th scope="col">Sitting places</th>
+              <th scope="col">Price</th>
+            </tr>
+          </thead>
+          <tbody id="demo">
+            <script>
+                listsCars('demo');
+            </script>
+          </tbody>
+    </table>
+</div>
+
+
 <footer>
     Menu Icon created by Caleb Amesbury
     http://calebamesbury.com
