@@ -14,6 +14,31 @@
 </head>
 <body>
 <div th:insert="navbar"></div>
+<!-- cars display-->
+<table>
+    <!-- table headers-->
+    <tr>
+        <th>Brand</th>
+        <th>Model</th>
+        <th>Engine</th>
+        <th>HP</th>
+        <th>Fuel</th>
+        <th>Type</th>
+        <th>Sitting places</th>
+        <th>Price</th>
+    </tr>
+    <!-- table data-->
+    <tr th:each="car:${cars}">
+        <td th:text="${car.brand}">Brand</td>
+        <td th:text="${car.model}">Model</td>
+        <td th:text="${car.engine}">Engine</td>
+        <td th:text="${car.hp}">HP</td>
+        <td th:text="${car.fuel}">Fuel</td>
+        <td th:text="${car.type}">Type</td>
+        <td th:text="${car.sittingPlaces}">Sitting places</td>
+        <td th:text="${car.price}">Price</td>
+    </tr>
+</table>
 <footer>
     Menu Icon created by Caleb Amesbury
     http://calebamesbury.com

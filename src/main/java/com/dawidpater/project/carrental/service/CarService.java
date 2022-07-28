@@ -22,4 +22,8 @@ public class CarService {
         topCars.add(carRepository.getBestCarOfRequestedTypeWithWebContent("sport"));
         return topCars;
     }
+
+    public List<Car> getAllCars(){
+        return carRepository.findAll();
+    }
 }

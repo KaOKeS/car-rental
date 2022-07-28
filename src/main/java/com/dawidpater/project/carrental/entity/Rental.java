@@ -3,6 +3,7 @@ package com.dawidpater.project.carrental.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -21,12 +22,17 @@ public class Rental {
     private LocalDateTime startDate;
     @Column(name = "end_date")
     private LocalDateTime endDate;
+
+    @ToString.Exclude
     @OneToOne(mappedBy = "rental", fetch = FetchType.LAZY)
     private Feedback feedback;
+
+    @ToString.Exclude
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
-    @OneToOne(fetch = FetchType.LAZY)
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "car_id")
     private Car car;
 }

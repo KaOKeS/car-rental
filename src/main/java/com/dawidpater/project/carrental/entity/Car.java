@@ -1,5 +1,6 @@
 package com.dawidpater.project.carrental.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -38,10 +39,13 @@ public @Data class Car {
     private boolean deleted;
     @Column(name="rate")
     private float rate;
-    @OneToOne(mappedBy = "car", fetch = FetchType.LAZY)
+    @JsonIgnore
+    @OneToOne(mappedBy = "car", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private WebContent webContent;
-    @OneToOne(mappedBy = "car", fetch = FetchType.LAZY)
-    private Rental rental;
+    @JsonIgnore
+    @ToString.Exclude
+    @OneToMany(mappedBy = "car", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Rental> rental;
 
     @Override
     public String toString() {

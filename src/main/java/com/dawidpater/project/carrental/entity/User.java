@@ -3,6 +3,7 @@ package com.dawidpater.project.carrental.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -41,9 +42,13 @@ public class User {
     private String documentId;
     @Column(name = "blocked")
     private Boolean blocked;
+
+    @ToString.Exclude
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "role_id")
     private Role role;
+
+    @ToString.Exclude
     @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
     private Rental rental;
 
