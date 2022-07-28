@@ -42,9 +42,19 @@ function carElement(car){
     const carRowElement = document.createElement('tr');
     for (const carProperty in car){
         if(car.hasOwnProperty(carProperty)){
-            if(!(carProperty=="deleted" || carProperty=="rate" || carProperty=="id")){
+            if(!(carProperty=="deleted" || carProperty=="rate" || carProperty=="id" || carProperty=="description" || carProperty=="imagePath")){
                 var createdTd = document.createElement('td');
                 createdTd.innerText = capitalizeFirstLetter(`${car[carProperty]}`);
+                carRowElement.appendChild(createdTd);
+            }
+            else if(carProperty=="imagePath"){
+                var createdTd = document.createElement('td');
+                
+                var createdImage = new Image();
+                createdImage.src=`${car[carProperty]}`;
+                createdImage.className="img-fluid";
+                
+                createdTd.appendChild(createdImage)
                 carRowElement.appendChild(createdTd);
             }
         }

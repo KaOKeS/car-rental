@@ -15,7 +15,7 @@ public class AppConfig {
         return new Rental();
     }
     @Bean
-    public Feedback review(){
+    public Feedback feedback(){
         return new Feedback();
     }
     @Bean
@@ -25,9 +25,5 @@ public class AppConfig {
     @Bean
     public User user(){
         return new User();
-    }
-    @Bean
-    public WebContent webContent(){
-        return new WebContent();
     }
 }

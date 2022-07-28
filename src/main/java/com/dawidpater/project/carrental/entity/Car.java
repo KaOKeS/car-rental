@@ -19,6 +19,8 @@ public @Data class Car {
     @Column(name="id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @Column(name = "image_path")
+    private String imagePath;
     @Column(name="brand")
     private String brand;
     @Column(name="model")
@@ -39,10 +41,8 @@ public @Data class Car {
     private boolean deleted;
     @Column(name="rate")
     private float rate;
-    @JsonIgnore
-    @ToString.Exclude
-    @OneToOne(mappedBy = "car", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private WebContent webContent;
+    @Column(name = "description")
+    private String description;
     @JsonIgnore
     @ToString.Exclude
     @OneToMany(mappedBy = "car", fetch = FetchType.LAZY, cascade = CascadeType.ALL)

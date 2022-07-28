@@ -7,8 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface CarRepository extends JpaRepository<Car,Long> {
-    @Query(value = "SELECT * FROM car c JOIN webcontent wc " +
-            "ON c.id=wc.car_id WHERE c.class=?1 " +
-            "ORDER BY c.rate DESC LIMIT 1",nativeQuery = true)
+    @Query(value = "SELECT * FROM car c WHERE c.class=?1 ORDER BY c.rate DESC LIMIT 1",nativeQuery = true)
     Car getBestCarOfRequestedTypeWithWebContent(String type);
 }

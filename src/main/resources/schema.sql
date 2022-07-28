@@ -9,7 +9,9 @@
   `sitting_places` TINYINT NOT NULL,
   `rent_price` REAL NOT NULL,
   `deleted` TINYINT NOT NULL,
-  `rate` DOUBLE NOT NULL DEFAULT 5.0
+  `rate` DOUBLE NOT NULL DEFAULT 5.0,
+  `image_path` VARCHAR(255) NULL DEFAULT '/images/cars/no-car-image.png',
+  `description` MEDIUMTEXT NULL DEFAULT NULL
   );
 
   CREATE TABLE role (
