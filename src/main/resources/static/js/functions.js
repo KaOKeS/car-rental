@@ -1,8 +1,8 @@
 const apiUrl = 'http://localhost:8080/api';
 
-async function fetchCars() {
+async function fetchCars(restUrl) {
     try{
-        var response = await fetch(`${apiUrl}/cars`);
+        var response = await fetch(`http://localhost:8080/api${restUrl}`);
 
           if(!response.ok){
             throw new Error(`Failed to fetch cars: ${response.status}`);
@@ -15,7 +15,7 @@ async function fetchCars() {
     }
 }
 
-async function listsCars(carsContainerElementId) {
+async function listsCars(carsContainerElementId,restUrl) {
     const carsContainerElement = document.getElementById(carsContainerElementId);
 
     if(!carsContainerElement){
@@ -23,7 +23,7 @@ async function listsCars(carsContainerElementId) {
         return;
     }
 
-    fetchCars()
+    fetchCars(restUrl)
         .then(cars => {
             if(!cars){
                 carsContainerElement.innerHTML = 'No cars';
@@ -44,6 +44,7 @@ function carElement(car){
         if(car.hasOwnProperty(carProperty)){
             if(!(carProperty=="deleted" || carProperty=="rate" || carProperty=="id" || carProperty=="description" || carProperty=="imagePath")){
                 var createdTd = document.createElement('td');
+                createdTd.setAttribute("class","align-middle");
                 createdTd.innerText = capitalizeFirstLetter(`${car[carProperty]}`);
                 carRowElement.appendChild(createdTd);
             }

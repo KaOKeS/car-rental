@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js" integrity="sha384-eMNCOe7tC1doHpGoWe/6oMVemdAVTMs2xqW4mwXrXsW0L84Iytr2wi5v2QjrP/xp" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.min.js" integrity="sha384-cn7l7gDp0eyniUwwAZgrzD06kc/tftFf19TOAs2zVinnD/C7E91j9yyk5//jjpt/" crossorigin="anonymous"></script>
+</head>
+<body>
+<div th:insert="../static/navbar"></div>
+    <section id="registration" class="section">
+        <em>Register User</em><br/>
+        <form action="/registeruser" method="post" th:action="@{/registeruser}" th:object="${newuser}">
+            <label>Username</label><input th:field="*{username}" type="text"/><br/>
+            <label>Password</label><input th:field="*{password}" type="password"/><br/>
+            <label>Email</label><input th:field="*{email}" type="email"/><br/>
+            <label>First name</label><input th:field="*{firstName}" type="text"/><br/>
+            <label>Last Name</label><input th:field="*{lastName}" type="text"/><br/>
+            <label>Country</label><input th:field="*{country}" type="text"/><br/>
+            <label>City</label><input th:field="*{city}" type="text"/><br/>
+            <label>Address</label><input th:field="*{address}" type="text"/><br/>
+            <label>Zip</label><input th:field="*{zip}" type="text"/><br/>
+            <label>Birthdate</label><input th:field="*{birthDate}" type="date"/><br/>
+            <label>Phone</label><input th:field="*{phone}" type="text"/><br/>
+            <label>Document ID</label><input th:field="*{documentId}" type="text"/><br/>
+            <input type="submit" value="Submit" id="submit">
+        </form>
+    </section>
+
+<script type="text/javascript">
+//Data Picker Initialization
+$('.datepicker').datepicker();
+</script>
+</body>
+</html>

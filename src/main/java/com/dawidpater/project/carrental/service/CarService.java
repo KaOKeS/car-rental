@@ -17,13 +17,20 @@ public class CarService {
 
     public List<Car> getBestCarFromEachType(){
         List<Car> topCars = new ArrayList<>();
-        topCars.add(carRepository.getBestCarOfRequestedTypeWithWebContent("family"));
-        topCars.add(carRepository.getBestCarOfRequestedTypeWithWebContent("transport"));
-        topCars.add(carRepository.getBestCarOfRequestedTypeWithWebContent("sport"));
+        topCars.add(carRepository.getBestCarOfRequestedType("family"));
+        topCars.add(carRepository.getBestCarOfRequestedType("transport"));
+        topCars.add(carRepository.getBestCarOfRequestedType("sport"));
         return topCars;
     }
 
     public List<Car> getAllCars(){
         return carRepository.findAll();
+    }
+
+    public List<Car> findByType(String type){
+        if(type.isEmpty()){
+            return carRepository.findAll();
+        }
+        return carRepository.searchByClass(type);
     }
 }
