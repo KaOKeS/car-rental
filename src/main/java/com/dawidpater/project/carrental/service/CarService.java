@@ -33,4 +33,8 @@ public class CarService {
         }
         return carRepository.searchByClass(type);
     }
+
+    public List<String> getAllCarsTypes(){
+        return carRepository.getAllCarTypes();
+    }
 }

@@ -13,4 +13,7 @@ public interface CarRepository extends JpaRepository<Car,Long> {
 
     @Query(value = "SELECT c FROM Car c WHERE c.type = ?1")
     List<Car> searchByClass(String type);
+
+    @Query(value = "SELECT DISTINCT class FROM takethatcar.car", nativeQuery = true)
+    List<String> getAllCarTypes();
 }
