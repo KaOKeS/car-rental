@@ -17,10 +17,7 @@ public class RegistrationController {
     private final UserService userService;
 
     @PostMapping("/registeruser")
-    public String registerUser(@ModelAttribute("newuser") User user,
-                               @RequestParam("birthDate") @DateTimeFormat(pattern="yyyy-MM-dd") LocalDate birthDate){
-        System.out.println("I am in RegistrationController before save");
-        System.out.println(userService.save(user));
-        return "login";
+    public String registerUser(@ModelAttribute("newuser") User user){
+        return "redirect:/login";
     }
 }

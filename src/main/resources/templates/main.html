@@ -25,7 +25,7 @@
                     <div class="display-5 text-muted">Your best rental service</div>
                 </h1>
                 <p class="lead my-4 text-muted">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-                <a href="#pricing" class="btn btn-secondary btn-lg">Rent Now!</a>
+                <a href="/login" class="btn btn-secondary btn-lg">Rent Now!</a>
             </div>
             <div class="col-md-5 text-center">
                 <img class="img-fluid" src="images/gray-audi.png" alt="car-img">
@@ -52,7 +52,7 @@
                         <p><img th:src="${cars[2].imagePath}" alt="Jaguar F-Type"></p>
                         <p class="card-text mx-5 text-muted" th:text="${cars[2].brand}+' '+ ${cars[2].model}">Lorem</p>
                         <p class="card-text mx-5 text-muted d-none d-md-block" th:text="${cars[2].description}">Lorem ipsum dolor, sit amet consectetur adipisicing elit.</p>
-                        <a href="#" class="btn btn-outline-primary btn-lg mt-3">Rent now!</a>
+                        <a href="/login" class="btn btn-outline-primary btn-lg mt-3">Rent now!</a>
                     </div>
                 </div>
             </div>
@@ -67,7 +67,7 @@
                         <p><img th:src="${cars[0].imagePath}" alt="Ford Mondeo"></p>
                         <p class="card-text mx-5 text-muted" th:text="${cars[0].brand}+' '+ ${cars[0].model}">Lorem</p>
                         <p class="card-text mx-5 text-muted d-none d-md-block" th:text="${cars[0].description}">Lorem ipsum dolor, sit amet consectetur adipisicing elit.</p>
-                        <a href="#" class="btn btn-outline-primary btn-lg mt-3">Rent now!</a>
+                        <a href="/login" class="btn btn-outline-primary btn-lg mt-3">Rent now!</a>
                     </div>
                 </div>
             </div>
@@ -81,7 +81,7 @@
                         <p><img th:src="${cars[1].imagePath}" alt="Peugeot Trafic"></p>
                         <p class="card-text mx-5 text-muted" th:text="${cars[1].brand}+' '+ ${cars[1].model}">Lorem</p>
                         <p class="card-text mx-5 text-muted d-none d-md-block" th:text="${cars[1].description}">Lorem ipsum dolor, sit amet consectetur adipisicing elit.</p>
-                        <a href="#" class="btn btn-outline-primary btn-lg mt-3">Rent now!</a>
+                        <a href="/login" class="btn btn-outline-primary btn-lg mt-3">Rent now!</a>
                     </div>
                 </div>
             </div>
@@ -92,7 +92,7 @@
 
 <!-- topics at a glance -->
 <section id="topics">
-    <div class="container-md">
+    <div class="container-md" id="about">
         <div class="text-center">
             <h2>Advantages of rental...</h2>
             <p class="lead text-muted">Short summary of all advantages which you get taking our car</p>
