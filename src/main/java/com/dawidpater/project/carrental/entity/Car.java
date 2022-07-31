@@ -25,14 +25,14 @@ public @Data class Car {
     private String brand;
     @Column(name="model")
     private String model;
-    @Column(name="engine")
-    private String engine;
+    @Column(name="car_engine")
+    private String carEngine;
     @Column(name="hp")
     private int hp;
     @Column(name="fuel")
     private String fuel;
-    @Column(name="class")
-    private String type;
+    @Column(name="car_type")
+    private String carType;
     @Column(name="sitting_places")
     private byte sittingPlaces;
     @Column(name="rent_price")
@@ -41,8 +41,8 @@ public @Data class Car {
     private boolean deleted;
     @Column(name="rate")
     private float rate;
-    @Column(name = "description")
-    private String description;
+    @Column(name = "car_description")
+    private String carDescription;
     @JsonIgnore
     @ToString.Exclude
     @OneToMany(mappedBy = "car", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -52,10 +52,10 @@ public @Data class Car {
     public String toString() {
         return  brand.substring(0,1).toUpperCase() + brand.substring(1) + ' ' +
                 model.substring(0,1).toUpperCase() + model.substring(1) + " - " +
-                " Engine: " + engine +
+                " Engine: " + carEngine +
                 " Fuel: " + fuel +
                 " Hp:" + hp +
-                " Type: " + type +
+                " Type: " + carType +
                 " Sitting Places: " + sittingPlaces;
     }
 }

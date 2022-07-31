@@ -8,7 +8,7 @@ async function fetchCars(restUrl) {
             throw new Error(`Failed to fetch cars: ${response.status}`);
           }
           const cars = await response.json();
-          console.log("cars:",cars);
+          //console.log("cars:",cars);
           return cars;
     } catch(e){
         console.log(e);
@@ -42,7 +42,7 @@ function carElement(car){
     const carRowElement = document.createElement('tr');
     for (const carProperty in car){
         if(car.hasOwnProperty(carProperty)){
-            if(!(carProperty=="deleted" || carProperty=="rate" || carProperty=="id" || carProperty=="description" || carProperty=="imagePath")){
+            if(!(carProperty=="deleted" || carProperty=="rate" || carProperty=="id" || carProperty=="carDescription" || carProperty=="imagePath")){
                 var createdTd = document.createElement('td');
                 createdTd.setAttribute("class","align-middle");
                 createdTd.innerText = capitalizeFirstLetter(`${car[carProperty]}`);

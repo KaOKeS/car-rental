@@ -6,23 +6,21 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "user")
+@Table(name = "rental_user")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class User {
+public class RentalUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
     @Column(name = "username")
     private String username;
-    @Column(name = "password")
-    private String password;
+    @Column(name = "user_password")
+    private String userPassword;
     @Column(name = "email")
     private String email;
     @Column(name = "first_name")
@@ -49,10 +47,10 @@ public class User {
     @ToString.Exclude
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "role_id")
-    private Role role;
+    private RoleOfUser roleOfUser;
 
     @ToString.Exclude
-    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "rentalUser", fetch = FetchType.LAZY)
     private Rental rental;
 
 }

@@ -19,10 +19,4 @@ public class CarController {
         model.addAttribute("carTypes",carService.getAllCarsTypes());
         return "car";
     }
-
-    @GetMapping(path = "/cars", params = "type")
-    public String displayCars(@RequestParam("type") String type, Model model){
-        model.addAttribute("restRequestUrl","/cars?type="+type);
-        return "car";
-    }
 }

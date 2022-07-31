@@ -45,18 +45,18 @@
               <div class="col-3">
                 <label for="searchByForm">Search by:  </label>
                 <div class="form-check form-check-inline" id="searchByForm">
-                    <input class="form-check-input" type="radio" name="searchBy" id="checkBrand" value="Brand">
-                    <label class="form-check-label" for="checkBrand">Brand</label>
+                    <input class="form-check-input" type="radio" name="searchBy" id="searchBy" value="Brand">
+                    <label class="form-check-label">Brand</label>
                   </div>
                   <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="searchBy" id="checkModel" value="Model">
-                    <label class="form-check-label" for="checkModel">Model</label>
+                    <input class="form-check-input" type="radio" name="searchBy" id="searchBy" value="Model">
+                    <label class="form-check-label">Model</label>
                   </div>
               </div>
                 <!-- search-->
               <div class="col-6 col-md-3 d-inline-flex">
                 <form onsubmit="listsCars('carTable',/*[[${restRequestUrl}]]*/)">
-                    <input type="text" class="form-control" placeholder="Search..." name="search">
+                    <input type="text" class="form-control" placeholder="Search..." name="search" id="searchField">
                     <input class="btn btn-secondary" type="submit" value="Search">
                 </form>
               </div>
@@ -72,7 +72,7 @@
                 <div class="col-6 col-lg-3">
                     <label for="datepicker1">Start date:</label>
                     <div class="input-group date datepicker" id="datepicker1">
-                        <input type="text" class="form-control" name="startDate" placeholder="12-01-2022">
+                        <input type="text" class="form-control" name="startDate" id="startDate" placeholder="12-01-2022" value ="">
                         <span class="input-group-append">
                             <span class="input-group-text bg-white d-block">
                                 <i class="fa fa-calendar"></i>
@@ -90,7 +90,7 @@
                 <div class="col-6 col-lg-3">
                     <label for="datepicker2">End date:</label>
                     <div class="input-group date datepicker" id="datepicker2">
-                        <input type="text" class="form-control" name="endDate" placeholder="12-01-2022">
+                        <input type="text" class="form-control" name="endDate" id="endDate" placeholder="12-01-2022" value="">
                         <span class="input-group-append">
                             <span class="input-group-text bg-white d-block">
                                 <i class="fa fa-calendar"></i>
@@ -102,21 +102,21 @@
             <!-- Order By-->
             <div class="row align-items-center mt-1 mb-5">
               <div class="col-7">
-                <label for="searchByForm" class="me-2">Sort by:  </label>
-                <div class="form-check form-check-inline" id="searchByForm">
-                    <input class="form-check-input" type="radio" name="sortBy" id="priceAsc" value="priceAsc">
+                <label for="orderByForm" class="me-2">Order by:  </label>
+                <div class="form-check form-check-inline" id="orderByForm">
+                    <input class="form-check-input" type="radio" name="sortBy" id="sortBy" value="priceAsc">
                     <label class="form-check-label" for="checkBrand">Price <i class="bi bi-arrow-up"></i></label>
                   </div>
                   <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="sortBy" id="PriceDesc" value="PriceDesc">
+                    <input class="form-check-input" type="radio" name="sortBy" id="sortBy" value="priceDesc">
                     <label class="form-check-label" for="checkModel">Price <i class="bi bi-arrow-down"></i></label>
                   </div>
                   <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="sortBy" id="brandAsc" value="brandAsc">
+                    <input class="form-check-input" type="radio" name="sortBy" id="sortBy" value="brandAsc">
                     <label class="form-check-label" for="checkModel">Brand <i class="bi bi-arrow-up"></i></label>
                   </div>
                   <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="sortBy" id="brandDesc" value="brandDesc">
+                    <input class="form-check-input" type="radio" name="sortBy" id="sortBy" value="brandDesc">
                     <label class="form-check-label" for="checkModel">Brand <i class="bi bi-arrow-down"></i></label>
                   </div>
               </div>
@@ -148,12 +148,62 @@
     </table>
 </div>
 <script type="text/javascript">
-        $(function() {
-            $("#datepicker1, #datepicker2").datepicker({
-                                                            //viewMode: 'months',
-                                                            format: 'dd-mm-yyyy',
-                                                        });
-        });
+    (function(){
+        "use strict";
+
+        document.getElementById('filters').addEventListener('submit',displayCarsOnEvent);
+
+        function displayCarsOnEvent(event){
+            event.preventDefault();
+
+            var typeChose = document.getElementById('typeChose').value;
+            console.log("typeChose " + typeChose);
+            var startDate = document.getElementById('startDate').value;
+            console.log("startDate " + startDate);
+            var endDate = document.getElementById('endDate').value;
+            console.log("endDate " + endDate);
+            var searchBy = "null";
+            if(document.querySelector('input[name=searchBy]:checked')!=null){
+                searchBy = document.querySelector('input[name=searchBy]:checked').value;
+                console.log("searchBy " + searchBy);
+            }
+            var searchQuery = document.getElementById('searchField').value;
+            var maxPrice = document.getElementById('maxPrice').value;
+            console.log("maxPrice " + maxPrice);
+            var minPrice = document.getElementById('minPrice').value;
+            console.log("minPrice " + minPrice);
+            var sortBy = "null";
+            if(document.querySelector('input[name=sortBy]:checked')!=null){
+                sortBy = document.querySelector('input[name=sortBy]:checked').value;
+                console.log("sortByForm " + sortBy);
+            }
+            
+
+            if(startDate.value === ""){
+                alert("Please fill up Start date field");
+                startDateField.focus();
+                return;
+            }
+            document.getElementById('carTable').innerHTML = "";
+
+            var carQueryToRest = "/cars?type=" + typeChose
+                              + "&startDate=" + startDate
+                              + "&endDate=" + endDate
+                              + "&searchBy=" + searchBy
+                              + "&maxPrice=" + maxPrice
+                              + "&minPrice=" + minPrice
+                              + "&sortBy=" + sortBy
+                              + "&searchQuery=" + searchQuery;
+
+            listsCars('carTable',carQueryToRest);
+        }
+    })();
+    $(function() {
+        $("#datepicker1, #datepicker2").datepicker({
+                                                        //viewMode: 'months',
+                                                        format: 'dd-mm-yyyy',
+                                                    });
+    });
 </script>
 <footer>
     <div class="container-lg">

@@ -1,23 +1,21 @@
 package com.dawidpater.project.carrental.controller;
 
-import com.dawidpater.project.carrental.entity.User;
-import com.dawidpater.project.carrental.service.UserService;
+import com.dawidpater.project.carrental.entity.RentalUser;
+import com.dawidpater.project.carrental.entity.RoleOfUser;
+import com.dawidpater.project.carrental.service.RentalUserService;
 import lombok.AllArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
-import java.time.LocalDate;
 
 @Controller
 @AllArgsConstructor
 public class RegistrationController {
-    private final UserService userService;
+    private final RentalUserService rentalUserService;
 
     @PostMapping("/registeruser")
-    public String registerUser(@ModelAttribute("newuser") User user){
+    public String registerUser(@ModelAttribute("newuser") RentalUser rentalUser){
+        rentalUserService.save(rentalUser);
         return "redirect:/login";
     }
 }

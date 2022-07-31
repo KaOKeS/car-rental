@@ -19,11 +19,11 @@ public class AppConfig {
         return new Feedback();
     }
     @Bean
-    public Role role(){
-        return new Role();
+    public RoleOfUser role(){
+        return new RoleOfUser();
     }
     @Bean
-    public User user(){
-        return new User();
+    public RentalUser rentalUser(){
+        return new RentalUser();
     }
 }

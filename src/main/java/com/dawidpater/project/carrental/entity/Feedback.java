@@ -22,8 +22,8 @@ public class Feedback {
     private String content;
     @Column(name = "rate")
     private Float rate;
-    @Column(name = "date")
-    private LocalDateTime date;
+    @Column(name = "feedback_date")
+    private LocalDateTime feedbackDate;
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "rental_id")
     private Rental rental;

@@ -1,6 +1,6 @@
 package com.dawidpater.project.carrental.controller;
 
-import com.dawidpater.project.carrental.entity.User;
+import com.dawidpater.project.carrental.entity.RentalUser;
 import com.dawidpater.project.carrental.service.CarService;
 import com.dawidpater.project.carrental.service.FeedbackService;
 import lombok.AllArgsConstructor;
@@ -8,7 +8,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @AllArgsConstructor
@@ -29,7 +28,7 @@ public class MainPageController {
     }
 
     @GetMapping("/register")
-    public String goToRegister(@ModelAttribute("newuser") User user,Model model){
+    public String goToRegister(@ModelAttribute("newuser") RentalUser rentalUser, Model model){
         return "register";
     }
 }

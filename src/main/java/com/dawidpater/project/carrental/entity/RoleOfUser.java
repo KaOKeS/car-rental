@@ -5,20 +5,19 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Objects;
 
 @Entity
-@Table(name = "role")
+@Table(name = "role_of_user")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Role {
+public class RoleOfUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-    @Column(name = "role")
+    @Column(name = "role_of_user")
     private String role;
-    @OneToOne(mappedBy = "role", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private User user;
+    @OneToOne(mappedBy = "roleOfUser", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private RentalUser rentalUser;
 }

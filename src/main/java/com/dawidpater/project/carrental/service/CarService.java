@@ -3,9 +3,13 @@ package com.dawidpater.project.carrental.service;
 import com.dawidpater.project.carrental.entity.Car;
 import com.dawidpater.project.carrental.repository.CarRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class CarService {
@@ -23,18 +27,15 @@ public class CarService {
         return topCars;
     }
 
-    public List<Car> getAllCars(){
-        return carRepository.findAll();
-    }
-
-    public List<Car> findByType(String type){
-        if(type.isEmpty()){
-            return carRepository.findAll();
-        }
-        return carRepository.searchByClass(type);
-    }
-
     public List<String> getAllCarsTypes(){
         return carRepository.getAllCarTypes();
+    }
+
+    public List<Car> getCarsAsRequested(Map<String,String> reqParams){
+        String type = (reqParams.get("type")=="0") ? "%" : reqParams.get("type");
+        List<Car> carsRentedInThisTime = carRepository.getAllRentedCarsAccordingToRequest("%","%","0","155","2021-12-01 00:00:00","2021-07-02 23:59:59");
+        List<Car> allCarsAccordingToRequest = carRepository.getAllCarsAccordingToRequest("%","%","0","155");
+        carsRentedInThisTime.forEach((car -> { allCarsAccordingToRequest.remove(car);}));
+        return allCarsAccordingToRequest;
     }
 }

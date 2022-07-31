@@ -23,7 +23,7 @@ public class FeedbackService {
         Feedback review = new Feedback();
         review.setContent("elo");
         review.setRate(4.5F);
-        review.setDate(LocalDateTime.now());
+        review.setFeedbackDate(LocalDateTime.now());
         return review;
     }
 }
