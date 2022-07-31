@@ -17,9 +17,14 @@ public interface CarRepository extends JpaRepository<Car,Long> {
     @Query(value = "SELECT DISTINCT car_type FROM car", nativeQuery = true)
     List<String> getAllCarTypes();
 
-    @Query(value = "SELECT DISTINCT (c.id),c.car_type ,c.brand, c.fuel, c.car_engine, c.hp, c.model, c.sitting_places , c.rent_price, c.deleted, c.rate, c.image_path, c.car_description FROM car c LEFT JOIN rental r ON r.car_id=c.id WHERE brand LIKE ?1 AND car_type LIKE ?2 AND rent_price>=?3 AND rent_price<=?4 AND start_date BETWEEN '2021-12-01 00:00:00' AND '2021-07-02 23:59:59' AND end_date BETWEEN '2021-12-01 00:00:00' AND '2021-07-02 23:59:59'", nativeQuery = true)
-    List<Car> getAllRentedCarsAccordingToRequest(String brand, String type, String minPrice, String maxPrice, String startDate, String endDate);
+    @Query(value = "SELECT DISTINCT (c.id),c.car_type ,c.brand, c.fuel, c.car_engine, c.hp, c.model, c.sitting_places , c.rent_price, c.deleted, c.rate, c.image_path, c.car_description FROM car c LEFT JOIN rental r ON r.car_id=c.id WHERE c.brand LIKE :brand AND c.car_type LIKE :type AND c.rent_price>=:minPrice AND c.rent_price<=:maxPrice AND r.start_date BETWEEN :startDate AND :endDate AND r.end_date BETWEEN :startDate AND :endDate", nativeQuery = true)
+    List<Car> getAllRentedCarsAccordingToRequest(@Param("brand") String brand,
+                                                 @Param("type") String type,
+                                                 @Param("minPrice") Integer minPrice,
+                                                 @Param("maxPrice") Integer maxPrice,
+                                                 @Param("startDate") LocalDateTime startDate,
+                                                 @Param("endDate") LocalDateTime endDate);
 
-    @Query(value = "SELECT DISTINCT (c.id),c.car_type ,c.brand, c.fuel, c.car_engine, c.hp, c.model, c.sitting_places , c.rent_price, c.deleted, c.rate, c.image_path, c.car_description FROM car c LEFT JOIN rental r ON r.car_id=c.id WHERE brand LIKE ?1 AND car_type LIKE ?2 AND rent_price>=?3 AND rent_price<=?4", nativeQuery = true)
+    @Query(value = "SELECT c.id,c.car_type ,c.brand, c.fuel, c.car_engine, c.hp, c.model, c.sitting_places , c.rent_price, c.deleted, c.rate, c.image_path, c.car_description FROM car c WHERE c.brand LIKE ?1 AND c.car_type LIKE ?2 AND c.rent_price>=?3 AND c.rent_price<=?4", nativeQuery = true)
     List<Car> getAllCarsAccordingToRequest(String brand, String type, String minPrice, String maxPrice);
 }
