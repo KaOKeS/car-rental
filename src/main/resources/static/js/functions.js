@@ -8,7 +8,6 @@ async function fetchCars(restUrl) {
             throw new Error(`Failed to fetch cars: ${response.status}`);
           }
           const cars = await response.json();
-          //console.log("cars:",cars);
           return cars;
     } catch(e){
         console.log(e);

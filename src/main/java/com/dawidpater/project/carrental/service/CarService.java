@@ -1,5 +1,7 @@
 package com.dawidpater.project.carrental.service;
 
+import com.dawidpater.project.carrental.comparator.CarByBrandNameComparator;
+import com.dawidpater.project.carrental.comparator.CarByPriceAscComparator;
 import com.dawidpater.project.carrental.exception.WrongDataPassedException;
 import com.dawidpater.project.carrental.converter.LocalDateTimeFromStringConverter;
 import com.dawidpater.project.carrental.entity.Car;
@@ -7,11 +9,9 @@ import com.dawidpater.project.carrental.repository.CarRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @Service
 public class CarService {
@@ -53,6 +53,18 @@ public class CarService {
         List<Car> carsRentedInThisTime = carRepository.getAllRentedCarsAccordingToRequest(brand,model,type,0,155,startDate,endDate);
         List<Car> allCarsAccordingToRequest = carRepository.findByBrandLikeIgnoreCaseAndModelLikeIgnoreCaseAndCarTypeLikeIgnoreCaseAndPriceGreaterThanEqualAndPriceLessThanEqual(brand,model,type,minPrice,maxPrice);
         carsRentedInThisTime.forEach((allCarsAccordingToRequest::remove));
+
+        if(reqParams.get("sortBy")!= null && !reqParams.get("sortBy").isEmpty()){
+            if(reqParams.get("sortBy").equals("priceAsc"))
+                allCarsAccordingToRequest = allCarsAccordingToRequest.stream().sorted(((o1, o2) -> new CarByPriceAscComparator().compare(o1,o2))).collect(Collectors.toList());
+            else if(reqParams.get("sortBy").equals("priceDesc"))
+                allCarsAccordingToRequest = allCarsAccordingToRequest.stream().sorted(((o1, o2) -> new CarByPriceAscComparator().reversed().compare(o1,o2))).collect(Collectors.toList());
+            else if(reqParams.get("sortBy").equals("brandAsc"))
+                allCarsAccordingToRequest = allCarsAccordingToRequest.stream().sorted(((o1, o2) -> new CarByBrandNameComparator().compare(o1,o2))).collect(Collectors.toList());
+            else if(reqParams.get("sortBy").equals("brandDesc"))
+                allCarsAccordingToRequest = allCarsAccordingToRequest.stream().sorted(((o1, o2) -> new CarByBrandNameComparator().reversed().compare(o1,o2))).collect(Collectors.toList());
+        }
+
         return allCarsAccordingToRequest;
     }
 
@@ -60,7 +72,7 @@ public class CarService {
         return Collections.EMPTY_LIST;
     }
 
-    private void dateFieldsValidation(String startDate, String endDate){
+    private void dateFieldsValidation(String startDate, String endDate) throws WrongDataPassedException{
         Pattern datePattern = Pattern.compile("\\d\\d-\\d\\d-\\d\\d\\d\\d");
         if(startDate==null || endDate==null || !datePattern.matcher(startDate).find() || !datePattern.matcher(endDate).find())
             throw new WrongDataPassedException();

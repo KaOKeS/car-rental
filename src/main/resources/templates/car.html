@@ -157,11 +157,8 @@
             event.preventDefault();
 
             var typeChose = document.getElementById('typeChose').value;
-            console.log("typeChose " + typeChose);
             var startDate = document.getElementById('startDate').value;
-            console.log("startDate " + startDate);
             var endDate = document.getElementById('endDate').value;
-            console.log("endDate " + endDate);
             var searchBy = "null";
             if(document.querySelector('input[name=searchBy]:checked')!=null){
                 searchBy = document.querySelector('input[name=searchBy]:checked').value;
@@ -169,9 +166,7 @@
             }
             var searchQuery = document.getElementById('searchField').value;
             var maxPrice = document.getElementById('maxPrice').value;
-            console.log("maxPrice " + maxPrice);
             var minPrice = document.getElementById('minPrice').value;
-            console.log("minPrice " + minPrice);
             var sortBy = "null";
             if(document.querySelector('input[name=sortBy]:checked')!=null){
                 sortBy = document.querySelector('input[name=sortBy]:checked').value;
