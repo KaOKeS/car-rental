@@ -3,9 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
+    <style>
+        section{
+            padding: 30px 0;
+        }
+    </style>
 </head>
 <body>
-<div th:insert="../static/navbar"></div>
+<div>
+    <div th:insert="../static/navbar"></div>
+    <div th:insert="../static/admin-navbar"></div>
+</div>
 <h3>User registered!</h3>
 <a href="/register">Register</a>
 </body>

@@ -1,25 +1,20 @@
 package com.dawidpater.project.carrental.service;
 
-import com.dawidpater.project.carrental.comparator.CarByBrandNameComparator;
-import com.dawidpater.project.carrental.comparator.CarByPriceAscComparator;
 import com.dawidpater.project.carrental.exception.WrongDataPassedException;
 import com.dawidpater.project.carrental.converter.LocalDateTimeFromStringConverter;
 import com.dawidpater.project.carrental.entity.Car;
 import com.dawidpater.project.carrental.repository.CarRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class CarService {
     private final CarRepository carRepository;
-
-    public CarService(CarRepository carRepository) {
-        this.carRepository = carRepository;
-    }
 
     public List<Car> getBestCarFromEachType(){
         List<Car> topCars = new ArrayList<>();
@@ -50,20 +45,23 @@ public class CarService {
         Double minPrice = Double.parseDouble(reqParams.get("minPrice"));
         Double maxPrice = Double.parseDouble(reqParams.get("maxPrice"));
 
-        List<Car> carsRentedInThisTime = carRepository.getAllRentedCarsAccordingToRequest(brand,model,type,0,155,startDate,endDate);
-        List<Car> allCarsAccordingToRequest = carRepository.findByBrandLikeIgnoreCaseAndModelLikeIgnoreCaseAndCarTypeLikeIgnoreCaseAndPriceGreaterThanEqualAndPriceLessThanEqual(brand,model,type,minPrice,maxPrice);
-        carsRentedInThisTime.forEach((allCarsAccordingToRequest::remove));
+        List<Car> allCarsAccordingToRequest = Collections.EMPTY_LIST;
 
-        if(reqParams.get("sortBy")!= null && !reqParams.get("sortBy").isEmpty()){
-            if(reqParams.get("sortBy").equals("priceAsc"))
-                allCarsAccordingToRequest = allCarsAccordingToRequest.stream().sorted(((o1, o2) -> new CarByPriceAscComparator().compare(o1,o2))).collect(Collectors.toList());
-            else if(reqParams.get("sortBy").equals("priceDesc"))
-                allCarsAccordingToRequest = allCarsAccordingToRequest.stream().sorted(((o1, o2) -> new CarByPriceAscComparator().reversed().compare(o1,o2))).collect(Collectors.toList());
-            else if(reqParams.get("sortBy").equals("brandAsc"))
-                allCarsAccordingToRequest = allCarsAccordingToRequest.stream().sorted(((o1, o2) -> new CarByBrandNameComparator().compare(o1,o2))).collect(Collectors.toList());
-            else if(reqParams.get("sortBy").equals("brandDesc"))
-                allCarsAccordingToRequest = allCarsAccordingToRequest.stream().sorted(((o1, o2) -> new CarByBrandNameComparator().reversed().compare(o1,o2))).collect(Collectors.toList());
+        if(reqParams.get("orderBy")!= null && !reqParams.get("orderBy").isEmpty()){
+            String orderBy=reqParams.get("orderBy");
+            if(orderBy.contains("price")){
+                allCarsAccordingToRequest = carRepository.getAllCarsAccordingToRequestOrderByPriceAsc(brand,model,type,minPrice,maxPrice,startDate,endDate);
+                if(orderBy.equals("priceDesc"))
+                    Collections.reverse(allCarsAccordingToRequest);
+            }
+            else if(orderBy.contains("brand")){
+                allCarsAccordingToRequest = carRepository.getAllCarsAccordingToRequestOrderByBrandAsc(brand,model,type,minPrice,maxPrice,startDate,endDate);
+                if(orderBy.equals("brandDesc"))
+                    Collections.reverse(allCarsAccordingToRequest);
+            }
         }
+        else
+            allCarsAccordingToRequest = carRepository.getAllCarsAccordingToRequestOrderByPriceAsc(brand,model,type,minPrice,maxPrice,startDate,endDate);
 
         return allCarsAccordingToRequest;
     }

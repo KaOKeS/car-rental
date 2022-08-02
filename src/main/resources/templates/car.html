@@ -25,6 +25,7 @@
 <body>
 <div th:insert="../static/navbar"></div>
 <section id="shift"></section>
+<section id="shift"></section>
 <!-- cars display-->
 <!-- load JS functions-->
 <script src="/js/functions.js"></script>
@@ -104,19 +105,19 @@
               <div class="col-7">
                 <label for="orderByForm" class="me-2">Order by:  </label>
                 <div class="form-check form-check-inline" id="orderByForm">
-                    <input class="form-check-input" type="radio" name="sortBy" id="sortBy" value="priceAsc">
+                    <input class="form-check-input" type="radio" name="orderBy" id="orderBy" value="priceAsc">
                     <label class="form-check-label" for="checkBrand">Price <i class="bi bi-arrow-up"></i></label>
                   </div>
                   <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="sortBy" id="sortBy" value="priceDesc">
+                    <input class="form-check-input" type="radio" name="orderBy" id="orderBy" value="priceDesc">
                     <label class="form-check-label" for="checkModel">Price <i class="bi bi-arrow-down"></i></label>
                   </div>
                   <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="sortBy" id="sortBy" value="brandAsc">
+                    <input class="form-check-input" type="radio" name="orderBy" id="orderBy" value="brandAsc">
                     <label class="form-check-label" for="checkModel">Brand <i class="bi bi-arrow-up"></i></label>
                   </div>
                   <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="sortBy" id="sortBy" value="brandDesc">
+                    <input class="form-check-input" type="radio" name="orderBy" id="orderBy" value="brandDesc">
                     <label class="form-check-label" for="checkModel">Brand <i class="bi bi-arrow-down"></i></label>
                   </div>
               </div>
@@ -167,10 +168,10 @@
             var searchQuery = document.getElementById('searchField').value;
             var maxPrice = document.getElementById('maxPrice').value;
             var minPrice = document.getElementById('minPrice').value;
-            var sortBy = "null";
-            if(document.querySelector('input[name=sortBy]:checked')!=null){
-                sortBy = document.querySelector('input[name=sortBy]:checked').value;
-                console.log("sortByForm " + sortBy);
+            var orderBy = "null";
+            if(document.querySelector('input[name=orderBy]:checked')!=null){
+                orderBy = document.querySelector('input[name=orderBy]:checked').value;
+                console.log("orderByForm " + orderBy);
             }
             
 
@@ -187,7 +188,7 @@
                               + "&searchBy=" + searchBy
                               + "&maxPrice=" + maxPrice
                               + "&minPrice=" + minPrice
-                              + "&sortBy=" + sortBy
+                              + "&orderBy=" + orderBy
                               + "&searchQuery=" + searchQuery;
 
             listsCars('carTable',carQueryToRest);
