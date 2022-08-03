@@ -1,6 +1,7 @@
 package com.dawidpater.project.carrental.repository;
 
 import com.dawidpater.project.carrental.entity.Car;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -24,22 +25,14 @@ public interface CarRepository extends JpaRepository<Car,Long> {
 
     //Take cars according to request and exclude rented ones(nested query) in one request to DB
     @Query(value =  SELECT_NOT_ORDERED_CARS_ACCORDING_TO_REQUEST + "ORDER BY rent_price", nativeQuery = true)
-    List<Car> getAllCarsAccordingToRequestOrderByPriceAsc(@Param("brand") String brand,
-                                                          @Param("model") String model,
-                                                          @Param("carType") String carType,
-                                                          @Param("minPrice") Double minPrice,
-                                                          @Param("maxPrice") Double maxPrice,
-                                                          @Param("startDate") LocalDateTime startDate,
-                                                          @Param("endDate") LocalDateTime endDate);
-
-    @Query(value =  SELECT_NOT_ORDERED_CARS_ACCORDING_TO_REQUEST + "ORDER BY brand", nativeQuery = true)
-    List<Car> getAllCarsAccordingToRequestOrderByBrandAsc(@Param("brand") String brand,
-                                                          @Param("model") String model,
-                                                          @Param("carType") String carType,
-                                                          @Param("minPrice") Double minPrice,
-                                                          @Param("maxPrice") Double maxPrice,
-                                                          @Param("startDate") LocalDateTime startDate,
-                                                          @Param("endDate") LocalDateTime endDate);
+    List<Car> getAllCarsAccordingToRequest(@Param("brand") String brand,
+                                           @Param("model") String model,
+                                           @Param("carType") String carType,
+                                           @Param("minPrice") Double minPrice,
+                                           @Param("maxPrice") Double maxPrice,
+                                           @Param("startDate") LocalDateTime startDate,
+                                           @Param("endDate") LocalDateTime endDate,
+                                           Pageable page);
 
 
 }

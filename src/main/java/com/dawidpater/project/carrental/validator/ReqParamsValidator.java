@@ -31,6 +31,6 @@ public class ReqParamsValidator {
     }
 
     public boolean isOrderByValid(String orderBy){
-            return (orderBy == null || orderBy.isEmpty());
+            return !(orderBy == null || orderBy.isEmpty());
     }
 }
