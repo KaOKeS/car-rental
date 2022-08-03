@@ -1,15 +1,14 @@
 package com.dawidpater.project.carrental.service;
 
-import com.dawidpater.project.carrental.exception.WrongDataPassedException;
 import com.dawidpater.project.carrental.converter.LocalDateTimeFromStringConverter;
 import com.dawidpater.project.carrental.entity.Car;
 import com.dawidpater.project.carrental.repository.CarRepository;
+import com.dawidpater.project.carrental.validator.ReqParamsValidator;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.regex.Pattern;
 
 @Service
 @AllArgsConstructor
@@ -18,9 +17,9 @@ public class CarService {
 
     public List<Car> getBestCarFromEachType(){
         List<Car> topCars = new ArrayList<>();
-        topCars.add(carRepository.getBestCarOfRequestedType("family"));
-        topCars.add(carRepository.getBestCarOfRequestedType("transport"));
-        topCars.add(carRepository.getBestCarOfRequestedType("sport"));
+        topCars.add(carRepository.findFirstDistinctByCarTypeOrderByRateDesc("family"));
+        topCars.add(carRepository.findFirstDistinctByCarTypeOrderByRateDesc("transport"));
+        topCars.add(carRepository.findFirstDistinctByCarTypeOrderByRateDesc("sport"));
         return topCars;
     }
 
@@ -32,48 +31,13 @@ public class CarService {
         if(reqParams.size()==0){
             return carRepository.findAll();
         }
-        LocalDateTimeFromStringConverter dateConverter = new LocalDateTimeFromStringConverter();
-        dateFieldsValidation(reqParams.get("startDate"),reqParams.get("endDate"));
+        ReqParamsValidator reqParamsValidator = new ReqParamsValidator();
+        reqParamsValidator.isDateValid(reqParams.get("startDate"),reqParams.get("endDate"));
+        reqParamsValidator.isDoubleAndMinMaxRangeValid(reqParams.get("minPrice"),reqParams.get("maxPrice"));
 
-        LocalDateTime startDate = dateConverter.getDate(reqParams.get("startDate"),"00:00");
-        LocalDateTime endDate = dateConverter.getDate(reqParams.get("endDate"),"23:59");
-
-        String brand = searchBySelector(reqParams.get("searchBy"),reqParams.get("searchQuery"),true);
-        String model = searchBySelector(reqParams.get("searchBy"),reqParams.get("searchQuery"),false);
-
-        String type = emptyFieldsReplacer(reqParams.get("type"));
-        Double minPrice = Double.parseDouble(reqParams.get("minPrice"));
-        Double maxPrice = Double.parseDouble(reqParams.get("maxPrice"));
-
-        List<Car> allCarsAccordingToRequest = Collections.EMPTY_LIST;
-
-        if(reqParams.get("orderBy")!= null && !reqParams.get("orderBy").isEmpty()){
-            String orderBy=reqParams.get("orderBy");
-            if(orderBy.contains("price")){
-                allCarsAccordingToRequest = carRepository.getAllCarsAccordingToRequestOrderByPriceAsc(brand,model,type,minPrice,maxPrice,startDate,endDate);
-                if(orderBy.equals("priceDesc"))
-                    Collections.reverse(allCarsAccordingToRequest);
-            }
-            else if(orderBy.contains("brand")){
-                allCarsAccordingToRequest = carRepository.getAllCarsAccordingToRequestOrderByBrandAsc(brand,model,type,minPrice,maxPrice,startDate,endDate);
-                if(orderBy.equals("brandDesc"))
-                    Collections.reverse(allCarsAccordingToRequest);
-            }
-        }
-        else
-            allCarsAccordingToRequest = carRepository.getAllCarsAccordingToRequestOrderByPriceAsc(brand,model,type,minPrice,maxPrice,startDate,endDate);
+        List<Car> allCarsAccordingToRequest = getAllCarsAccordingToRequestOrderBy(reqParams);
 
         return allCarsAccordingToRequest;
-    }
-
-    private List<Double> priceValidation(String minPrice, String maxPrice, boolean max){
-        return Collections.EMPTY_LIST;
-    }
-
-    private void dateFieldsValidation(String startDate, String endDate) throws WrongDataPassedException{
-        Pattern datePattern = Pattern.compile("\\d\\d-\\d\\d-\\d\\d\\d\\d");
-        if(startDate==null || endDate==null || !datePattern.matcher(startDate).find() || !datePattern.matcher(endDate).find())
-            throw new WrongDataPassedException();
     }
 
     private String emptyFieldsReplacer(String field){
@@ -91,5 +55,40 @@ public class CarService {
         }else{
             return "%";
         }
+    }
+
+    private List<Car> getAllCarsAccordingToRequestOrderBy(Map<String,String> reqParams){
+        ReqParamsValidator reqParamsValidator = new ReqParamsValidator();
+        List<Car> allCarsAccordingToRequest = Collections.EMPTY_LIST;
+
+        LocalDateTimeFromStringConverter dateConverter = new LocalDateTimeFromStringConverter();
+        LocalDateTime startDate = dateConverter.getDate(reqParams.get("startDate"),"00:00");
+        LocalDateTime endDate = dateConverter.getDate(reqParams.get("endDate"),"23:59");
+
+        String brand = searchBySelector(reqParams.get("searchBy"),reqParams.get("searchQuery"),true);
+        String model = searchBySelector(reqParams.get("searchBy"),reqParams.get("searchQuery"),false);
+
+        String type = emptyFieldsReplacer(reqParams.get("type"));
+        Double minPrice = Double.parseDouble(reqParams.get("minPrice"));
+        Double maxPrice = Double.parseDouble(reqParams.get("maxPrice"));
+
+
+        String orderBy=reqParams.get("orderBy");
+        if(reqParamsValidator.isOrderByValid(orderBy)){
+            if(orderBy.contains("price")){
+                allCarsAccordingToRequest = carRepository.getAllCarsAccordingToRequestOrderByPriceAsc(brand,model,type,minPrice,maxPrice,startDate,endDate);
+                if(orderBy.equals("priceDesc"))
+                    Collections.reverse(allCarsAccordingToRequest);
+            }
+            else if(orderBy.contains("brand")){
+                allCarsAccordingToRequest = carRepository.getAllCarsAccordingToRequestOrderByBrandAsc(brand,model,type,minPrice,maxPrice,startDate,endDate);
+                if(orderBy.equals("brandDesc"))
+                    Collections.reverse(allCarsAccordingToRequest);
+            }
+        }
+        else
+            allCarsAccordingToRequest = carRepository.getAllCarsAccordingToRequestOrderByPriceAsc(brand,model,type,minPrice,maxPrice,startDate,endDate);
+
+        return allCarsAccordingToRequest;
     }
 }
