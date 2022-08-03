@@ -73,7 +73,7 @@ public class CarService {
         Double maxPrice = Double.parseDouble(reqParams.get("maxPrice"));
 
 
-        String orderBy=reqParams.get("orderBy");
+        String orderBy=(reqParams.get("orderBy").equals("null")) ? null : reqParams.get("orderBy");
         if(reqParamsValidator.isOrderByValid(orderBy)){
             if(orderBy.contains("price")){
                 allCarsAccordingToRequest = carRepository.getAllCarsAccordingToRequestOrderByPriceAsc(brand,model,type,minPrice,maxPrice,startDate,endDate);
