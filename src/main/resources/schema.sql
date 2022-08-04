@@ -16,16 +16,16 @@
   `car_description` MEDIUMTEXT NULL DEFAULT NULL
   );
 
-  CREATE TABLE role_of_user (
+  CREATE TABLE user_role (
     `id` BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    `role_of_user` VARCHAR(45) NOT NULL,
+    `user_role` VARCHAR(45) NOT NULL,
     PRIMARY KEY (`id`));
 
   CREATE TABLE rental_user (
     `id` BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     `username` VARCHAR(50) NOT NULL,
     `email` VARCHAR(120) NOT NULL,
-    `user_password` VARCHAR(32) NOT NULL,
+    `user_password` VARCHAR(100) NOT NULL,
     `first_name` VARCHAR(120) NOT NULL,
     `last_name` VARCHAR(120) NOT NULL,
     `country` VARCHAR(60) NOT NULL,
@@ -37,7 +37,7 @@
     `document_id` VARCHAR(45) NOT NULL,
     `blocked` TINYINT NOT NULL DEFAULT '0',
     `role_id` INT NOT NULL DEFAULT '1',
-    FOREIGN KEY (`role_id`) REFERENCES role_of_user(`id`));
+    FOREIGN KEY (`role_id`) REFERENCES user_role(`id`));
 
 CREATE TABLE rental (
   `id` BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,

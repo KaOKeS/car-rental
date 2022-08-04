@@ -3,11 +3,12 @@ package com.dawidpater.project.carrental.config;
 import com.dawidpater.project.carrental.entity.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @Configuration
 @EnableWebMvc
@@ -15,7 +16,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 public class AppConfig {
 
     @Bean
-    public Docket swaggerApi(){
+    public Docket swaggerApi() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
                 .paths(PathSelectors.regex("^(?!/(error).*$).*$"))
@@ -23,23 +24,28 @@ public class AppConfig {
     }
 
     @Bean
-    public Car car(){
+    public Car car() {
         return new Car();
     }
+
     @Bean
-    public Rental rental(){
+    public Rental rental() {
         return new Rental();
     }
+
     @Bean
-    public Feedback feedback(){
+    public Feedback feedback() {
         return new Feedback();
     }
+
     @Bean
-    public RoleOfUser role(){
-        return new RoleOfUser();
+    public UserRole role() {
+        return new UserRole();
     }
+
     @Bean
-    public RentalUser rentalUser(){
+    public RentalUser rentalUser() {
         return new RentalUser();
     }
 }
+

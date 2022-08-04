@@ -1,9 +1,12 @@
 package com.dawidpater.project.carrental.config.security;
 
+import com.dawidpater.project.carrental.service.RentalUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -22,6 +25,7 @@ import javax.persistence.Basic;
 public class AppSecurityConfig extends WebSecurityConfigurerAdapter{
 
     private final PasswordEncoder passwordEncoder;
+    private final RentalUserService rentalUserService;
 
     @Override
     public void configure(WebSecurity web) throws Exception {
@@ -32,7 +36,7 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter{
     protected void configure(HttpSecurity http) throws Exception {
         http.
                 authorizeRequests()
-                .antMatchers("/","/login","/cars","/api/cars")
+                .antMatchers("/","/login","/cars","/api/cars","/h2-console")
                 .permitAll()
                 .antMatchers(HttpMethod.POST,"/logout").hasAnyRole("USER","ADMIN")
                 .antMatchers("/register").hasRole("ADMIN")
@@ -40,7 +44,7 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter{
                 .authenticated()
                 .and()
                     .formLogin()
-                    .loginPage("/login")
+                    //.loginPage("/login")
                     .permitAll()
                     .passwordParameter("password")
                     .usernameParameter("username")
@@ -54,21 +58,16 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter{
                     .logoutSuccessUrl("/login");
     }
 
-    //tutaj BEAN!!
     @Override
-    @Bean
-    protected UserDetailsService userDetailsService() {
-        UserDetails userAdmin = User.builder()
-                .username("admin")
-                .password(passwordEncoder.encode("admin"))
-                .roles("ADMIN") //ROLE_ADMIN
-                .build();
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.authenticationProvider(daoAuthenticationProvider());
+    }
 
-        UserDetails userRental = User.builder()
-                .username("userrental")
-                .password(passwordEncoder.encode("userrental"))
-                .roles("USER") //ROLE_ADMIN
-                .build();
-        return new InMemoryUserDetailsManager(userAdmin,userRental);
+    @Bean
+    public DaoAuthenticationProvider daoAuthenticationProvider(){
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setPasswordEncoder(passwordEncoder);
+        provider.setUserDetailsService(rentalUserService);
+        return provider;
     }
 }

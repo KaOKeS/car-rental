@@ -28,7 +28,7 @@ public class Rental {
     private Feedback feedback;
 
     @ToString.Exclude
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private RentalUser rentalUser;
 

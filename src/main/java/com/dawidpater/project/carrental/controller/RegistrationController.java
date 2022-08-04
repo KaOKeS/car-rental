@@ -1,7 +1,6 @@
 package com.dawidpater.project.carrental.controller;
 
 import com.dawidpater.project.carrental.entity.RentalUser;
-import com.dawidpater.project.carrental.entity.RoleOfUser;
 import com.dawidpater.project.carrental.service.RentalUserService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;

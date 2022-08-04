@@ -10,6 +10,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 @Entity
 @Table(name = "rental_user")
@@ -46,20 +48,21 @@ public class RentalUser implements UserDetails{
     @Column(name = "document_id")
     private String documentId;
     @Column(name = "blocked")
-    private Boolean blocked;
+    private Boolean blocked = false;
 
     @ToString.Exclude
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "role_id")
-    private RoleOfUser roleOfUser;
+    private UserRole userRole;
 
     @ToString.Exclude
-    @OneToOne(mappedBy = "rentalUser", fetch = FetchType.LAZY)
-    private Rental rental;
+    @OneToMany(mappedBy = "rentalUser", fetch = FetchType.LAZY)
+    private List<Rental> rental;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(userRole.getRole());
+        return Collections.singleton(simpleGrantedAuthority);
     }
 
     @Override
