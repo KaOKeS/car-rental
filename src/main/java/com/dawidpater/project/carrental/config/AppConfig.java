@@ -3,12 +3,14 @@ package com.dawidpater.project.carrental.config;
 import com.dawidpater.project.carrental.entity.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @Configuration
+@EnableWebMvc
 //@EnableSwagger2
 public class AppConfig {
 
@@ -19,6 +21,7 @@ public class AppConfig {
                 .paths(PathSelectors.regex("^(?!/(error).*$).*$"))
                 .build();
     }
+
     @Bean
     public Car car(){
         return new Car();
