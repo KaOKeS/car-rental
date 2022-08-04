@@ -5,10 +5,14 @@ import com.dawidpater.project.carrental.entity.Car;
 import com.dawidpater.project.carrental.repository.CarRepository;
 import com.dawidpater.project.carrental.validator.ReqParamsValidator;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 @AllArgsConstructor
@@ -75,19 +79,18 @@ public class CarService {
 
         String orderBy=(reqParams.get("orderBy").equals("null")) ? null : reqParams.get("orderBy");
         if(reqParamsValidator.isOrderByValid(orderBy)){
-            if(orderBy.contains("price")){
-                allCarsAccordingToRequest = carRepository.getAllCarsAccordingToRequestOrderByPriceAsc(brand,model,type,minPrice,maxPrice,startDate,endDate);
-                if(orderBy.equals("priceDesc"))
-                    Collections.reverse(allCarsAccordingToRequest);
+            Pattern findFieldAndOrderDirection = Pattern.compile("(.+)(Asc|Desc)",Pattern.CASE_INSENSITIVE);
+            Matcher getFieldAndOrderDirection = findFieldAndOrderDirection.matcher(orderBy);
+            Sort.Direction direction = null;
+            String orderByField = null;
+            while (getFieldAndOrderDirection.find()){
+                direction = (getFieldAndOrderDirection.group(2).equals("Asc") ? Sort.Direction.ASC : Sort.Direction.DESC);
+                orderByField = (getFieldAndOrderDirection.group(1).equals("price") ? "rent_price" : "brand");
             }
-            else if(orderBy.contains("brand")){
-                allCarsAccordingToRequest = carRepository.getAllCarsAccordingToRequestOrderByBrandAsc(brand,model,type,minPrice,maxPrice,startDate,endDate);
-                if(orderBy.equals("brandDesc"))
-                    Collections.reverse(allCarsAccordingToRequest);
-            }
+            allCarsAccordingToRequest = carRepository.getAllCarsAccordingToRequest(brand,model,type,minPrice,maxPrice,startDate,endDate, PageRequest.of(0,10, Sort.by(direction,orderByField)));
         }
         else
-            allCarsAccordingToRequest = carRepository.getAllCarsAccordingToRequestOrderByPriceAsc(brand,model,type,minPrice,maxPrice,startDate,endDate);
+            allCarsAccordingToRequest = carRepository.getAllCarsAccordingToRequest(brand,model,type,minPrice,maxPrice,startDate,endDate,PageRequest.of(0,10));
 
         return allCarsAccordingToRequest;
     }
