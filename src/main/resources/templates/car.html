@@ -160,7 +160,7 @@
             var typeChose = document.getElementById('typeChose').value;
             var startDate = document.getElementById('startDate').value;
             var endDate = document.getElementById('endDate').value;
-            var searchBy = "null";
+            var searchBy = null;
             if(document.querySelector('input[name=searchBy]:checked')!=null){
                 searchBy = document.querySelector('input[name=searchBy]:checked').value;
                 console.log("searchBy " + searchBy);
@@ -168,7 +168,7 @@
             var searchQuery = document.getElementById('searchField').value;
             var maxPrice = document.getElementById('maxPrice').value;
             var minPrice = document.getElementById('minPrice').value;
-            var orderBy = "null";
+            var orderBy = null;
             if(document.querySelector('input[name=orderBy]:checked')!=null){
                 orderBy = document.querySelector('input[name=orderBy]:checked').value;
                 console.log("orderByForm " + orderBy);

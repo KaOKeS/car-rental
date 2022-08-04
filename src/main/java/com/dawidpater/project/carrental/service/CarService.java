@@ -87,7 +87,7 @@ public class CarService {
                 direction = (getFieldAndOrderDirection.group(2).equals("Asc") ? Sort.Direction.ASC : Sort.Direction.DESC);
                 orderByField = (getFieldAndOrderDirection.group(1).equals("price") ? "rent_price" : "brand");
             }
-            allCarsAccordingToRequest = carRepository.getAllCarsAccordingToRequest(brand,model,type,minPrice,maxPrice,startDate,endDate, PageRequest.of(0,10, Sort.by(Sort.Direction.DESC,"rent_price")));
+            allCarsAccordingToRequest = carRepository.getAllCarsAccordingToRequest(brand,model,type,minPrice,maxPrice,startDate,endDate, PageRequest.of(0,10, Sort.by(direction,orderByField)));
         }
         else
             allCarsAccordingToRequest = carRepository.getAllCarsAccordingToRequest(brand,model,type,minPrice,maxPrice,startDate,endDate,PageRequest.of(0,10));

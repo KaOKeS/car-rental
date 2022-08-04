@@ -24,7 +24,7 @@ public interface CarRepository extends JpaRepository<Car,Long> {
     List<String> getAllCarTypes();
 
     //Take cars according to request and exclude rented ones(nested query) in one request to DB
-    @Query(value =  SELECT_NOT_ORDERED_CARS_ACCORDING_TO_REQUEST + "ORDER BY rent_price", nativeQuery = true)
+    @Query(value =  SELECT_NOT_ORDERED_CARS_ACCORDING_TO_REQUEST, nativeQuery = true)
     List<Car> getAllCarsAccordingToRequest(@Param("brand") String brand,
                                            @Param("model") String model,
                                            @Param("carType") String carType,
