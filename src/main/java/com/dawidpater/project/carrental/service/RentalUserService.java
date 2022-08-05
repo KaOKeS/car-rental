@@ -30,7 +30,7 @@ public class RentalUserService implements UserDetailsService {
         return user;
     }
 
-    // TODO: just for test method
+    // TODO: just for test method, take a look how to improve
     public RentalUser save(RentalUser rentalUser){
         rentalUser.setUserPassword(passwordEncoder.encode(rentalUser.getUserPassword()));
         rentalUser.setUserRole(new UserRole(1L,"user",null));

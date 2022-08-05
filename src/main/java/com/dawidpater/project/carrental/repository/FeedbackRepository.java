@@ -12,7 +12,7 @@ public interface FeedbackRepository extends JpaRepository<Feedback,Long> {
             "JOIN car c ON r.car_id=c.id " +
             "JOIN `rental_user` u ON r.user_id=u.id " +
             "ORDER BY feedback.`feedback_date` DESC limit ?1",nativeQuery = true)
-    List<Feedback> getLatestReviewsLimitedTo(int amount);
+    List<Feedback> getLatestFeedbacksLimitedTo(int amount);
 }
 
 

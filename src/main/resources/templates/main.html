@@ -49,9 +49,9 @@
                         <h4 class="card-title">Top choice #1</h4>
                         <p class="lead car-subtitle">In sport category car</p>
                         <p class="display-5 my-4 text-primary fw-bold"> <span th:text="${#numbers.formatDecimal(cars[2].price,2,2,'POINT')}"></span><i class="bi bi-currency-euro"></i></p>
-                        <p><img th:src="${cars[2].imagePath}" alt="Jaguar F-Type"></p>
-                        <p class="card-text mx-5 text-muted" th:text="${cars[2].brand}+' '+ ${cars[2].model}">Lorem</p>
-                        <p class="card-text mx-5 text-muted d-none d-md-block" th:text="${cars[2].carDescription}">Lorem ipsum dolor, sit amet consectetur adipisicing elit.</p>
+                        <p><img th:src="${cars[2].getImagePath()}" alt="Jaguar F-Type"></p>
+                        <p class="card-text mx-5 text-muted" th:text="${cars[2].getBrand()}+' '+ ${cars[2].getModel()}">Lorem</p>
+                        <p class="card-text mx-5 text-muted d-none d-md-block" th:text="${cars[2].getCarDescription()}">Lorem ipsum dolor, sit amet consectetur adipisicing elit.</p>
                         <a href="/login" class="btn btn-outline-primary btn-lg mt-3">Rent now!</a>
                     </div>
                 </div>
@@ -64,9 +64,9 @@
                         <h4 class="card-title">Top choice #1</h4>
                         <p class="lead car-subtitle">In family category cars</p>
                         <p class="display-4 my-4 text-primary fw-bold"><span th:text="${#numbers.formatDecimal(cars[0].price,2,2,'POINT')}"></span><i class="bi bi-currency-euro"></i></p>
-                        <p><img th:src="${cars[0].imagePath}" alt="Ford Mondeo"></p>
-                        <p class="card-text mx-5 text-muted" th:text="${cars[0].brand}+' '+ ${cars[0].model}">Lorem</p>
-                        <p class="card-text mx-5 text-muted d-none d-md-block" th:text="${cars[0].carDescription}">Lorem ipsum dolor, sit amet consectetur adipisicing elit.</p>
+                        <p><img th:src="${cars[0].getImagePath()}" alt="Ford Mondeo"></p>
+                        <p class="card-text mx-5 text-muted" th:text="${cars[0].getBrand()}+' '+ ${cars[0].getModel()}">Lorem</p>
+                        <p class="card-text mx-5 text-muted d-none d-md-block" th:text="${cars[0].getCarDescription()}">Lorem ipsum dolor, sit amet consectetur adipisicing elit.</p>
                         <a href="/login" class="btn btn-outline-primary btn-lg mt-3">Rent now!</a>
                     </div>
                 </div>
@@ -78,9 +78,9 @@
                         <h4 class="card-title">Top choice #1</h4>
                         <p class="lead car-subtitle">In transport category car</p>
                         <p class="display-5 my-4 text-primary fw-bold"><span th:text="${#numbers.formatDecimal(cars[1].price,2,2,'POINT')}"></span><i class="bi bi-currency-euro"></i></p>
-                        <p><img th:src="${cars[1].imagePath}" alt="Peugeot Trafic"></p>
-                        <p class="card-text mx-5 text-muted" th:text="${cars[1].brand}+' '+ ${cars[1].model}">Lorem</p>
-                        <p class="card-text mx-5 text-muted d-none d-md-block" th:text="${cars[1].carDescription}">Lorem ipsum dolor, sit amet consectetur adipisicing elit.</p>
+                        <p><img th:src="${cars[1].getImagePath()}" alt="Peugeot Trafic"></p>
+                        <p class="card-text mx-5 text-muted" th:text="${cars[1].getBrand()}+' '+ ${cars[1].getModel()}">Lorem</p>
+                        <p class="card-text mx-5 text-muted d-none d-md-block" th:text="${cars[1].getCarDescription()}">Lorem ipsum dolor, sit amet consectetur adipisicing elit.</p>
                         <a href="/login" class="btn btn-outline-primary btn-lg mt-3">Rent now!</a>
                     </div>
                 </div>
@@ -163,12 +163,12 @@
             <div class="col-lg-8">
                 <div class="list-group" th:each="feedback: ${feedbacks}">
                     <div class="list-group-item py-3">
-                        <div class="pb-2" th:id="'feedback' + ${feedback.id}">
+                        <div class="pb-2" th:id="'feedback' + ${feedback.getId()}">
                             <script th:inline="javascript">
-                                var x=[[${feedback.rate}]];
+                                var x=[[${feedback.getRate()}]];
                                 var index=4;
                                 while(index>=0){
-                                    var second = document.getElementById("feedback[[${feedback.id}]]");
+                                    var second = document.getElementById("feedback[[${feedback.getId()}]]");
                                     if(x>0.8){
                                         second.innerHTML += "<i class=\"bi bi-star-fill text-primary\"></i>";
                                     }
@@ -181,12 +181,12 @@
                                     index--;
                                     x--;
                                 }
-                                second.innerHTML += "<span class=\"small text-primary\"> " + "[[${feedback.rate}]]" + "</span>";
+                                second.innerHTML += "<span class=\"small text-primary\"> " + "[[${feedback.getRate()}]]" + "</span>";
                             </script>
                         </div>
-                        <h5 class="mb-1" th:text="${feedback.content}">A must-buy for every aspiring web dev</h5>
-                        <p class="mb-1 small text-muted"  th:text="${feedback.rental.car}">Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur error veniam sit expedita est illo maiores neque quos nesciunt, reprehenderit autem odio commodi labore praesentium voluptate repellat in id quisquam.</p>
-                        <small>Review by <span th:text="${feedback.rental.rentalUser.username}">Author Name</span></small>
+                        <h5 class="mb-1" th:text="${feedback.getContent()}">A must-buy for every aspiring web dev</h5>
+                        <p class="mb-1 small text-muted"  th:text="${feedback.getRentalDto().getCarDto().toString()}">Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur error veniam sit expedita est illo maiores neque quos nesciunt, reprehenderit autem odio commodi labore praesentium voluptate repellat in id quisquam.</p>
+                        <small>Review by <span th:text="${feedback.getRentalDto().getRentalUserDto().getUsername()}">Author Name</span></small>
                     </div>
                 </div>
             </div>

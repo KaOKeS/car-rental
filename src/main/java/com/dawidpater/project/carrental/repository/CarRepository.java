@@ -35,4 +35,5 @@ public interface CarRepository extends JpaRepository<Car,Long> {
                                            Pageable page);
 
 
+    List<Car> findByRentalIdIn(List<Long> rentalsIds);
 }

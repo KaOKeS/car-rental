@@ -49,12 +49,10 @@ public class RentalUser implements UserDetails{
     private String documentId;
     @Column(name = "blocked")
     private Boolean blocked = false;
-
     @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "role_id")
     private UserRole userRole;
-
     @ToString.Exclude
     @OneToMany(mappedBy = "rentalUser", fetch = FetchType.LAZY)
     private List<Rental> rental;

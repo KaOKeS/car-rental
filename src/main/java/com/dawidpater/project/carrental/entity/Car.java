@@ -14,7 +14,8 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
-public @Data class Car {
+@Data
+public class Car {
     @Id
     @Column(name="id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,19 +44,7 @@ public @Data class Car {
     private float rate;
     @Column(name = "car_description")
     private String carDescription;
-    @JsonIgnore
     @ToString.Exclude
     @OneToMany(mappedBy = "car", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Rental> rental;
-
-    @Override
-    public String toString() {
-        return  brand.substring(0,1).toUpperCase() + brand.substring(1) + ' ' +
-                model.substring(0,1).toUpperCase() + model.substring(1) + " - " +
-                " Engine: " + carEngine +
-                " Fuel: " + fuel +
-                " Hp:" + hp +
-                " Type: " + carType +
-                " Sitting Places: " + sittingPlaces;
-    }
 }

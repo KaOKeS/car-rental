@@ -1,5 +1,7 @@
 package com.dawidpater.project.carrental.controller.rest;
 
+import com.dawidpater.project.carrental.converter.CarConverter;
+import com.dawidpater.project.carrental.dto.CarDto;
 import com.dawidpater.project.carrental.entity.Car;
 import com.dawidpater.project.carrental.service.CarService;
 import lombok.AllArgsConstructor;
@@ -20,10 +22,12 @@ import java.util.Optional;
 @AllArgsConstructor
 public class CarRestController {
     private final CarService carService;
+    private final CarConverter converter;
 
     @GetMapping(value = "/cars")
-    public List<Car> getRequestedCars(@RequestParam Map<String,String> allRequestParams, ModelMap model){
+    public List<CarDto> getRequestedCars(@RequestParam Map<String,String> allRequestParams, ModelMap model){
         List<Car> requestedCars = carService.getCarsAsRequested(allRequestParams);
-        return requestedCars;
+        List<CarDto> requestedCarsDto = converter.entityToDto(requestedCars);
+        return requestedCarsDto;
     }
 }
