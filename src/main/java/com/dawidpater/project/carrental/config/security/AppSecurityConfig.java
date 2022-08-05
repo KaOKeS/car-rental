@@ -16,6 +16,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import javax.persistence.Basic;
 
@@ -34,9 +35,17 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter{
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        String[] staticResources  =  {
+                "/css/**",
+                "/images/**",
+                "/fonts/**",
+                "/js/**",
+        };
+
         http.
                 authorizeRequests()
-                .antMatchers("/**")
+                .antMatchers(staticResources).permitAll()
+                .antMatchers("/","/login","/cars","/api/cars","/h2-console")
                 .permitAll()
                 .antMatchers(HttpMethod.POST,"/logout").hasAnyRole("USER","ADMIN")
                 .antMatchers("/register").hasRole("ADMIN")
@@ -44,18 +53,17 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter{
                 .authenticated()
                 .and()
                     .formLogin()
-                    //.loginPage("/login")
+                    .loginPage("/login")
                     .permitAll()
                     .passwordParameter("password")
                     .usernameParameter("username")
-                .defaultSuccessUrl("/cars",true)
+                .defaultSuccessUrl("/",true)
                 .and()
                 .logout()
-                    .logoutUrl("/logout")
+                    .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                     .clearAuthentication(true)
                     .invalidateHttpSession(true)
-                    .deleteCookies("JSESSIONID")
-                    .logoutSuccessUrl("/login");
+                    .deleteCookies("JSESSIONID");
     }
 
     @Override

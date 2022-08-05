@@ -49,6 +49,16 @@
                     <li class="nav-item d-sm-none">
                         <a href="/login" class="nav-link">Login</a>
                     </li>
+                    <!-- hide since small-->
+                    <li class="nav-item ms-2 d-none d-sm-inline">
+                        <form class="form-signin" method="post" th:action="@{/logout}" name="logoutButton">
+                            <button class="btn btn-lg btn-primary btn-block" type="submit" value="Logout">Logout</button>
+                        </form>
+                    </li>
+                    <!-- display since small-->
+                    <li class="nav-item d-sm-none">
+                        <a href="/logout" class="nav-link">Logout</a>
+                    </li>
                 </ul>
             </div>
         </div>
