@@ -36,14 +36,4 @@ public class MainPageController {
         model.addAttribute("feedbacks", latestReviewsLimited);
         return "main";
     }
-
-    @GetMapping("/login")
-    public String goToLogin(Model model){
-        return "login";
-    }
-
-    @GetMapping("/register")
-    public String goToRegister(@ModelAttribute("newuser") RentalUser rentalUser, Model model){
-        return "register";
-    }
 }

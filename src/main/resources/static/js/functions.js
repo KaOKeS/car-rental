@@ -41,7 +41,7 @@ function carElement(car){
     const carRowElement = document.createElement('tr');
     for (const carProperty in car){
         if(car.hasOwnProperty(carProperty)){
-            if(!(carProperty=="deleted" || carProperty=="rate" || carProperty=="id" || carProperty=="carDescription" || carProperty=="imagePath")){
+            if(!(carProperty=="deleted" || carProperty=="rate" || carProperty=="id" || carProperty=="carDescription" || carProperty=="imagePath" || carProperty=="rentalDtos")){
                 var createdTd = document.createElement('td');
                 createdTd.setAttribute("class","align-middle");
                 createdTd.innerText = capitalizeFirstLetter(`${car[carProperty]}`);

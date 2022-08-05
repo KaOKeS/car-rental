@@ -1,37 +1,37 @@
 -- CARS
-INSERT INTO `car`
+INSERT INTO car
 (`car_type`, `brand`, `fuel`, `car_engine`, `hp`, `model`, `sitting_places`, `rent_price`, `deleted`,`rate`,`car_description`,`image_path`)
 VALUES
 ('family', 'Ford', 'diesel', '1997cc', '150', 'Mondeo', '5', '40', '0',5,'Ford mondeo dynamic text from DB','/images/cars/ford-mondeo-id1-200x120.png');
-INSERT INTO `car`
-(`car_type`, `brand`, `fuel`, `car_engine`, `hp`, `model`, `sitting_places`, `rent_price`, `deleted`,`rate`)
+INSERT INTO car
+(`car_type`, `brand`, `fuel`, `car_engine`, `hp`, `model`, `sitting_places`, `rent_price`, `deleted`,`rate`,`image_path`)
 VALUES
-('family', 'Ford', 'petrol', '1999cc', '203', 'Mondeo', '5', '43', '0',4.8);
-INSERT INTO `car`
-(`car_type`, `brand`, `fuel`, `car_engine`, `hp`, `model`, `sitting_places`, `rent_price`, `deleted`,`rate`)
+('family', 'Ford', 'petrol', '1999cc', '203', 'Mondeo', '5', '43', '0',4.8,'/images/cars/ford-mondeo-id2-200x120.png');
+INSERT INTO car
+(`car_type`, `brand`, `fuel`, `car_engine`, `hp`, `model`, `sitting_places`, `rent_price`, `deleted`,`rate`,`image_path`)
 VALUES
-('family', 'Ford', 'diesel', '1498cc', '95', 'Focus', '5', '35', '0',4.7);
-INSERT INTO `car`
-(`car_type`, `brand`, `fuel`, `car_engine`, `hp`, `model`, `sitting_places`, `rent_price`, `deleted`)
+('family', 'Ford', 'diesel', '1498cc', '95', 'Focus', '5', '35', '0',4.7,'/images/cars/ford-focus-id3-200x120.png');
+INSERT INTO car
+(`car_type`, `brand`, `fuel`, `car_engine`, `hp`, `model`, `sitting_places`, `rent_price`, `deleted`,`image_path`)
 VALUES
-('family', 'Ford', 'diesel', '1498cc', '95', 'Focus', '5', '35', '0');
-INSERT INTO `car`
+('family', 'Ford', 'diesel', '1498cc', '95', 'Focus', '5', '35', '0','/images/cars/ford-focus-id4-200x120.png');
+INSERT INTO car
 (`car_type`, `brand`, `fuel`, `car_engine`, `hp`, `model`, `sitting_places`, `rent_price`, `deleted`,`car_description`,`image_path`)
 VALUES
 ('sport', 'Audi', 'petrol', '2894cc', '450', 'RS5', '5', '120', '0','Audi RS5 dynamic text from DB','/images/cars/audi-rs5-id5-200x120.png');
-INSERT INTO `car`
+INSERT INTO car
 (`car_type`, `brand`, `fuel`, `car_engine`, `hp`, `model`, `sitting_places`, `rent_price`, `deleted`,`car_description`,`image_path`)
 VALUES
 ('sport', 'Jaguar', 'petrol', '2996cc', '380', 'F-Type', '2', '110', '0','Jaguar F-Type dynamic text from DB','/images/cars/jaguar-ftype-id6-200x120.png');
-INSERT INTO `car`
-(`car_type`, `brand`, `fuel`, `car_engine`, `hp`, `model`, `sitting_places`, `rent_price`, `deleted`)
+INSERT INTO car
+(`car_type`, `brand`, `fuel`, `car_engine`, `hp`, `model`, `sitting_places`, `rent_price`, `deleted`,`image_path`)
 VALUES
-('family', 'Peugeot', 'diesel', '1560cc', '115', 'Traveller', '8', '45', '0');
-INSERT INTO `car`
+('family', 'Peugeot', 'diesel', '1560cc', '115', 'Traveller', '8', '45', '0','/images/cars/peugeot-traveller-id7-200x120.png');
+INSERT INTO car
 (`car_type`, `brand`, `fuel`, `car_engine`, `hp`, `model`, `sitting_places`, `rent_price`, `deleted`,`car_description`,`image_path`)
 VALUES
 ('transport', 'Ford', 'petrol', '998cc', '100', 'Courier', '2', '35', '0','Ford Courier dynamic text from DB','/images/cars/ford-courier-id8-200x120.png');
-INSERT INTO `car`
+INSERT INTO car
 (`car_type`, `brand`, `fuel`, `car_engine`, `hp`, `model`, `sitting_places`, `rent_price`, `deleted`,`car_description`,`image_path`)
 VALUES
 ('transport', 'Renault', 'diesel', '1997cc', '145', 'Trafic', '3', '42', '0','Peugeot Trafic dynamic text from DB','/images/cars/peugeot-trafic-id9-200x120.png');
