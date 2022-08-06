@@ -19,6 +19,10 @@ import java.util.regex.Pattern;
 public class CarService {
     private final CarRepository carRepository;
 
+    public void addCar(Car car){
+        carRepository.save(car);
+    }
+
     public List<Car> getBestCarFromEachType(){
         List<Car> topCars = new ArrayList<>();
         topCars.add(carRepository.findFirstDistinctByCarTypeOrderByRateDesc("family"));

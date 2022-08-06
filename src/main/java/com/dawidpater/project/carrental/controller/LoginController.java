@@ -1,5 +1,6 @@
 package com.dawidpater.project.carrental.controller;
 
+import com.dawidpater.project.carrental.dto.RentalUserDto;
 import com.dawidpater.project.carrental.entity.RentalUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,17 +14,12 @@ public class LoginController {
 
     @PostMapping
     @RequestMapping("/logout")
-    public String getLogout(){
+    public String logout(){
         return "redirect:/login";
     }
 
     @GetMapping("/login")
-    public String goToLogin(Model model){
+    public String showLoginForm(Model model){
         return "login";
-    }
-
-    @GetMapping("/register")
-    public String goToRegister(@ModelAttribute("newuser") RentalUser rentalUser, Model model){
-        return "register";
     }
 }

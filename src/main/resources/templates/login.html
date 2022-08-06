@@ -13,28 +13,50 @@
 <div>
     <div th:insert="../static/navbar"></div>
     <div th:insert="../static/admin-navbar"></div>
-
-    <h3>User registered!</h3>
-    <a href="/register">Register</a>
 </div>
 <div class="container">
     <section id="intro">
         <div class="container-lg">
             <div class="row justify-content-center align-items-center">
                 <div class="col-md-5 text-center text-md-start">
-                    <h1>Please Log In</h1>
+                    <div th:if="${param.success}">
+                        <div class="alert alert-success" role="alert">
+                            User have been registered. You can log in.
+                        </div>
+                    </div>
+                    <h1 class="text-center mb-3 text-secondary">Please Log In</h1>
                     <div th:if="${param.error}">
-                        Invalid username and password.</div>
+                        <div class="alert alert-danger" role="alert">
+                            Invalid username and password!
+                        </div>
+                    </div>
                     <div th:if="${param.logout}">
-                        You have been logged out.</div>
+                        <div class="alert alert-success" role="alert">
+                            You have been logged out.
+                        </div>
+                    </div>
                     <form th:action="@{/login}" method="post">
-                        <div>
-                            <input type="text" name="username" placeholder="Username"/>
+                        <div class="form-floating mb-4">
+                            <input type="text" name="username" class="form-control" id="loginForm1" placeholder="username"/>
+                            <label class="form-label" for="loginForm1">Username</label>
                         </div>
-                        <div>
-                            <input type="password" name="password" placeholder="Password"/>
+
+                        <div class="form-floating mb-4">
+                            <input type="password" name="password" class="form-control" id="loginForm2" placeholder="Password"/>
+                            <label class="form-label" for="loginForm2">Password</label>
                         </div>
-                        <button class="btn btn-lg btn-primary btn-block" type="submit" value="Log in" >Sign in</button>
+
+                        <div class="row mb-4">
+                            <div class="col">
+                                <a href="#!" class="text-center">Forgot password?</a>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-block mb-4">Sign in</button>
+
+                        <div class="text-center">
+                            <p class="text-center mt-3 text-secondary">If you do not have account, please <a href="/register">Register</a></p>
+                        </div>
                     </form>
                 </div>
                 <div class="col-md-5 text-center">

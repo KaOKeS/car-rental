@@ -28,64 +28,67 @@
         <div class="row">
             <div class="col-md-6 offset-md-3">
                 <div class="signup-form">
-                    <form action="/registeruser" method="post" th:action="@{/registeruser}" th:object="${newuser}" class="mt-5 border p-4 bg-light shadow">
+                    <form method="post" th:action="@{/register}" th:object="${userDto}" class="mt-5 border p-4 bg-light shadow">
                         <h4 class="mb-5 text-secondary">Create Your Account</h4>
                         <div class="row">
 
                             <div class="mb-3 col-md-12">
                                 <label>Username<span class="text-danger">*</span></label>
-                                <input th:field="*{username}" type="text" class="form-control" placeholder="Enter Password">
+                                <input th:field="*{username}" type="text" class="form-control" placeholder="Enter username" required>
+                                <p th:each="error: ${#fields.errors('firstName')}" th:text="${error}">
+                                    Validation error
+                                </p>
                             </div>
 
                             <div class="mb-3 col-md-12">
                                 <label>Password<span class="text-danger">*</span></label>
-                                <input th:field="*{userPassword}" name="password" class="form-control" placeholder="Enter Password">
+                                <input type="password" th:field="*{userPassword}" name="password" class="form-control" placeholder="Enter Password"  required autofocus>
                             </div>
 
                             <div class="mb-3 col-md-12">
                                 <label>Confirm Password<span class="text-danger">*</span></label>
-                                <input type="password" class="form-control" placeholder="Confirm Password">
+                                <input type="password" class="form-control" placeholder="Confirm Password"  required autofocus>
                             </div>
 
                             <div class="mb-3 col-md-6">
                                 <label>First Name<span class="text-danger">*</span></label>
-                                <input th:field="*{firstName}" type="text" class="form-control" placeholder="Enter First Name">
+                                <input th:field="*{firstName}" type="text" class="form-control" placeholder="Enter First Name"  required autofocus>
                             </div>
     
                             <div class="mb-3 col-md-6">
                                 <label>Last Name<span class="text-danger">*</span></label>
-                                <input th:field="*{lastName}" type="text" class="form-control" placeholder="Enter Last Name">
+                                <input th:field="*{lastName}" type="text" class="form-control" placeholder="Enter Last Name"  required autofocus>
                             </div>
 
                             <div class="mb-3 col-md-12">
                                 <label>Email<span class="text-danger">*</span></label>
-                                <input th:field="*{email}" type="email" class="form-control" placeholder="example@example.com">
+                                <input th:field="*{email}" type="email" class="form-control" placeholder="example@example.com"  required autofocus>
                             </div>
 
                             <div class="mb-3 col-md-6">
                                 <label>Country<span class="text-danger">*</span></label>
-                                <input th:field="*{country}" type="text" class="form-control" placeholder="Enter country">
+                                <input th:field="*{country}" type="text" class="form-control" placeholder="Enter country"  required autofocus>
                             </div>
     
                             <div class="mb-3 col-md-6">
                                 <label>City<span class="text-danger">*</span></label>
-                                <input th:field="*{city}" type="text" class="form-control" placeholder="Enter city">
+                                <input th:field="*{city}" type="text" class="form-control" placeholder="Enter city"  required autofocus>
                             </div>
 
                             <div class="mb-3 col-md-12">
                                 <label>Address<span class="text-danger">*</span></label>
-                                <input th:field="*{address}" type="text" class="form-control" placeholder="Great Street 55/12">
+                                <input th:field="*{address}" type="text" class="form-control" placeholder="Great Street 55/12"  required autofocus>
                             </div>
 
                             <div class="mb-3 col-md-6">
                                 <label>Zipcode<span class="text-danger">*</span></label>
-                                <input th:field="*{zip}" type="text" class="form-control" placeholder="Enter Zipcode">
+                                <input th:field="*{zip}" type="text" class="form-control" placeholder="Enter Zipcode"  required autofocus>
                             </div>
     
                             <div class="mb-3 col-md-6">
                                 <label>Birthday<span class="text-danger">*</span></label>
                                 <div th:field="*{birthDate}" class="input-group date datepicker" id="datepicker">
-                                    <input type="text" class="form-control" name="birthDate" placeholder="12-01-2022">
+                                    <input type="text" class="form-control" name="birthDate" placeholder="12-01-2022"  required autofocus>
                                     <span class="input-group-append">
                                         <span class="input-group-text bg-white d-block">
                                             <i class="fa fa-calendar"></i>
@@ -96,12 +99,12 @@
 
                             <div class="mb-3 col-md-6">
                                 <label>Zipcode<span class="text-danger">*</span></label>
-                                <input th:field="*{phone}" type="text" class="form-control" placeholder="Enter Phone">
+                                <input th:field="*{phone}" type="text" class="form-control" placeholder="Enter Phone"  required autofocus>
                             </div>
     
                             <div class="mb-3 col-md-6">
-                                <label>Birthday<span class="text-danger">*</span></label>
-                                <input th:field="*{documentId}" type="text" class="form-control" placeholder="Enter Document Id">
+                                <label>Document Id<span class="text-danger">*</span></label>
+                                <input th:field="*{documentId}" type="text" class="form-control" placeholder="Enter Document Id"  required autofocus>
                             </div>
 
                             <div class="col-md-12">

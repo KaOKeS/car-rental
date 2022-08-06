@@ -42,13 +42,18 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter{
                 "/js/**",
         };
 
-        http.
-                authorizeRequests()
+        http
+                .authorizeRequests().antMatchers("/h2_console/**").permitAll()
+                .and().csrf().ignoringAntMatchers("/h2-console/**")
+                .and().headers().frameOptions().sameOrigin()
+                .and().authorizeRequests()
                 .antMatchers(staticResources).permitAll()
-                .antMatchers("/","/login","/cars","/api/cars","/h2-console")
+                .antMatchers("/","/login","/cars","/api/cars","/h2-console","/register","/registeruser")
                 .permitAll()
-                .antMatchers(HttpMethod.POST,"/logout").hasAnyRole("USER","ADMIN")
-                .antMatchers("/register").hasRole("ADMIN")
+                .antMatchers(HttpMethod.POST,"/register").permitAll()
+                .antMatchers(HttpMethod.POST,"/logout").hasAnyRole("USER","ADMIN","MANAGER")
+                .antMatchers("/management/manager").hasAnyRole("ADMIN","MANAGER")
+                .antMatchers("/management/admin").hasRole("ADMIN")
                 .anyRequest()
                 .authenticated()
                 .and()

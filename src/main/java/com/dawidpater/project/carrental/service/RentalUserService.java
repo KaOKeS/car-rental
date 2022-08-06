@@ -11,6 +11,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class RentalUserService implements UserDetailsService {
@@ -36,6 +38,10 @@ public class RentalUserService implements UserDetailsService {
         rentalUser.setUserRole(new UserRole(1L,"user",null));
         rentalUser.setBlocked(false);
         return rentalUserRepository.save(rentalUser);
+    }
+
+    public List<RentalUser> getAllUsers(){
+        return rentalUserRepository.findAll();
     }
 
 }

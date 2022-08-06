@@ -5,6 +5,9 @@ import com.dawidpater.project.carrental.entity.UserRole;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Getter
@@ -12,6 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 public class RentalUserDto {
     private Long id;
+    @NotEmpty(message = "Name cannot be null")
     private String username;
     private String userPassword;
     private String email;
