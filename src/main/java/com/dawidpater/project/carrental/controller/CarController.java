@@ -36,7 +36,7 @@ public class CarController {
         Car car = carService.getCarById(id);
         CarDto carDto = carConverter.entityToDto(car);
         model.addAttribute("carDto",carDto);
-        return "update_car";
+        return "new_car";
     }
 
     @PostMapping("/saveCar")
@@ -44,5 +44,11 @@ public class CarController {
         Car carEntity = carConverter.dtoToEntity(carDto);
         carService.addCar(carEntity);
         return "redirect:/addCar?success";
+    }
+
+    @GetMapping("/deleteCar/{id}")
+    public String deleteCar(@PathVariable(value = "id") Long id, Model model){
+        carService.deleteCarById(id);
+        return "redirect:/cars?deletionSucced";
     }
 }

@@ -69,7 +69,7 @@ function carElement(car,isAdmin){
      createdA.innerText = "Update";
      createdTd.appendChild(createdA);
      var createdA1 = document.createElement('a');
-      createdA1.setAttribute("href","/updateCar/"+`${car["id"]}`);
+      createdA1.setAttribute("href","/deleteCar/"+`${car["id"]}`);
       createdA1.setAttribute("class","btn btn-danger btn-sm");
       createdA1.innerText = "Delete";
       createdTd.appendChild(createdA1);

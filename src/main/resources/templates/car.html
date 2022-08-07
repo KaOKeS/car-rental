@@ -23,7 +23,9 @@
 <div th:insert="../static/navbar"></div>
 <div class="container" sec:authorize="hasRole('ROLE_ADMIN')">
     <a th:href = "@{/addCar}" class="btn btn-warning btn-sm  mb-3 mt-3 ms-3"> Add Car </a>
-    <div id="administration"></div>
+    <div th:if="${param.deletionSucced}" class="alert alert-warning" role="alert">
+        <div class="col-md-5 text-center text-md-start align-items-center">Car deleted!</div>
+    </div>
 </div>
 <!-- cars display-->
 <!-- load JS functions-->

@@ -30,6 +30,11 @@ public class CarService {
                 .orElseThrow(() -> new CarNotFoundException());
     }
 
+    public boolean deleteCarById(Long id){
+        carRepository.deleteById(id);
+        return true;
+    }
+
     public List<Car> getBestCarFromEachType(){
         List<Car> topCars = new ArrayList<>();
         topCars.add(carRepository.findFirstDistinctByCarTypeOrderByRateDesc("family"));
