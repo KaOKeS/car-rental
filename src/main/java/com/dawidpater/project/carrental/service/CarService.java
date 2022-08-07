@@ -31,7 +31,9 @@ public class CarService {
     }
 
     public boolean deleteCarById(Long id){
-        carRepository.deleteById(id);
+        Car car = getCarById(id);
+        car.setDeleted(true);
+        carRepository.save(car);
         return true;
     }
 
@@ -49,7 +51,8 @@ public class CarService {
 
     public List<Car> getCarsAsRequested(Map<String,String> reqParams){
         if(reqParams.size()==0){
-            return carRepository.findAll();
+            List<Car> allNotDeletedCars = carRepository.findAllNotDeletedCars();
+            return allNotDeletedCars;
         }
         ReqParamsValidator reqParamsValidator = new ReqParamsValidator();
         reqParamsValidator.isDateValid(reqParams.get("startDate"),reqParams.get("endDate"));

@@ -16,7 +16,8 @@ public interface CarRepository extends JpaRepository<Car,Long> {
                                                                 "AND rent_price>=:minPrice AND rent_price<=:maxPrice AND id NOT IN " +
                                                                 "(SELECT c.id FROM car c LEFT JOIN rental r ON c.id=r.car_id WHERE " +
                                                                 "r.start_date BETWEEN :startDate AND :endDate OR" +
-                                                                " r.end_date BETWEEN :startDate AND :endDate) ";
+                                                                " r.end_date BETWEEN :startDate AND :endDate) " +
+                                                                "AND NOT deleted";
 
     Car findFirstDistinctByCarTypeOrderByRateDesc(String type);
 
@@ -36,4 +37,7 @@ public interface CarRepository extends JpaRepository<Car,Long> {
 
 
     List<Car> findByRentalIdIn(List<Long> rentalsIds);
+
+    @Query("SELECT c FROM Car c WHERE c.deleted!=1")
+    List<Car> findAllNotDeletedCars();
 }

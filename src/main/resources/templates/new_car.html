@@ -32,6 +32,7 @@
 
         <form th:action="@{/saveCar}" th:object="${carDto}" method="POST" class="mt-5 border p-4 bg-light shadow">
             <input type="hidden" th:field="*{id}">
+            <input type="hidden" th:field="*{deleted}">
             <input type="text" th:field="*{brand}" placeholder="Car brand" class="form-control mb-4 col-2">
             <input type="text" th:field="*{model}" placeholder="Car model" class="form-control mb-4 col-2">
             <input type="text" th:field="*{carEngine}" placeholder="Car engine" class="form-control mb-4 col-2">
