@@ -11,6 +11,8 @@ import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 
+import java.util.Properties;
+
 @Configuration
 //@EnableWebMvc
 //@EnableSwagger2

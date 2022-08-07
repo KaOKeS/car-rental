@@ -3,6 +3,7 @@ package com.dawidpater.project.carrental.controller;
 import com.dawidpater.project.carrental.converter.RentalUserConverter;
 import com.dawidpater.project.carrental.dto.RentalUserDto;
 import com.dawidpater.project.carrental.entity.RentalUser;
+import com.dawidpater.project.carrental.service.EmailSenderService;
 import com.dawidpater.project.carrental.service.RentalUserService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -23,6 +24,7 @@ import javax.validation.Valid;
 public class RegistrationController {
     private final RentalUserService rentalUserService;
     private final RentalUserConverter rentalUserConverter;
+    private final EmailSenderService emailSenderService;
 
     @GetMapping
     public String showRegistrationForm(@ModelAttribute("userDto") RentalUserDto rentalUserDto, Model model){
@@ -33,6 +35,9 @@ public class RegistrationController {
     public String registerUser(@Valid @ModelAttribute("userDto") RentalUserDto rentalUserDto, Model model){
         RentalUser rentalUser = rentalUserConverter.dtoToEntity(rentalUserDto);
         rentalUserService.save(rentalUser);
-        return "redirect:/new_car?success";
+        emailSenderService.sendEmail(rentalUser.getEmail(),
+                "Registration to Take That Car!",
+                "Hi " + rentalUser.getFirstName() +". You have been successfully registered in Take That Car!");
+        return "redirect:/login?success";
     }
 }
