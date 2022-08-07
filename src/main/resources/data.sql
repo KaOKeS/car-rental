@@ -40,6 +40,7 @@ VALUES
 -- USER ROlE
 INSERT INTO `user_role` (`user_role`) VALUES ('USER');
 INSERT INTO `user_role` (`user_role`) VALUES ('ADMIN');
+INSERT INTO `user_role` (`user_role`) VALUES ('MANAGER');
 
 
 -- USERS

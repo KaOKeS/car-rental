@@ -11,11 +11,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import javax.persistence.Basic;
@@ -48,12 +44,12 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter{
                 .and().headers().frameOptions().sameOrigin()
                 .and().authorizeRequests()
                 .antMatchers(staticResources).permitAll()
-                .antMatchers("/","/login","/cars","/api/cars","/h2-console","/register","/registeruser")
+                .antMatchers("/","/login","/cars","/api/cars","/h2-console","/register")
                 .permitAll()
                 .antMatchers(HttpMethod.POST,"/register").permitAll()
                 .antMatchers(HttpMethod.POST,"/logout").hasAnyRole("USER","ADMIN","MANAGER")
-                .antMatchers("/management/manager").hasAnyRole("ADMIN","MANAGER")
-                .antMatchers("/management/admin").hasRole("ADMIN")
+                .antMatchers("/management/**").hasAnyRole("ADMIN","MANAGER")
+                .antMatchers("/management/admin/**").hasRole("ADMIN")
                 .anyRequest()
                 .authenticated()
                 .and()

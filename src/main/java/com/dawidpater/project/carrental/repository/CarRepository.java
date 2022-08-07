@@ -39,5 +39,5 @@ public interface CarRepository extends JpaRepository<Car,Long> {
     List<Car> findByRentalIdIn(List<Long> rentalsIds);
 
     @Query("SELECT c FROM Car c WHERE c.deleted!=1")
-    List<Car> findAllNotDeletedCars();
+    List<Car> findAllNotDeletedCars(Pageable page);
 }

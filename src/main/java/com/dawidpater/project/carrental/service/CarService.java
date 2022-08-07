@@ -51,7 +51,7 @@ public class CarService {
 
     public List<Car> getCarsAsRequested(Map<String,String> reqParams){
         if(reqParams.size()==0){
-            List<Car> allNotDeletedCars = carRepository.findAllNotDeletedCars();
+            List<Car> allNotDeletedCars = carRepository.findAllNotDeletedCars(PageRequest.of(0,10));
             return allNotDeletedCars;
         }
         ReqParamsValidator reqParamsValidator = new ReqParamsValidator();

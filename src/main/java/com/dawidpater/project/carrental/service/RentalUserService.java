@@ -1,5 +1,8 @@
 package com.dawidpater.project.carrental.service;
 
+import com.dawidpater.project.carrental.converter.RentalUserConverter;
+import com.dawidpater.project.carrental.dto.RentalUserDto;
+import com.dawidpater.project.carrental.dto.UserRoleDto;
 import com.dawidpater.project.carrental.entity.RentalUser;
 import com.dawidpater.project.carrental.entity.UserRole;
 import com.dawidpater.project.carrental.repository.RentalUserRepository;
@@ -12,6 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -19,6 +23,7 @@ public class RentalUserService implements UserDetailsService {
     private final RentalUserRepository rentalUserRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserRoleRepository userRoleRepository;
+    private final RentalUserConverter rentalUserConverter;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -40,8 +45,40 @@ public class RentalUserService implements UserDetailsService {
         return rentalUserRepository.save(rentalUser);
     }
 
-    public List<RentalUser> getAllUsers(){
-        return rentalUserRepository.findAll();
+    public List<RentalUserDto> getAllUsersWithRoles(){
+        List<RentalUser> allUsers = rentalUserRepository.getAllUsersWithTheirRole();
+        List<RentalUserDto> rentalUserDtos = rentalUserConverter.entityToDto(allUsers);
+        List<String> usersRole = allUsers.stream().map(user -> user.getUserRole().getRole()).collect(Collectors.toList());
+        for (int i = 0; i < rentalUserDtos.size(); i++) {
+            rentalUserDtos.get(i).setUserRoleDto(UserRoleDto.builder().role(usersRole.get(i)).build());
+        }
+        return rentalUserDtos;
     }
 
+    public void inverseBlockedFieldOfUserById(Long id) {
+        RentalUser rentalUser = rentalUserRepository.findById(id).orElseThrow();
+        rentalUser.setBlocked(!rentalUser.getBlocked());
+        rentalUserRepository.save(rentalUser);
+    }
+
+    public void changeRoleToManager(Long id) {
+        RentalUser rentalUser = rentalUserRepository.findById(id).orElseThrow();
+        UserRole manager = userRoleRepository.findByRole("MANAGER");
+        rentalUser.setUserRole(manager);
+        rentalUserRepository.save(rentalUser);
+    }
+
+    public void changeRoleToAdmin(Long id) {
+        RentalUser rentalUser = rentalUserRepository.findById(id).orElseThrow();
+        UserRole admin = userRoleRepository.findByRole("ADMIN");
+        rentalUser.setUserRole(admin);
+        rentalUserRepository.save(rentalUser);
+    }
+
+    public void changeRoleToUser(Long id) {
+        RentalUser rentalUser = rentalUserRepository.findById(id).orElseThrow();
+        UserRole admin = userRoleRepository.findByRole("USER");
+        rentalUser.setUserRole(admin);
+        rentalUserRepository.save(rentalUser);
+    }
 }

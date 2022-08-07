@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.spi.DocumentationType;
@@ -13,6 +14,7 @@ import springfox.documentation.spring.web.plugins.Docket;
 @Configuration
 //@EnableWebMvc
 //@EnableSwagger2
+@EnableTransactionManagement
 public class AppConfig {
 
     @Bean

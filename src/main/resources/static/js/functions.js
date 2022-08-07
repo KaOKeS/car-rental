@@ -60,21 +60,41 @@ function carElement(car,isAdmin){
         }
     }
     if(isAdmin){
-       var createdTd = document.createElement('td');
-     createdTd.setAttribute("class","align-middle");
-     createdTd.setAttribute("sec:authorize","hasRole('ROLE_ADMIN')");
-     var createdA = document.createElement('a');
-     createdA.setAttribute("href","/updateCar/"+`${car["id"]}`);
-     createdA.setAttribute("class","btn btn-primary btn-sm me-1");
-     createdA.innerText = "Update";
-     createdTd.appendChild(createdA);
-     var createdA1 = document.createElement('a');
-      createdA1.setAttribute("href","/deleteCar/"+`${car["id"]}`);
-      createdA1.setAttribute("class","btn btn-danger btn-sm");
-      createdA1.innerText = "Delete";
-      createdTd.appendChild(createdA1);
-     carRowElement.appendChild(createdTd); 
+        var createdTd = document.createElement('td');
+        createdTd.setAttribute("class","align-middle col-sm-2");
+        createdTd.setAttribute("sec:authorize","hasRole('ROLE_ADMIN')");
+        var createdA = document.createElement('a');
+        createdA.setAttribute("href","/management/admin/updateCar/"+`${car["id"]}`);
+        createdA.setAttribute("class","btn btn-block btn-primary btn-sm me-1");
+        createdA.innerText = "Update";
+        createdTd.appendChild(createdA);
+        var createdA1 = document.createElement('a');
+        createdA1.setAttribute("href","/management/admin/deleteCar/"+`${car["id"]}`);
+        createdA1.setAttribute("class","btn btn-block btn-danger btn-sm");
+        createdA1.innerText = "Delete";
+        createdTd.appendChild(createdA1);
+        carRowElement.appendChild(createdTd); 
+        var createdTd = document.createElement('td');
+        createdTd.setAttribute("class","align-middle");
+        var createdA2 = document.createElement('a');
+        createdA2.setAttribute("href","/rent/"+`${car["id"]}`);
+        createdA2.setAttribute("class","btn btn-block btn-secondary btn-sm me-1");
+        createdA2.innerText = "Rent";
+        createdTd.appendChild(createdA2);
+        carRowElement.appendChild(createdTd);
     }
+    else{
+        var createdTd = document.createElement('td');
+        createdTd.setAttribute("class","align-middle");
+        var createdA = document.createElement('a');
+        createdA.setAttribute("href","/rent/"+`${car["id"]}`);
+        createdA.setAttribute("class","btn btn-block btn-secondary btn-sm me-1");
+        createdA.innerText = "Rent";
+        createdTd.appendChild(createdA);
+        carRowElement.appendChild(createdTd);
+    }
+    
+
 
     return carRowElement;
 }

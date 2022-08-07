@@ -13,7 +13,7 @@
         <div class="container-lg">
             <a href="/" class="navbar-brand">
                 <span class="fw-bold text-secondary">
-                    <img src="images/Muscle-Car-Chevrolet-Camaro-SS-icon.png" alt="menu-icon">
+                    <img th:src="@{../../images/Muscle-Car-Chevrolet-Camaro-SS-icon.png}" alt="menu-icon">
                     Take That Car
                 </span>
             </a>
@@ -87,7 +87,7 @@
             <div class="justify-content-end align-center" sec:authorize="hasRole('ROLE_ADMIN')">
                 <ul class="nav">
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="/user">Users Managment</a>
+                        <a class="nav-link text-white" href="/management/admin/user">Users Managment</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-white" href="/cars">Cars Management</a>
