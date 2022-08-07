@@ -2,11 +2,13 @@ package com.dawidpater.project.carrental.service;
 
 import com.dawidpater.project.carrental.converter.LocalDateTimeFromStringConverter;
 import com.dawidpater.project.carrental.entity.Car;
+import com.dawidpater.project.carrental.exception.CarNotFoundException;
 import com.dawidpater.project.carrental.repository.CarRepository;
 import com.dawidpater.project.carrental.validator.ReqParamsValidator;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -21,6 +23,11 @@ public class CarService {
 
     public void addCar(Car car){
         carRepository.save(car);
+    }
+
+    public Car getCarById(Long id){
+        return carRepository.findById(id)
+                .orElseThrow(() -> new CarNotFoundException());
     }
 
     public List<Car> getBestCarFromEachType(){

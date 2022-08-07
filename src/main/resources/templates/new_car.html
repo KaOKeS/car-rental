@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <title>Take That Car! - Car management - Add Car</title>
+    <style>
+    section{
+        padding: 60px 0;
+    }
+    </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css">
+</head>
+<body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+<div th:insert="../static/navbar"></div>
+<section>
+    <div class="container">
+        <h1 class="mt-3">Car management system</h1>
+        <hr>
+        <h2>Add Car</h2>
+        <br>
+        <div class="col-md-5 text-center text-md-start">
+            <div th:if="${param.success}">
+                <div class="alert alert-success" role="alert">
+                    Car has been added!
+                </div>
+            </div>
+        </div>
+
+        <form th:action="@{/saveCar}" th:object="${carDto}" method="POST" class="mt-5 border p-4 bg-light shadow">
+            <input type="hidden" th:field="*{id}">
+            <input type="text" th:field="*{brand}" placeholder="Car brand" class="form-control mb-4 col-2">
+            <input type="text" th:field="*{model}" placeholder="Car model" class="form-control mb-4 col-2">
+            <input type="text" th:field="*{carEngine}" placeholder="Car engine" class="form-control mb-4 col-2">
+            <input type="text" th:field="*{hp}" placeholder="Car hp" class="form-control mb-4 col-4">
+            <input type="text" th:field="*{fuel}" placeholder="Car fuel" class="form-control mb-4 col-4">
+            <input type="text" th:field="*{carType}" placeholder="Car type" class="form-control mb-4 col-4">
+            <input type="text" th:field="*{sittingPlaces}" placeholder="Amount of sitiing places" class="form-control mb-4 col-4">
+            <input type="text" th:field="*{price}" placeholder="Car price" class="form-control mb-4 col-4">
+            <input type="text" th:field="*{imagePath}" placeholder="Car image path" class="form-control mb-4 col-4">
+            <input type="text" th:field="*{carDescription}" placeholder="Car description" class="form-control mb-4 col-4">
+            <button type="submit" class="btn btn-secondary col-2">Save Car</button>
+        </form>
+
+    </div>
+</section>
+</body>
+<footer>
+    Menu Icon created by Caleb Amesbury
+    http://calebamesbury.com
+    http://dribbble.com/CalebAmesbury
+</footer>
+</html>

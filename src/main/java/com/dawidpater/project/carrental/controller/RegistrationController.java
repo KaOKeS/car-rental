@@ -33,6 +33,6 @@ public class RegistrationController {
     public String registerUser(@Valid @ModelAttribute("userDto") RentalUserDto rentalUserDto, Model model){
         RentalUser rentalUser = rentalUserConverter.dtoToEntity(rentalUserDto);
         rentalUserService.save(rentalUser);
-        return "redirect:/login?success";
+        return "redirect:/new_car?success";
     }
 }

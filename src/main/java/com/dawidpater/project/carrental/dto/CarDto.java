@@ -12,7 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 public class CarDto {
     private long id;
-    private String imagePath;
+    private String imagePath = "/images/cars/no-car-image.png";
     private String brand;
     private String model;
     private String carEngine;

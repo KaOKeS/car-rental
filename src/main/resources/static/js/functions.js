@@ -14,7 +14,7 @@ async function fetchCars(restUrl) {
     }
 }
 
-async function listsCars(carsContainerElementId,restUrl) {
+async function listsCars(carsContainerElementId,restUrl,isAdmin) {
     const carsContainerElement = document.getElementById(carsContainerElementId);
 
     if(!carsContainerElement){
@@ -29,7 +29,7 @@ async function listsCars(carsContainerElementId,restUrl) {
                 return;
             }
             for(const car of cars){
-                carsContainerElement.appendChild(carElement(car));
+                carsContainerElement.appendChild(carElement(car,isAdmin));
             }
 
         }).catch(e => {
@@ -37,7 +37,7 @@ async function listsCars(carsContainerElementId,restUrl) {
         })
 }
 
-function carElement(car){
+function carElement(car,isAdmin){
     const carRowElement = document.createElement('tr');
     for (const carProperty in car){
         if(car.hasOwnProperty(carProperty)){
@@ -58,7 +58,23 @@ function carElement(car){
                 carRowElement.appendChild(createdTd);
             }
         }
-      }
+    }
+    if(isAdmin){
+       var createdTd = document.createElement('td');
+     createdTd.setAttribute("class","align-middle");
+     createdTd.setAttribute("sec:authorize","hasRole('ROLE_ADMIN')");
+     var createdA = document.createElement('a');
+     createdA.setAttribute("href","/updateCar/"+`${car["id"]}`);
+     createdA.setAttribute("class","btn btn-primary btn-sm me-1");
+     createdA.innerText = "Update";
+     createdTd.appendChild(createdA);
+     var createdA1 = document.createElement('a');
+      createdA1.setAttribute("href","/updateCar/"+`${car["id"]}`);
+      createdA1.setAttribute("class","btn btn-danger btn-sm");
+      createdA1.innerText = "Delete";
+      createdTd.appendChild(createdA1);
+     carRowElement.appendChild(createdTd); 
+    }
 
     return carRowElement;
 }
