@@ -53,9 +53,9 @@ VALUES
 ('admin','admin@myemail.com','$2a$10$amPAOVNolNd1xmv34322OenZEBrU3JFPKshau3jYN0oqaY8pDUPOW','Dawid','Pater','Poland','Tychy','Street 55/14','43-100','1950-01-01','754432532','ASF327654',2);
 
 INSERT INTO `rental_user`
-(`username`,`email`,`user_password`,`first_name`,`last_name`,`country`,`city`,`address`,`zip`,`birthdate`,`phone`,`document_id`)
+(`username`,`email`,`user_password`,`first_name`,`last_name`,`country`,`city`,`address`,`zip`,`birthdate`,`phone`,`document_id`,`blocked`)
 VALUES
-('user123','user123@myemail.com','$2a$10$tAxU2qOSwUjqflCXmLe8k..RSA/O2/ry2/UthdNHYtQ5b4dB/xq0y','Danil','Petrov','UK','London','Street 158','GU16 7HF','1987-01-01','75447632','A42264');
+('user123','user123@myemail.com','$2a$10$tAxU2qOSwUjqflCXmLe8k..RSA/O2/ry2/UthdNHYtQ5b4dB/xq0y','Danil','Petrov','UK','London','Street 158','GU16 7HF','1987-01-01','75447632','A42264',true);
 
 INSERT INTO `rental_user`
 (`username`,`email`,`user_password`,`first_name`,`last_name`,`country`,`city`,`address`,`zip`,`birthdate`,`phone`,`document_id`)

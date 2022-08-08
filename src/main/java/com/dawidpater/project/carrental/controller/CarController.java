@@ -1,15 +1,19 @@
 package com.dawidpater.project.carrental.controller;
 
 import com.dawidpater.project.carrental.converter.CarConverter;
+import com.dawidpater.project.carrental.converter.IntegerTryParse;
 import com.dawidpater.project.carrental.dto.CarDto;
 import com.dawidpater.project.carrental.entity.Car;
 import com.dawidpater.project.carrental.service.CarService;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @AllArgsConstructor
@@ -19,10 +23,19 @@ public class CarController {
     private final CarConverter carConverter;
 
     @GetMapping("/cars")
-    public String displayCars(Model model){
+    public String displayCars(@RequestParam(required = false) Map<String,String> allRequestParams,
+                              Model model,
+                              HttpServletRequest request){
         List<String> allCarsTypes = carService.getAllCarsTypes();
-        model.addAttribute("restRequestUrl","/cars");
+        int reqPageNumber = IntegerTryParse.parse(allRequestParams.get("pageNumber"),1)-1;
+        int reqPageSize = IntegerTryParse.parse(allRequestParams.get("perPage"),5);
+        Page<Car> carsAsRequested = carService.getCarsAsRequested(allRequestParams, reqPageNumber, reqPageSize);
+        model.addAttribute("cars",carsAsRequested);
+        model.addAttribute("totalItems",carsAsRequested.getTotalElements());
+        model.addAttribute("totalPages",carsAsRequested.getTotalPages());
+        model.addAttribute("currentPage",reqPageNumber);
         model.addAttribute("carTypes", allCarsTypes);
+        model.addAttribute("isAdmin",request.isUserInRole("ADMIN"));
         return "car";
     }
 

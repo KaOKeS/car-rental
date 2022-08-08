@@ -29,7 +29,8 @@
 </div>
 <!-- cars display-->
 <!-- load JS functions-->
-<script src="/js/functions.js"></script>
+<script src="/js/carPageFunctions.js"></script>
+
 <div class="container-lg">
     <form id="filters">
         <div class="container">
@@ -37,7 +38,7 @@
             <div class="row align-items-center">
               <div class="col-md-3 col-6 mb-2">
                 <label for="typeChose">Select car type:</label>
-                <select class="form-select" id="typeChose">
+                <select class="form-select" id="typeChose" name="type">
                     <option th:value="0">Chose car type...</option>
                     <option th:each="carType: ${carTypes}" th:text="${carType}" th:value="${carType}">text</option>
                 </select>
@@ -47,21 +48,17 @@
               <div class="col-3">
                 <label for="searchByForm">Search by:  </label>
                 <div class="form-check form-check-inline" id="searchByForm">
-                    <input class="form-check-input" type="radio" name="searchBy" id="searchBy" value="Brand">
+                    <input class="form-check-input" type="radio" name="searchBy" id="Brand" value="Brand">
                     <label class="form-check-label">Brand</label>
                   </div>
                   <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="searchBy" id="searchBy" value="Model">
+                    <input class="form-check-input" type="radio" name="searchBy" id="Model" value="Model">
                     <label class="form-check-label">Model</label>
                   </div>
               </div>
                 <!-- search-->
               <div class="col-6 col-md-3 d-inline-flex">
-                <form sec:authorize="hasRole('ROLE_ADMIN')" onsubmit="listsCars('carTable',/*[[${restRequestUrl}]]*/,true)">
-                    <input type="text" class="form-control" placeholder="Search..." name="search" id="searchField">
-                    <input class="btn btn-secondary" type="submit" value="Search">
-                </form>
-                  <form sec:authorize="!hasRole('ROLE_ADMIN')" onsubmit="listsCars('carTable1',/*[[${restRequestUrl}]]*/,false)">
+                  <form onsubmit="">
                       <input type="text" class="form-control" placeholder="Search..." name="search" id="searchField">
                       <input class="btn btn-secondary" type="submit" value="Search">
                   </form>
@@ -106,26 +103,36 @@
                 </div>
             </div>
             <!-- Order By-->
-            <div class="row align-items-center mt-1 mb-5">
+            <div class="row align-items-center mt-1 mb-2">
               <div class="col-7">
                 <label for="orderByForm" class="me-2">Order by:  </label>
                 <div class="form-check form-check-inline" id="orderByForm">
-                    <input class="form-check-input" type="radio" name="orderBy" id="orderBy" value="priceAsc">
+                    <input class="form-check-input" type="radio" name="orderBy" id="priceAsc" value="priceAsc">
                     <label class="form-check-label" for="checkBrand">Price <i class="bi bi-arrow-up"></i></label>
                   </div>
                   <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="orderBy" id="orderBy" value="priceDesc">
+                    <input class="form-check-input" type="radio" name="orderBy" id="priceDesc" value="priceDesc">
                     <label class="form-check-label" for="checkModel">Price <i class="bi bi-arrow-down"></i></label>
                   </div>
                   <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="orderBy" id="orderBy" value="brandAsc">
+                    <input class="form-check-input" type="radio" name="orderBy" id="brandAsc" value="brandAsc">
                     <label class="form-check-label" for="checkModel">Brand <i class="bi bi-arrow-up"></i></label>
                   </div>
                   <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="orderBy" id="orderBy" value="brandDesc">
+                    <input class="form-check-input" type="radio" name="orderBy" id="brandDesc" value="brandDesc">
                     <label class="form-check-label" for="checkModel">Brand <i class="bi bi-arrow-down"></i></label>
                   </div>
               </div>
+            </div>
+            <div class="row align-items-center">
+                <div class="col-2">
+                    <label for="itemsPerPage">Cars per page:</label>
+                    <select class="form-select" id="itemsPerPage" name="perPage">
+                        <option th:value="5">5</option>
+                        <option th:value="10">10</option>
+                        <option th:value="20">20</option>
+                    </select>
+                </div>
             </div>
         </div>
     </form>
@@ -146,78 +153,132 @@
             </tr>
           </thead>
           <tbody id="carTable">
-            <script sec:authorize="hasRole('ROLE_ADMIN')" th:inline="javascript">
-                /*<![CDATA[*/
-                listsCars('carTable',/*[[${restRequestUrl}]]*/,true);
-                /*]]>*/
-            </script>
-            <script sec:authorize="!hasRole('ROLE_ADMIN')" th:inline="javascript">
-                /*<![CDATA[*/
-                listsCars('carTable',/*[[${restRequestUrl}]]*/,false);
-                /*]]>*/
-            </script>
+             <!--cars go here-->
+             <tr th:each="car: ${cars}">
+                 <td><image th:src="${car.imagePath}" class="img-fluid"/></td>
+                 <td th:text="${car.brand}" class="align-middle"/>
+                 <td th:text="${car.model}" class="align-middle"/>
+                 <td th:text="${car.carEngine}" class="align-middle" />
+                 <td th:text="${car.hp}" class="align-middle" />
+                 <td th:text="${car.fuel}" class="align-middle" />
+                 <td th:text="${car.carType}" class="align-middle" />
+                 <td th:text="${car.sittingPlaces}" class="align-middle" />
+                 <td th:text="${car.price}" class="align-middle" />
+                 <td sec:authorize="hasRole('ROLE_ADMIN')" class="align-middle col-sm-2">
+                     <a class="btn btn-block btn-primary btn-sm me-1" th:href="@{/management/admin/updateCar/{id}(id=${car.id})}">Update</a>
+                     <a class="btn btn-block btn-danger btn-sm me-1" th:href="@{/management/admin/deleteCar/{id}(id=${car.id})}">Delete</a>
+                 </td>
+                 <td class="align-middle">
+                     <a class="btn btn-block btn-secondary btn-sm me-1" th:href="@{/rent/{id}(id=${car.id})}">Rent</a>
+                 </td>
+             </tr>
           </tbody>
     </table>
-    <nav aria-label="Page navigation example">
-        <ul class="pagination justify-content-center">
-            <li class="page-item disabled">
-                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
-            </li>
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item">
-                <a class="page-link" href="#">Next</a>
-            </li>
-        </ul>
-    </nav>
+
+    <div class = "row col-sm-10 align-middle align-items-middle">
+        <div class = "col-sm-2">
+            Total Rows: [[${totalItems}]] 
+        </div>
+        <div th:if = "${totalPages > 1}" class="col-sm-2">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination" id="pagination">
+                    <span th:each="i: ${#numbers.sequence(1, totalPages)}">
+                        <li class="page-item"><a class="page-link" href="#" th:onclick="'javascript:displayCarsOnEvent(' + ${i} + ',' + ${isAdmin} +')'">[[${i}]]</a></li>
+                    </span>
+                </ul>
+            </nav>
+        </div>
+
 </div>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    window.onload = fillFieldsWithRequestParams();
+    /*]]>*/
+</script>
+
 <script type="text/javascript">
-    (function(){
-        "use strict";
-
-        document.getElementById('filters').addEventListener('submit',displayCarsOnEvent);
-
-        function displayCarsOnEvent(event){
-            event.preventDefault();
-
-            var typeChose = document.getElementById('typeChose').value;
-            var startDate = document.getElementById('startDate').value;
-            var endDate = document.getElementById('endDate').value;
-            var searchBy = null;
-            if(document.querySelector('input[name=searchBy]:checked')!=null){
-                searchBy = document.querySelector('input[name=searchBy]:checked').value;
-                console.log("searchBy " + searchBy);
-            }
-            var searchQuery = document.getElementById('searchField').value;
-            var maxPrice = document.getElementById('maxPrice').value;
-            var minPrice = document.getElementById('minPrice').value;
-            var orderBy = null;
-            if(document.querySelector('input[name=orderBy]:checked')!=null){
-                orderBy = document.querySelector('input[name=orderBy]:checked').value;
-                console.log("orderByForm " + orderBy);
-            }
-            
-
-            if(startDate.value === ""){
-                alert("Please fill up Start date field");
-                startDateField.focus();
-                return;
-            }
-            document.getElementById('carTable').innerHTML = "";
-
-            var carQueryToRest = "/cars?type=" + typeChose
-                              + "&startDate=" + startDate
-                              + "&endDate=" + endDate
-                              + "&searchBy=" + searchBy
-                              + "&maxPrice=" + maxPrice
-                              + "&minPrice=" + minPrice
-                              + "&orderBy=" + orderBy
-                              + "&searchQuery=" + searchQuery;
-
-            listsCars('carTable',carQueryToRest);
+    function displayCarsOnEvent(clickedPage,isAdmin){
+        //not refresh PAGE
+        event.preventDefault();
+        if (window.performance) {
+        console.info("window.performance works fine on this browser");
         }
-    })();
+        console.info(performance.navigation.type);
+        if (performance.navigation.type == performance.navigation.TYPE_RELOAD) {
+        console.info( "This page is reloaded" );
+        } else {
+        console.info( "This page is not reloaded");
+        }
+
+        var carQueryToRest = "/cars?"; 
+
+        var reqPageNumber = null;
+        var reqPerPage = null;
+        var reqType = null;
+        var reqStartDate = null;
+        var reqEndDate = null;
+        var reqSearchBy = null;
+        var reqMaxPrice = null;
+        var reqMinPrice = null;
+        var reqOrderBy = null;
+        var reqSearchQuery = null;
+
+        //Get URL Params
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+
+        carQueryToRest+="pageNumber="+clickedPage;
+
+        if(urlParams.has("perPage")){
+            reqPerPage = urlParams.get('perPage');
+            carQueryToRest+="&perPage="+reqPerPage;
+        }
+        if(urlParams.has("type")){
+            reqType = urlParams.get('type');
+            carQueryToRest+="&type="+reqType;
+        }
+        if(urlParams.has("startDate")){
+            reqStartDate = urlParams.get('startDate');
+            carQueryToRest+="&startDate="+reqStartDate;
+        }
+        if(urlParams.has("endDate")){
+            reqEndDate = urlParams.get('endDate');
+            carQueryToRest+="&endDate="+reqEndDate;
+        }
+        if(urlParams.has("searchBy")){
+            reqSearchBy = urlParams.get('searchBy');
+            carQueryToRest+="&searchBy="+reqSearchBy;
+        }
+        if(urlParams.has("maxPrice")){
+            reqMaxPrice = urlParams.get('maxPrice');
+            carQueryToRest+="&maxPrice="+reqMaxPrice;
+        }
+        if(urlParams.has("minPrice")){
+            reqMinPrice = urlParams.get('minPrice');
+            carQueryToRest+="&minPrice="+reqMinPrice;
+        }
+        if(urlParams.has("orderBy")){
+            reqOrderBy = urlParams.get('orderBy');
+            carQueryToRest+="&orderBy="+reqOrderBy;
+        }
+        if(urlParams.has("search")){
+            reqSearchQuery = urlParams.get('search');
+            carQueryToRest+="&search="+reqSearchQuery;
+        }
+
+        /*
+        if(startDate.value === ""){
+            alert("Please fill up Start date field");
+            startDateField.focus();
+            return;
+        }*/
+
+        document.getElementById('carTable').innerHTML = "";
+
+        listsCars('carTable',carQueryToRest,isAdmin);
+    }
+
     $(function() {
         $("#datepicker1, #datepicker2").datepicker({
                                                         //viewMode: 'months',

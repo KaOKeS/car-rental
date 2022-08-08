@@ -5,16 +5,23 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import javax.persistence.Basic;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 @Configuration
 @EnableWebSecurity
@@ -44,7 +51,7 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter{
                 .and().headers().frameOptions().sameOrigin()
                 .and().authorizeRequests()
                 .antMatchers(staticResources).permitAll()
-                .antMatchers("/","/login","/cars","/api/cars","/h2-console","/register")
+                .antMatchers("/","/login**","/cars**","/api/cars**","/h2-console","/register")
                 .permitAll()
                 .antMatchers(HttpMethod.POST,"/register").permitAll()
                 .antMatchers(HttpMethod.POST,"/logout").hasAnyRole("USER","ADMIN","MANAGER")
@@ -59,6 +66,7 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter{
                     .passwordParameter("password")
                     .usernameParameter("username")
                 .defaultSuccessUrl("/",true)
+                .failureUrl("/login-error")
                 .and()
                 .logout()
                     .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
