@@ -57,10 +57,14 @@
               </div>
                 <!-- search-->
               <div class="col-6 col-md-3 d-inline-flex">
-                <form onsubmit="listsCars('carTable',/*[[${restRequestUrl}]]*/)">
+                <form sec:authorize="hasRole('ROLE_ADMIN')" onsubmit="listsCars('carTable',/*[[${restRequestUrl}]]*/,true)">
                     <input type="text" class="form-control" placeholder="Search..." name="search" id="searchField">
                     <input class="btn btn-secondary" type="submit" value="Search">
                 </form>
+                  <form sec:authorize="!hasRole('ROLE_ADMIN')" onsubmit="listsCars('carTable1',/*[[${restRequestUrl}]]*/,false)">
+                      <input type="text" class="form-control" placeholder="Search..." name="search" id="searchField">
+                      <input class="btn btn-secondary" type="submit" value="Search">
+                  </form>
               </div>
             </div>
             <!-- Price range -->
@@ -141,21 +145,18 @@
                 <th scope="col">Actions</th>
             </tr>
           </thead>
-          <tbody id="carTable" sec:authorize="hasRole('ROLE_ADMIN')">
-            <script th:inline="javascript">
+          <tbody id="carTable">
+            <script sec:authorize="hasRole('ROLE_ADMIN')" th:inline="javascript">
                 /*<![CDATA[*/
                 listsCars('carTable',/*[[${restRequestUrl}]]*/,true);
                 /*]]>*/
             </script>
+            <script sec:authorize="!hasRole('ROLE_ADMIN')" th:inline="javascript">
+                /*<![CDATA[*/
+                listsCars('carTable',/*[[${restRequestUrl}]]*/,false);
+                /*]]>*/
+            </script>
           </tbody>
-
-        <tbody id="carTable1" sec:authorize="!hasRole('ROLE_ADMIN')">
-            <script th:inline="javascript">
-        /*<![CDATA[*/
-        listsCars('carTable1',/*[[${restRequestUrl}]]*/,false);
-        /*]]>*/
-        </script>
-        </tbody>
     </table>
     <nav aria-label="Page navigation example">
         <ul class="pagination justify-content-center">

@@ -5,6 +5,7 @@ import com.dawidpater.project.carrental.dto.RentalUserDto;
 import com.dawidpater.project.carrental.entity.RentalUser;
 import com.dawidpater.project.carrental.service.EmailSenderService;
 import com.dawidpater.project.carrental.service.RentalUserService;
+import com.dawidpater.project.carrental.service.contract.EmailSender;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,7 +25,7 @@ import javax.validation.Valid;
 public class RegistrationController {
     private final RentalUserService rentalUserService;
     private final RentalUserConverter rentalUserConverter;
-    private final EmailSenderService emailSenderService;
+    private final EmailSender emailSenderService;
 
     @GetMapping
     public String showRegistrationForm(@ModelAttribute("userDto") RentalUserDto rentalUserDto, Model model){

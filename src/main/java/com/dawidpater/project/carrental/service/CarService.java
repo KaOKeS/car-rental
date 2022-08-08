@@ -6,7 +6,9 @@ import com.dawidpater.project.carrental.exception.CarNotFoundException;
 import com.dawidpater.project.carrental.repository.CarRepository;
 import com.dawidpater.project.carrental.validator.ReqParamsValidator;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -30,6 +32,11 @@ public class CarService {
                 .orElseThrow(() -> new CarNotFoundException());
     }
 
+    public Page<Car> getPaginatedCars(int pageNo, int pageSize){
+        Pageable pageable = PageRequest.of(pageNo-1,pageSize);
+        return null;
+    }
+
     public boolean deleteCarById(Long id){
         Car car = getCarById(id);
         car.setDeleted(true);
@@ -51,8 +58,8 @@ public class CarService {
 
     public List<Car> getCarsAsRequested(Map<String,String> reqParams){
         if(reqParams.size()==0){
-            List<Car> allNotDeletedCars = carRepository.findAllNotDeletedCars(PageRequest.of(0,10));
-            return allNotDeletedCars;
+            Page<Car> allNotDeletedCars = carRepository.findAllNotDeletedCars(PageRequest.of(0,10));
+            return allNotDeletedCars.getContent();
         }
         ReqParamsValidator reqParamsValidator = new ReqParamsValidator();
         reqParamsValidator.isDateValid(reqParams.get("startDate"),reqParams.get("endDate"));
@@ -82,7 +89,7 @@ public class CarService {
 
     private List<Car> getAllCarsAccordingToRequestOrderBy(Map<String,String> reqParams){
         ReqParamsValidator reqParamsValidator = new ReqParamsValidator();
-        List<Car> allCarsAccordingToRequest = Collections.EMPTY_LIST;
+        Page<Car> allCarsAccordingToRequest;
 
         LocalDateTimeFromStringConverter dateConverter = new LocalDateTimeFromStringConverter();
         LocalDateTime startDate = dateConverter.getDate(reqParams.get("startDate"),"00:00");
@@ -111,6 +118,6 @@ public class CarService {
         else
             allCarsAccordingToRequest = carRepository.getAllCarsAccordingToRequest(brand,model,type,minPrice,maxPrice,startDate,endDate,PageRequest.of(0,10));
 
-        return allCarsAccordingToRequest;
+        return allCarsAccordingToRequest.getContent();
     }
 }

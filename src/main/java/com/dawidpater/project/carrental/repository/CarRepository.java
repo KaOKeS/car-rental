@@ -1,6 +1,7 @@
 package com.dawidpater.project.carrental.repository;
 
 import com.dawidpater.project.carrental.entity.Car;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -26,7 +27,7 @@ public interface CarRepository extends JpaRepository<Car,Long> {
 
     //Take cars according to request and exclude rented ones(nested query) in one request to DB
     @Query(value =  SELECT_NOT_ORDERED_CARS_ACCORDING_TO_REQUEST, nativeQuery = true)
-    List<Car> getAllCarsAccordingToRequest(@Param("brand") String brand,
+    Page<Car> getAllCarsAccordingToRequest(@Param("brand") String brand,
                                            @Param("model") String model,
                                            @Param("carType") String carType,
                                            @Param("minPrice") Double minPrice,
@@ -39,5 +40,5 @@ public interface CarRepository extends JpaRepository<Car,Long> {
     List<Car> findByRentalIdIn(List<Long> rentalsIds);
 
     @Query("SELECT c FROM Car c WHERE c.deleted!=1")
-    List<Car> findAllNotDeletedCars(Pageable page);
+    Page<Car> findAllNotDeletedCars(Pageable page);
 }
