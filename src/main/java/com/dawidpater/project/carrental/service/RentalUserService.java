@@ -5,8 +5,10 @@ import com.dawidpater.project.carrental.dto.RentalUserDto;
 import com.dawidpater.project.carrental.dto.UserRoleDto;
 import com.dawidpater.project.carrental.entity.RentalUser;
 import com.dawidpater.project.carrental.entity.UserRole;
+import com.dawidpater.project.carrental.exception.UserAlreadyExistException;
 import com.dawidpater.project.carrental.repository.RentalUserRepository;
 import com.dawidpater.project.carrental.repository.UserRoleRepository;
+import com.dawidpater.project.carrental.service.contract.NotyficationSender;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -24,9 +26,10 @@ public class RentalUserService implements UserDetailsService {
     private final PasswordEncoder passwordEncoder;
     private final UserRoleRepository userRoleRepository;
     private final RentalUserConverter rentalUserConverter;
+    private final NotyficationSender notyficationSenderService;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username) {
         RentalUser user = rentalUserRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException(String.format("Username %s not found",username)));
         Long userRoleId = user.getUserRole().getId();
@@ -37,12 +40,20 @@ public class RentalUserService implements UserDetailsService {
         return user;
     }
 
-    // TODO: just for test method, take a look how to improve
-    public RentalUser save(RentalUser rentalUser){
+    public RentalUser save(RentalUserDto rentalUserDto) throws UserAlreadyExistException {
+        RentalUser rentalUser = rentalUserConverter.dtoToEntity(rentalUserDto);
         rentalUser.setUserPassword(passwordEncoder.encode(rentalUser.getUserPassword()));
         rentalUser.setUserRole(new UserRole(1L,"user",null));
         rentalUser.setBlocked(false);
-        return rentalUserRepository.save(rentalUser);
+        rentalUserRepository.findByUsernameOrEmail(rentalUserDto.getUsername(),rentalUserDto.getEmail())
+                .ifPresent((user) -> {throw new UserAlreadyExistException();});
+        rentalUserRepository.save(rentalUser);
+
+        notyficationSenderService.send(rentalUserDto.getEmail(),
+        "Registration to Take That Car!",
+        "Hi " + rentalUserDto.getFirstName() +". You have been successfully registered in Take That Car!");
+
+        return rentalUser;
     }
 
     public List<RentalUserDto> getAllUsersWithRoles(){

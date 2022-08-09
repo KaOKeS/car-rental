@@ -1,6 +1,6 @@
 package com.dawidpater.project.carrental.service;
 
-import com.dawidpater.project.carrental.service.contract.EmailSender;
+import com.dawidpater.project.carrental.service.contract.NotyficationSender;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.SimpleMailMessage;
@@ -10,11 +10,11 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 @AllArgsConstructor
-public class EmailSenderService implements EmailSender {
+public class NotyficationSenderService implements NotyficationSender {
     private final JavaMailSender mailSender;
 
     @Override
-    public void sendEmail(String to,String subject,String body){
+    public void send(String to,String subject,String body){
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom("takethatcar@gmail.com");
         message.setTo(to);

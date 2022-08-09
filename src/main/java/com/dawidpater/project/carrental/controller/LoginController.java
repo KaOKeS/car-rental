@@ -17,6 +17,7 @@ import javax.servlet.http.HttpSession;
 @Controller
 public class LoginController {
 
+    //TODO: Logging?
     @PostMapping
     @RequestMapping("/logout")
     public String logout(){

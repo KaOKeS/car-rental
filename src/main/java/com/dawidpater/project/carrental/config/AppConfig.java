@@ -27,30 +27,5 @@ public class AppConfig {
                 .paths(PathSelectors.regex("^(?!/(error).*$).*$"))
                 .build();
     }
-
-    @Bean
-    public Car car() {
-        return new Car();
-    }
-
-    @Bean
-    public Rental rental() {
-        return new Rental();
-    }
-
-    @Bean
-    public Feedback feedback() {
-        return new Feedback();
-    }
-
-    @Bean
-    public UserRole role() {
-        return new UserRole();
-    }
-
-    @Bean
-    public RentalUser rentalUser() {
-        return new RentalUser();
-    }
 }
 

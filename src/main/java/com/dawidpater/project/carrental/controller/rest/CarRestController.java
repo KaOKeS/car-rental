@@ -3,6 +3,7 @@ package com.dawidpater.project.carrental.controller.rest;
 import com.dawidpater.project.carrental.converter.CarConverter;
 import com.dawidpater.project.carrental.converter.IntegerTryParse;
 import com.dawidpater.project.carrental.dto.CarDto;
+import com.dawidpater.project.carrental.dto.FilterCarsRequestDto;
 import com.dawidpater.project.carrental.entity.Car;
 import com.dawidpater.project.carrental.service.CarService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -25,17 +26,23 @@ import java.util.Map;
 @AllArgsConstructor
 public class CarRestController {
     private final CarService carService;
-    private final CarConverter converter;
 
     @GetMapping
-    public List<CarDto> getRequestedCars(@RequestParam Map<String,String> allRequestParams){
-        int reqPageNumber = IntegerTryParse.parse(allRequestParams.get("pageNumber"),1)-1;
-        int reqPageSize = IntegerTryParse.parse(allRequestParams.get("perPage"),5);
-        Page<Car> requestedCars = carService.getCarsAsRequested(allRequestParams,reqPageNumber,reqPageSize);
-        List<CarDto> requestedCarsDto = converter.entityToDto(requestedCars.getContent());
-        return requestedCarsDto;
+    public List<CarDto> getAllCars(@RequestParam(required = false) String perPage,
+                                   @RequestParam(required = false) String pageNumber){
+        Page<CarDto> requestedCars = carService.getAllCars(pageNumber,perPage);
+        return requestedCars.getContent();
     }
 
+    @GetMapping(params = "perPage")
+    public List<CarDto> getRequestedCars(@ModelAttribute FilterCarsRequestDto filterCarsRequestDto,
+                                         @RequestParam(required = false) String perPage,
+                                         @RequestParam(required = false) String pageNumber){
+        Page<CarDto> requestedCars = carService.getCarsAsRequested(filterCarsRequestDto,pageNumber,perPage);
+        return requestedCars.getContent();
+    }
+
+    //TODO: play with spring security
     @PostMapping
     public String addNewCar(@RequestBody CarDto carDto){
         //Car car = converter.dtoToEntity(carDto);

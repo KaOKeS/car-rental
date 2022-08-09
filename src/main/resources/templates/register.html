@@ -29,6 +29,11 @@
                     <form method="post" th:action="@{/register}" th:object="${userDto}" class="mt-5 border p-4 bg-light shadow" enctype="utf8">
                         <h4 class="mb-5 text-secondary">Create Your Account</h4>
                         <div class="row">
+                            <div th:if="${param.exists}">
+                                <div class="alert alert-danger" role="alert">
+                                    User with username: <p th:text="${user}"></p> already exists!
+                                </div>
+                            </div>
                             <div th:if="${#fields.hasAnyErrors()}">
                                 <ul th:class="${#fields.hasAnyErrors()}? 'error alert alert-danger'">
                                     <li th:each="err : ${#fields.allErrors()}" th:text="${err}" />
@@ -143,8 +148,12 @@
                                 </p>
                             </div>
 
-                            <div class="col-md-12">
-                                <button class="btn btn-primary float-end">Sign Up</button>
+                            <div class="col-md-12" id="signUpDisplay">
+                                <button class="btn btn-primary float-end" id="buttonSpinner" th:onclick="'javascript:spinnerOn()'">Sign Up</button>
+                                <button class="btn btn-primary float-end" type="button" disabled id="spinner" style="display:none">
+                                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                    Processing...
+                                </button>
                             </div>
                         </div>
                     </form>
@@ -155,6 +164,11 @@
     </div>
     
 <script type="text/javascript">
+function spinnerOn(){
+    document.getElementById("buttonSpinner").style.display = "none";
+    document.getElementById("spinner").style.display = "block";
+}
+
 //Data Picker Initialization
 $('.datepicker').datepicker({
     format: 'yyyy-mm-dd'

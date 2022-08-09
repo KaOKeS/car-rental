@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(path = "api/registration")
 public class RegistrationRestController {
 
+    //TODO: registration rest controller
     @PostMapping
     public String register(@RequestBody RentalUserDto rentalUserDto){
         return "Does it work?";

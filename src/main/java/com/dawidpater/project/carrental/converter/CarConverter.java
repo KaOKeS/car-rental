@@ -2,7 +2,9 @@ package com.dawidpater.project.carrental.converter;
 
 import com.dawidpater.project.carrental.dto.CarDto;
 import com.dawidpater.project.carrental.entity.Car;
+import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -29,4 +31,11 @@ public class CarConverter {
     public List<CarDto> entityToDto(List<Car> cars){
         return cars.stream().map(car -> entityToDto(car)).collect(Collectors.toList());
     }
+
+    public Page<CarDto> entityToDto(Page<Car> cars){
+        Page<CarDto> dtoPage = cars.map(this::entityToDto);
+        return dtoPage;
+    }
+
+
 }

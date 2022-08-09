@@ -32,13 +32,18 @@
 <script src="/js/carPageFunctions.js"></script>
 
 <div class="container-lg">
-    <form id="filters">
+    <form id="filters" th:action="@{/cars}" th:object="${filterCarsRequestDto}">
         <div class="container">
+            <div th:if="${#fields.hasAnyErrors()}">
+                <ul th:class="${#fields.hasAnyErrors()}? 'error alert alert-danger'">
+                    <li th:each="err : ${#fields.allErrors()}" th:text="' '+${err}" />
+                </ul>
+            </div>
             <!-- Select car type -->
             <div class="row align-items-center">
               <div class="col-md-3 col-6 mb-2">
                 <label for="typeChose">Select car type:</label>
-                <select class="form-select" id="typeChose" name="type">
+                <select class="form-select" id="typeChose" name="type" th:field="*{type}">
                     <option th:value="0">Chose car type...</option>
                     <option th:each="carType: ${carTypes}" th:text="${carType}" th:value="${carType}">text</option>
                 </select>
@@ -48,18 +53,18 @@
               <div class="col-3">
                 <label for="searchByForm">Search by:  </label>
                 <div class="form-check form-check-inline" id="searchByForm">
-                    <input class="form-check-input" type="radio" name="searchBy" id="Brand" value="Brand">
+                    <input class="form-check-input" type="radio" name="searchBy" id="Brand" value="Brand" th:field="*{searchBy}">
                     <label class="form-check-label">Brand</label>
                   </div>
                   <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="searchBy" id="Model" value="Model">
+                    <input class="form-check-input" type="radio" name="searchBy" id="Model" value="Model" th:field="*{searchBy}">
                     <label class="form-check-label">Model</label>
                   </div>
               </div>
                 <!-- search-->
               <div class="col-6 col-md-3 d-inline-flex">
                   <form onsubmit="">
-                      <input type="text" class="form-control" placeholder="Search..." name="search" id="searchField">
+                      <input type="text" class="form-control" placeholder="Search..." name="search" id="searchField" th:field="*{search}">
                       <input class="btn btn-secondary" type="submit" value="Search">
                   </form>
               </div>
@@ -69,37 +74,49 @@
             <div class="row mt-1">
                 <div class="col-6 col-md-3">
                     <label for="minPrice">Min price:</label>
-                    <input type="text" class="form-control" id="minPrice" name="minPrice" placeholder="0">
+                    <input type="text" class="form-control" id="minPrice" name="minPrice" placeholder="0" th:field="*{minPrice}">
+                    <p th:each="error : ${#fields.errors('minPrice')}" th:text="${error}" th:class="${#fields.hasErrors('minPrice')}? 'error alert alert-danger'">
+                        Validation error
+                    </p>
                 </div>
                 <!-- Date picker-->
                 <div class="col-6 col-lg-3">
                     <label for="datepicker1">Start date:</label>
                     <div class="input-group date datepicker" id="datepicker1">
-                        <input type="text" class="form-control" name="startDate" id="startDate" placeholder="12-01-2022" value ="">
+                        <input type="text" class="form-control" name="startDate" id="startDate" placeholder="12-01-2022" value ="" th:field="*{startDate}">
                         <span class="input-group-append">
                             <span class="input-group-text bg-white d-block">
                                 <i class="fa fa-calendar"></i>
                             </span>
                         </span>
                     </div>
+                    <p th:each="error : ${#fields.errors('startDate')}" th:text="${error}" th:class="${#fields.hasErrors('startDate')}? 'error alert alert-danger'">
+                        Validation error
+                    </p>
                 </div>
             </div>
             <div class="row mt-1">
                 <div class="col-6 col-md-3">
                     <label for="maxPrice">Max price:</label>
-                    <input type="text" class="form-control" id="maxPrice" name="maxPrice" placeholder="0">
+                    <input type="text" class="form-control" id="maxPrice" name="maxPrice" placeholder="0" th:field="*{maxPrice}">
+                    <p th:each="error : ${#fields.errors('maxPrice')}" th:text="${error}" th:class="${#fields.hasErrors('maxPrice')}? 'error alert alert-danger'">
+                        Validation error
+                    </p>
                 </div>
                 <!-- Date picker-->
                 <div class="col-6 col-lg-3">
                     <label for="datepicker2">End date:</label>
                     <div class="input-group date datepicker" id="datepicker2">
-                        <input type="text" class="form-control" name="endDate" id="endDate" placeholder="12-01-2022" value="">
+                        <input type="text" class="form-control" name="endDate" id="endDate" placeholder="12-01-2022" value="" th:field="*{endDate}">
                         <span class="input-group-append">
                             <span class="input-group-text bg-white d-block">
                                 <i class="fa fa-calendar"></i>
                             </span>
                         </span>
                     </div>
+                    <p th:each="error : ${#fields.errors('endDate')}" th:text="${error}" th:class="${#fields.hasErrors('endDate')}? 'error alert alert-danger'">
+                        Validation error
+                    </p>
                 </div>
             </div>
             <!-- Order By-->
@@ -107,20 +124,20 @@
               <div class="col-7">
                 <label for="orderByForm" class="me-2">Order by:  </label>
                 <div class="form-check form-check-inline" id="orderByForm">
-                    <input class="form-check-input" type="radio" name="orderBy" id="priceAsc" value="priceAsc">
-                    <label class="form-check-label" for="checkBrand">Price <i class="bi bi-arrow-up"></i></label>
+                    <input class="form-check-input" type="radio" name="orderBy" id="priceAsc" value="priceAsc" th:field="*{orderBy}">
+                    <label class="form-check-label" for="priceAsc">Price <i class="bi bi-arrow-up"></i></label>
                   </div>
                   <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="orderBy" id="priceDesc" value="priceDesc">
-                    <label class="form-check-label" for="checkModel">Price <i class="bi bi-arrow-down"></i></label>
+                    <input class="form-check-input" type="radio" name="orderBy" id="priceDesc" value="priceDesc" th:field="*{orderBy}">
+                    <label class="form-check-label" for="priceDesc">Price <i class="bi bi-arrow-down"></i></label>
                   </div>
                   <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="orderBy" id="brandAsc" value="brandAsc">
-                    <label class="form-check-label" for="checkModel">Brand <i class="bi bi-arrow-up"></i></label>
+                    <input class="form-check-input" type="radio" name="orderBy" id="brandAsc" value="brandAsc" th:field="*{orderBy}">
+                    <label class="form-check-label" for="brandAsc">Brand <i class="bi bi-arrow-up"></i></label>
                   </div>
                   <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="orderBy" id="brandDesc" value="brandDesc">
-                    <label class="form-check-label" for="checkModel">Brand <i class="bi bi-arrow-down"></i></label>
+                    <input class="form-check-input" type="radio" name="orderBy" id="brandDesc" value="brandDesc" th:field="*{orderBy}">
+                    <label class="form-check-label" for="brandDesc">Brand <i class="bi bi-arrow-down"></i></label>
                   </div>
               </div>
             </div>

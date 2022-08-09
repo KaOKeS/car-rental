@@ -32,6 +32,7 @@ public class FeedbackService {
     private final CarConverter carConverter;
     private final RentalUserConverter rentalUserConverter;
 
+    //TODO: get latest feedback rebuild query to fetch all data in one
     public List<FeedbackDto> getLatestFeedbacksLimitedTo(int amount){
         List<Feedback> latestFeedbacksLimited = feedbackRepository.getLatestFeedbacksLimitedTo(amount);
         List<FeedbackDto> feedbackDtos = feedbackConverter.entityToDto(latestFeedbacksLimited);
@@ -51,6 +52,7 @@ public class FeedbackService {
         return feedbackDtos;
     }
 
+    //TODO: Feedback adding
     public Feedback save(){
         Feedback review = new Feedback();
         review.setContent("elo");
