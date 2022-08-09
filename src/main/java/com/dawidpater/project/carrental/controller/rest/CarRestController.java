@@ -21,18 +21,25 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/cars")
 @AllArgsConstructor
 public class CarRestController {
     private final CarService carService;
     private final CarConverter converter;
 
-    @GetMapping(value = "/cars")
+    @GetMapping
     public List<CarDto> getRequestedCars(@RequestParam Map<String,String> allRequestParams){
         int reqPageNumber = IntegerTryParse.parse(allRequestParams.get("pageNumber"),1)-1;
         int reqPageSize = IntegerTryParse.parse(allRequestParams.get("perPage"),5);
         Page<Car> requestedCars = carService.getCarsAsRequested(allRequestParams,reqPageNumber,reqPageSize);
         List<CarDto> requestedCarsDto = converter.entityToDto(requestedCars.getContent());
         return requestedCarsDto;
+    }
+
+    @PostMapping
+    public String addNewCar(@RequestBody CarDto carDto){
+        //Car car = converter.dtoToEntity(carDto);
+        //car = carService.addCar(car);
+        return "Does it work?";
     }
 }

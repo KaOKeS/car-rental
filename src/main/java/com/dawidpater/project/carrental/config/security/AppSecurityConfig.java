@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -15,6 +16,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import javax.persistence.Basic;
@@ -51,9 +53,11 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter{
                 .and().headers().frameOptions().sameOrigin()
                 .and().authorizeRequests()
                 .antMatchers(staticResources).permitAll()
-                .antMatchers("/","/login**","/cars**","/api/cars**","/h2-console","/register")
+                .antMatchers("/","/login**","/cars**","/api/cars**","/h2-console","/register","/api/registration/**")
                 .permitAll()
                 .antMatchers(HttpMethod.POST,"/register").permitAll()
+                .antMatchers(HttpMethod.POST,"/api/registration/**").permitAll()
+                .antMatchers(HttpMethod.POST,"/api/cars/**").permitAll()
                 .antMatchers(HttpMethod.POST,"/logout").hasAnyRole("USER","ADMIN","MANAGER")
                 .antMatchers("/management/**").hasAnyRole("ADMIN","MANAGER")
                 .antMatchers("/management/admin/**").hasRole("ADMIN")
@@ -72,7 +76,10 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter{
                     .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                     .clearAuthentication(true)
                     .invalidateHttpSession(true)
-                    .deleteCookies("JSESSIONID");
+                    .deleteCookies("JSESSIONID")
+                .and()
+                .exceptionHandling() // 1
+                .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED));
     }
 
     @Override

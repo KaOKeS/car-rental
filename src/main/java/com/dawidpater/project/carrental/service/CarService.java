@@ -23,8 +23,8 @@ import java.util.regex.Pattern;
 public class CarService {
     private final CarRepository carRepository;
 
-    public void addCar(Car car){
-        carRepository.save(car);
+    public Car addCar(Car car){
+        return carRepository.save(car);
     }
 
     public Car getCarById(Long id){

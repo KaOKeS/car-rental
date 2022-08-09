@@ -26,21 +26,29 @@
         <div class="row">
             <div class="col-md-6 offset-md-3">
                 <div class="signup-form">
-                    <form method="post" th:action="@{/register}" th:object="${userDto}" class="mt-5 border p-4 bg-light shadow">
+                    <form method="post" th:action="@{/register}" th:object="${userDto}" class="mt-5 border p-4 bg-light shadow" enctype="utf8">
                         <h4 class="mb-5 text-secondary">Create Your Account</h4>
                         <div class="row">
+                            <div th:if="${#fields.hasAnyErrors()}">
+                                <ul th:class="${#fields.hasAnyErrors()}? 'error alert alert-danger'">
+                                    <li th:each="err : ${#fields.allErrors()}" th:text="${err}" />
+                                </ul>
+                            </div>
 
                             <div class="mb-3 col-md-12">
                                 <label>Username<span class="text-danger">*</span></label>
-                                <input th:field="*{username}" type="text" class="form-control" placeholder="Enter username" required>
-                                <p th:each="error: ${#fields.errors('firstName')}" th:text="${error}">
+                                <input th:field="*{username}" type="text" class="form-control" placeholder="Enter username">
+                                <p th:each="error : ${#fields.errors('username')}" th:text="${error}" th:class="${#fields.hasErrors('username')}? 'error alert alert-danger'">
                                     Validation error
                                 </p>
                             </div>
 
                             <div class="mb-3 col-md-12">
                                 <label>Password<span class="text-danger">*</span></label>
-                                <input type="password" th:field="*{userPassword}" name="password" class="form-control" placeholder="Enter Password"  required autofocus>
+                                <input type="password" th:field="*{userPassword}" name="password" class="form-control" placeholder="Enter Password">
+                                <p th:each="error : ${#fields.errors('userPassword')}" th:text="${error}" th:class="${#fields.hasErrors('userPassword')}? 'error alert alert-danger'">
+                                    Validation error
+                                </p>
                             </div>
 
                             <div class="mb-3 col-md-12">
@@ -50,59 +58,89 @@
 
                             <div class="mb-3 col-md-6">
                                 <label>First Name<span class="text-danger">*</span></label>
-                                <input th:field="*{firstName}" type="text" class="form-control" placeholder="Enter First Name"  required autofocus>
+                                <input th:field="*{firstName}" type="text" class="form-control" placeholder="Enter First Name">
+                                <p th:each="error : ${#fields.errors('firstName')}" th:text="${error}" th:class="${#fields.hasErrors('firstName')}? 'error alert alert-danger'">
+                                    Validation error
+                                </p>
                             </div>
     
                             <div class="mb-3 col-md-6">
                                 <label>Last Name<span class="text-danger">*</span></label>
-                                <input th:field="*{lastName}" type="text" class="form-control" placeholder="Enter Last Name"  required autofocus>
+                                <input th:field="*{lastName}" type="text" class="form-control" placeholder="Enter Last Name">
+                                <p th:each="error : ${#fields.errors('lastName')}" th:text="${error}" th:class="${#fields.hasErrors('lastName')}? 'error alert alert-danger'">
+                                    Validation error
+                                </p>
                             </div>
 
                             <div class="mb-3 col-md-12">
                                 <label>Email<span class="text-danger">*</span></label>
-                                <input th:field="*{email}" type="email" class="form-control" placeholder="example@example.com"  required autofocus>
+                                <input th:field="*{email}" type="text" class="form-control" placeholder="example@example.com">
+                                <p th:each="error : ${#fields.errors('email')}" th:text="${error}" th:class="${#fields.hasErrors('email')}? 'error alert alert-danger'">
+                                    Validation error
+                                </p>
                             </div>
 
                             <div class="mb-3 col-md-6">
                                 <label>Country<span class="text-danger">*</span></label>
-                                <input th:field="*{country}" type="text" class="form-control" placeholder="Enter country"  required autofocus>
+                                <input th:field="*{country}" type="text" class="form-control" placeholder="Enter country">
+                                <p th:each="error : ${#fields.errors('country')}" th:text="${error}" th:class="${#fields.hasErrors('country')}? 'error alert alert-danger'">
+                                    Validation error
+                                </p>
                             </div>
     
                             <div class="mb-3 col-md-6">
                                 <label>City<span class="text-danger">*</span></label>
-                                <input th:field="*{city}" type="text" class="form-control" placeholder="Enter city"  required autofocus>
+                                <input th:field="*{city}" type="text" class="form-control" placeholder="Enter city">
+                                <p th:each="error : ${#fields.errors('city')}" th:text="${error}" th:class="${#fields.hasErrors('city')}? 'error alert alert-danger'">
+                                    Validation error
+                                </p>
                             </div>
 
                             <div class="mb-3 col-md-12">
                                 <label>Address<span class="text-danger">*</span></label>
-                                <input th:field="*{address}" type="text" class="form-control" placeholder="Great Street 55/12"  required autofocus>
+                                <input th:field="*{address}" type="text" class="form-control" placeholder="Great Street 55/12">
+                                <p th:each="error : ${#fields.errors('address')}" th:text="${error}" th:class="${#fields.hasErrors('address')}? 'error alert alert-danger'">
+                                    Validation error
+                                </p>
                             </div>
 
                             <div class="mb-3 col-md-6">
                                 <label>Zipcode<span class="text-danger">*</span></label>
-                                <input th:field="*{zip}" type="text" class="form-control" placeholder="Enter Zipcode"  required autofocus>
+                                <input th:field="*{zip}" type="text" class="form-control" placeholder="Enter Zipcode">
+                                <p th:each="error : ${#fields.errors('zip')}" th:text="${error}" th:class="${#fields.hasErrors('zip')}? 'error alert alert-danger'">
+                                    Validation error
+                                </p>
                             </div>
     
                             <div class="mb-3 col-md-6">
                                 <label>Birthday<span class="text-danger">*</span></label>
                                 <div th:field="*{birthDate}" class="input-group date datepicker" id="datepicker">
-                                    <input type="text" class="form-control" name="birthDate" placeholder="12-01-2022"  required autofocus>
+                                    <input type="text" class="form-control" name="birthDate" placeholder="12-01-2022">
                                     <span class="input-group-append">
                                         <span class="input-group-text bg-white d-block">
                                             <i class="fa fa-calendar"></i>
                                         </span>
                                     </span>
+                                    <p th:each="error : ${#fields.errors('birthDate')}" th:text="${error}" th:class="${#fields.hasErrors('birthDate')}? 'error alert alert-danger'">
+                                        Validation error
+                                    </p>
                                 </div>
                             </div>
 
                             <div class="mb-3 col-md-6">
-                                <label>Zipcode<span class="text-danger">*</span></label>
-                                <input th:field="*{phone}" type="text" class="form-control" placeholder="Enter Phone"  required autofocus>
+                                <label>Phone<span class="text-danger">*</span></label>
+                                <input th:field="*{phone}" type="text" class="form-control" placeholder="Enter Phone">
+                                <p th:each="error : ${#fields.errors('phone')}" th:text="${error}" th:class="${#fields.hasErrors('phone')}? 'error alert alert-danger'">
+                                    Validation error
+                                </p>
                             </div>
     
                             <div class="mb-3 col-md-6">
                                 <label>Document Id<span class="text-danger">*</span></label>
-                                <input th:field="*{documentId}" type="text" class="form-control" placeholder="Enter Document Id"  required autofocus>
+                                <input th:field="*{documentId}" type="text" class="form-control" placeholder="Enter Document Id">
+                                <p th:each="error : ${#fields.errors('documentId')}" th:text="${error}" th:class="${#fields.hasErrors('documentId')}? 'error alert alert-danger'">
+                                    Validation error
+                                </p>
                             </div>
 
                             <div class="col-md-12">
