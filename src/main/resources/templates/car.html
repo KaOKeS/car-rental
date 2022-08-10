@@ -164,7 +164,7 @@
                 <th scope="col">HP</th>
                 <th scope="col">Fuel</th>
                 <th scope="col">Type</th>
-                <th scope="col">Sitting places</th>
+                <th scope="col" class="text-center">Sitting places</th>
                 <th scope="col">Price</th>
                 <th scope="col">Actions</th>
             </tr>
@@ -179,7 +179,7 @@
                  <td th:text="${car.hp}" class="align-middle" />
                  <td th:text="${car.fuel}" class="align-middle" />
                  <td th:text="${car.carType}" class="align-middle" />
-                 <td th:text="${car.sittingPlaces}" class="align-middle" />
+                 <td th:text="${car.sittingPlaces}" class="align-middle text-center" />
                  <td th:text="${car.price}" class="align-middle" />
                  <td sec:authorize="hasRole('ROLE_ADMIN')" class="align-middle col-sm-2">
                      <a class="btn btn-block btn-primary btn-sm me-1" th:href="@{/management/admin/updateCar/{id}(id=${car.id})}">Update</a>

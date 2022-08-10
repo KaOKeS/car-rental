@@ -14,11 +14,12 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor
+@ToString
 public class RentalDto {
     private Long id;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
-    private FeedbackDto feedbackDto = null;
-    private RentalUserDto rentalUserDto = null;
-    private CarDto carDto = null;
+    private FeedbackDto feedbackDto;
+    private RentalUserDto rentalUserDto;
+    private CarDto carDto;
 }

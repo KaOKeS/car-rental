@@ -9,6 +9,7 @@ import com.dawidpater.project.carrental.entity.Car;
 import com.dawidpater.project.carrental.exception.CarNotFoundException;
 import com.dawidpater.project.carrental.repository.CarRepository;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -21,6 +22,7 @@ import java.util.regex.Pattern;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class CarService {
     private final CarRepository carRepository;
     private final CarConverter carConverter;
@@ -65,9 +67,11 @@ public class CarService {
     }
 
     public Page<CarDto> getCarsAsRequested(FilterCarsRequestDto filterCarsRequestDto, String reqPageNumber,String reqPerPage){
+        log.debug("Trying to parse perPage={} pageSize{} to int. In case of null defaults value will be taken",reqPageNumber,reqPageNumber);
         Integer pageNumber = IntegerTryParse.parse(reqPageNumber,1)-1;
         Integer perPage = IntegerTryParse.parse(reqPerPage,5);
 
+        log.debug("Fetching data from {} to variables",filterCarsRequestDto);
         String startDate = filterCarsRequestDto.getStartDate();
         String endDate = filterCarsRequestDto.getEndDate();
         String minPrice = filterCarsRequestDto.getMinPrice();
@@ -80,6 +84,7 @@ public class CarService {
 
         Page<Car> allCarsAccordingToRequestOrderBy = getAllCarsAccordingToRequestOrderBy(type, searchBy, search, minPrice, maxPrice,
                                                                                     startDate, endDate, orderBy, pageNumber, perPage);
+        log.debug("allCarsAccordingToRequestOrderBy received from function.");
         Page<CarDto> allCarsAccordingToRequest = carConverter.entityToDto(allCarsAccordingToRequestOrderBy);
 
         return allCarsAccordingToRequest;
@@ -93,29 +98,38 @@ public class CarService {
         LocalDateTime startDate = dateConverter.getDate(reqStartDate,"00:00");
         LocalDateTime endDate = dateConverter.getDate(reqEndDate,"23:59");
 
+        log.debug("Selection if we should search by brand/model thanks to searchBy parameter. Received string from request searchBy={} search value={}",reqSearchBy,reqSearch);
         String brand = searchBySelector(reqSearchBy,reqSearch,true);
         String model = searchBySelector(reqSearchBy,reqSearch,false);
+        log.debug("After selector values which will be fetched to SQL:  brand={}  model={}",brand,model);
 
         String type = emptyFieldsReplacer(reqType);
         Double minPrice = Double.parseDouble(reqMinPrice);
         Double maxPrice = Double.parseDouble(reqMaxPrice);
+        log.debug("After assigning to variables: type={} of car, min={} and maxPrice={} of car.",type,minPrice,maxPrice);
 
 
         String orderBy= (reqOrderBy==null) ? null : reqOrderBy;
         if(!(orderBy == null  || orderBy.isEmpty())){
+            log.debug("orderBy was not null and not empty. Regex trying to fetch necessary data from orderBy={}",orderBy);
             Pattern findFieldAndOrderDirection = Pattern.compile("(.+)(Asc|Desc)",Pattern.CASE_INSENSITIVE);
             Matcher getFieldAndOrderDirection = findFieldAndOrderDirection.matcher(orderBy);
             Sort.Direction direction = null;
             String orderByField = null;
             while (getFieldAndOrderDirection.find()){
+                log.debug("Regex found pattern in data.");
                 direction = (getFieldAndOrderDirection.group(2).equals("Asc") ? Sort.Direction.ASC : Sort.Direction.DESC);
                 orderByField = (getFieldAndOrderDirection.group(1).equals("price") ? "rent_price" : "brand");
             }
+            log.debug("Extracted direction={} and orderByField={} from orderBy={}",direction,orderByField,orderBy);
             allCarsAccordingToRequest = carRepository.getAllCarsAccordingToRequest(brand,model,type,minPrice,maxPrice,startDate,endDate, PageRequest.of(pageNumber,perPage, Sort.by(direction,orderByField)));
         }
-        else
+        else{
+            log.debug("orderBy was null or empty. Fetching cars without ORDER BY");
             allCarsAccordingToRequest = carRepository.getAllCarsAccordingToRequest(brand,model,type,minPrice,maxPrice,startDate,endDate,PageRequest.of(pageNumber,perPage));
 
+        }
+        log.debug("Returning all cars according to request");
         return allCarsAccordingToRequest;
     }
 

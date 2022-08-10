@@ -6,6 +6,7 @@ import com.dawidpater.project.carrental.validator.annotation.ValidStrongPassword
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.validation.constraints.NotEmpty;
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @PasswordMatches
+@ToString
 public class RentalUserDto {
     private Long id;
     @NotEmpty(message = "Username cannot be empty!")
@@ -43,7 +45,7 @@ public class RentalUserDto {
     private String phone;
     @NotEmpty(message = "Document Id cannot be empty!")
     private String documentId;
-    private Boolean blocked = false;
-    private UserRoleDto userRoleDto = null;
-    private List<RentalDto> rentalDtos = null;
+    private Boolean blocked;
+    private UserRoleDto userRoleDto;
+    private List<RentalDto> rentalDtos;
 }

@@ -21,9 +21,8 @@ public class NotyficationSenderService implements NotyficationSender {
         message.setText(body);
         message.setSubject(subject);
 
+        log.debug("Trying to send email to: {}, with subject: {} and body: {}",to,subject,body);
         mailSender.send(message);
-
-        log.info("Mail sending to: " + to);
-        System.out.println("Mail sent successfully.");
+        log.info("Mail sent");
     }
 }

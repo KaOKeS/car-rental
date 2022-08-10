@@ -14,7 +14,9 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
-@Data
+@Getter
+@Setter
+@ToString
 public class Car {
     @Id
     @Column(name="id")

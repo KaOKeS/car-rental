@@ -5,6 +5,7 @@ import com.dawidpater.project.carrental.validator.annotation.StartDateLessThanEn
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.validation.constraints.NotEmpty;
 
@@ -13,6 +14,7 @@ import javax.validation.constraints.NotEmpty;
 @NoArgsConstructor
 @StartDateLessThanEndDate
 @IsPriceRangeOk
+@ToString
 public class FilterCarsRequestDto {
     private String type;
     private String searchBy;

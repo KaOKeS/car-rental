@@ -10,6 +10,7 @@ import com.dawidpater.project.carrental.repository.RentalUserRepository;
 import com.dawidpater.project.carrental.repository.UserRoleRepository;
 import com.dawidpater.project.carrental.service.contract.NotyficationSender;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -21,6 +22,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class RentalUserService implements UserDetailsService {
     private final RentalUserRepository rentalUserRepository;
     private final PasswordEncoder passwordEncoder;
@@ -41,12 +43,16 @@ public class RentalUserService implements UserDetailsService {
     }
 
     public RentalUser save(RentalUserDto rentalUserDto) throws UserAlreadyExistException {
+        log.debug("Before saving user. Checking if already exists. Username={}  email={}",rentalUserDto.getUsername(),rentalUserDto.getEmail());
+        rentalUserRepository.findByUsernameOrEmail(rentalUserDto.getUsername(),rentalUserDto.getEmail())
+                .ifPresent((user) -> {throw new UserAlreadyExistException();});
+        log.debug("Building rentalUser from rentalUserDto={}",rentalUserDto);
         RentalUser rentalUser = rentalUserConverter.dtoToEntity(rentalUserDto);
+        log.debug("Encoding user password");
         rentalUser.setUserPassword(passwordEncoder.encode(rentalUser.getUserPassword()));
         rentalUser.setUserRole(new UserRole(1L,"user",null));
         rentalUser.setBlocked(false);
-        rentalUserRepository.findByUsernameOrEmail(rentalUserDto.getUsername(),rentalUserDto.getEmail())
-                .ifPresent((user) -> {throw new UserAlreadyExistException();});
+        log.debug("Saving user to database");
         rentalUserRepository.save(rentalUser);
 
         notyficationSenderService.send(rentalUserDto.getEmail(),

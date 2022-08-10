@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -103,8 +104,12 @@ public class CarController {
     }
 
     @PostMapping("/management/admin/saveCar")
-    public String saveCar(@ModelAttribute CarDto carDto, Model model,HttpServletRequest request){
+    public String saveCar(@Valid @ModelAttribute CarDto carDto, BindingResult result, Model model, HttpServletRequest request, RedirectAttributes attr){
         log.debug("Car dto provided by admin: {}",carDto);
+        if (result.hasErrors()) {
+            log.debug("Validation failure");
+            return "new_car";
+        }
         carService.addCar(carDto);
         List<String> currentUserRoles = UserRoleValdation.getCurrentUserRoles(request);
         log.debug("Displaying admin update car page for user with role {}", currentUserRoles.toArray().toString());

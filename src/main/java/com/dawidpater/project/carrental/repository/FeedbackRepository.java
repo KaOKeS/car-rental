@@ -7,8 +7,9 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface FeedbackRepository extends JpaRepository<Feedback,Long> {
-    @Query(value = "SELECT * FROM feedback ORDER BY feedback_date DESC limit ?1",nativeQuery = true)
-    List<Feedback> getLatestFeedbacksLimitedTo(int amount);
+
+    @Query(value = "SELECT f,r,c,ur FROM Feedback f JOIN FETCH f.rental r JOIN FETCH r.car c JOIN FETCH r.rentalUser ur ORDER BY f.feedbackDate DESC")
+    List<Feedback> getFeedbacksOrderByDateDesc();
 }
 
 

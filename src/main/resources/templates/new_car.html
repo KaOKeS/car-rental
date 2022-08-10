@@ -34,13 +34,37 @@
             <input type="hidden" th:field="*{id}">
             <input type="hidden" th:field="*{deleted}">
             <input type="text" th:field="*{brand}" placeholder="Car brand" class="form-control mb-4 col-2">
+            <p th:each="error : ${#fields.errors('brand')}" th:text="${error}" th:class="${#fields.hasErrors('brand')}? 'error alert alert-danger'">
+                Validation error
+            </p>
             <input type="text" th:field="*{model}" placeholder="Car model" class="form-control mb-4 col-2">
+            <p th:each="error : ${#fields.errors('model')}" th:text="${error}" th:class="${#fields.hasErrors('model')}? 'error alert alert-danger'">
+                Validation error
+            </p>
             <input type="text" th:field="*{carEngine}" placeholder="Car engine" class="form-control mb-4 col-2">
+            <p th:each="error : ${#fields.errors('carEngine')}" th:text="${error}" th:class="${#fields.hasErrors('carEngine')}? 'error alert alert-danger'">
+                Validation error
+            </p>
             <input type="text" th:field="*{hp}" placeholder="Car hp" class="form-control mb-4 col-4">
+            <p th:each="error : ${#fields.errors('hp')}" th:text="${error}" th:class="${#fields.hasErrors('hp')}? 'error alert alert-danger'">
+                Validation error
+            </p>
             <input type="text" th:field="*{fuel}" placeholder="Car fuel" class="form-control mb-4 col-4">
+            <p th:each="error : ${#fields.errors('fuel')}" th:text="${error}" th:class="${#fields.hasErrors('fuel')}? 'error alert alert-danger'">
+                Validation error
+            </p>
             <input type="text" th:field="*{carType}" placeholder="Car type" class="form-control mb-4 col-4">
+            <p th:each="error : ${#fields.errors('carType')}" th:text="${error}" th:class="${#fields.hasErrors('carType')}? 'error alert alert-danger'">
+                Validation error
+            </p>
             <input type="text" th:field="*{sittingPlaces}" placeholder="Amount of sitiing places" class="form-control mb-4 col-4">
+            <p th:each="error : ${#fields.errors('sittingPlaces')}" th:text="${error}" th:class="${#fields.hasErrors('sittingPlaces')}? 'error alert alert-danger'">
+                Validation error
+            </p>
             <input type="text" th:field="*{price}" placeholder="Car price" class="form-control mb-4 col-4">
+            <p th:each="error : ${#fields.errors('price')}" th:text="${error}" th:class="${#fields.hasErrors('price')}? 'error alert alert-danger'">
+                Validation error
+            </p>
             <input type="text" th:field="*{imagePath}" placeholder="Car image path" class="form-control mb-4 col-4">
             <input type="text" th:field="*{carDescription}" placeholder="Car description" class="form-control mb-4 col-4">
             <button type="submit" class="btn btn-secondary col-2">Save Car</button>

@@ -14,6 +14,7 @@ import com.dawidpater.project.carrental.entity.Rental;
 import com.dawidpater.project.carrental.entity.RentalUser;
 import com.dawidpater.project.carrental.repository.*;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -22,33 +23,31 @@ import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class FeedbackService {
     private final FeedbackRepository feedbackRepository;
-    private final RentalRepository rentalRepository;
-    private final CarRepository carRepository;
-    private final RentalUserRepository rentalUserRepository;
     private final FeedbackConverter feedbackConverter;
     private final RentalConverter rentalConverter;
     private final CarConverter carConverter;
     private final RentalUserConverter rentalUserConverter;
 
-    //TODO: get latest feedback rebuild query to fetch all data in one
     public List<FeedbackDto> getLatestFeedbacksLimitedTo(int amount){
-        List<Feedback> latestFeedbacksLimited = feedbackRepository.getLatestFeedbacksLimitedTo(amount);
-        List<FeedbackDto> feedbackDtos = feedbackConverter.entityToDto(latestFeedbacksLimited);
-        List<Long> feedbackIds = latestFeedbacksLimited.stream().map(Feedback::getId).collect(Collectors.toList());
-        List<Rental> rentalsAccordingToReviews = rentalRepository.findByFeedbackIdIn(feedbackIds);
-        List<RentalDto> rentalDtos = rentalConverter.entityToDto(rentalsAccordingToReviews);
-        List<Long> rentalsIds = rentalsAccordingToReviews.stream().map(Rental::getId).collect(Collectors.toList());
-        List<Car> carsAccordingToReviews = carRepository.findByRentalIdIn(rentalsIds);
-        List<CarDto> carDtos = carConverter.entityToDto(carsAccordingToReviews);
-        List<RentalUser> usersAccordingToReviews = rentalUserRepository.findByRentalIdIn(rentalsIds);
-        List<RentalUserDto> userDtos =  rentalUserConverter.entityToDto(usersAccordingToReviews);
-        for(int i = 0; i < feedbackDtos.size(); i++){
-            rentalDtos.get(i).setCarDto(carDtos.get(i));
-            rentalDtos.get(i).setRentalUserDto(userDtos.get(i));
-            feedbackDtos.get(i).setRentalDto(rentalDtos.get(i));
+        log.debug("Trying to receive feedbacks from database");
+        List<Feedback> latestFeedbacksLimited = feedbackRepository.getFeedbacksOrderByDateDesc();
+        log.debug("Trying to make sublist of feedbacks to size={}",amount);
+        if(latestFeedbacksLimited.size()>amount){
+            latestFeedbacksLimited = latestFeedbacksLimited.subList(0,amount);
         }
+
+        log.debug("Building List of FeedbackDto from List<Feedback>");
+        List<FeedbackDto> feedbackDtos = latestFeedbacksLimited.stream().map(feedback -> {
+            FeedbackDto feedbackDto = feedbackConverter.entityToDto(feedback);
+            feedbackDto.setRentalDto(rentalConverter.entityToDto(feedback.getRental()));
+            feedbackDto.getRentalDto().setRentalUserDto(rentalUserConverter.entityToDto(feedback.getRental().getRentalUser()));
+            feedbackDto.getRentalDto().setCarDto((carConverter.entityToDto(feedback.getRental().getCar())));
+            return feedbackDto;
+        }).collect(Collectors.toList());
+        log.debug("Returning List of FeedbackDto");
         return feedbackDtos;
     }
 

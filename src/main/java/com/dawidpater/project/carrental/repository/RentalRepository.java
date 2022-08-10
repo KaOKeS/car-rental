@@ -9,5 +9,4 @@ import java.util.Optional;
 
 @Repository
 public interface RentalRepository extends JpaRepository<Rental,Long> {
-    public List<Rental> findByFeedbackIdIn(List<Long> feedbacksId);
 }

@@ -10,9 +10,10 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 @Builder
 public class UserRoleDto {
     private Long id;
     private String role;
-    private List<RentalUserDto> rentalUserDtos = null;
+    private List<RentalUserDto> rentalUserDtos;
 }

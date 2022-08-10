@@ -4,12 +4,16 @@ import com.dawidpater.project.carrental.converter.LocalDateTimeFromStringConvert
 import com.dawidpater.project.carrental.dto.FilterCarsRequestDto;
 import com.dawidpater.project.carrental.exception.IncorrectDateFormat;
 import com.dawidpater.project.carrental.validator.annotation.StartDateLessThanEndDate;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.time.LocalDateTime;
 import java.util.regex.Pattern;
 
+@Component
+@Slf4j
 public class DatesValidator implements ConstraintValidator<StartDateLessThanEndDate, Object> {
 
     @Override
@@ -26,8 +30,10 @@ public class DatesValidator implements ConstraintValidator<StartDateLessThanEndD
         if(startDateString==null || startDateString.isEmpty() || endDateString==null || endDateString.isEmpty())
             return false;
         Pattern datePattern = Pattern.compile("\\d\\d-\\d\\d-\\d\\d\\d\\d");
-        if(!datePattern.matcher(startDateString).find() || !datePattern.matcher(endDateString).find())
+        if(!datePattern.matcher(startDateString).find() || !datePattern.matcher(endDateString).find()){
+            log.debug("Dates are not in correct format. Start date={} and End date={}",startDateString,endDateString);
             throw new IncorrectDateFormat();
+        }
         LocalDateTime startDate = dateConverter.getDate(startDateString, "00:00");
         LocalDateTime endDate = dateConverter.getDate(endDateString, "23:59");
         return startDate.isBefore(endDate);

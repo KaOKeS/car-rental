@@ -41,11 +41,21 @@ function carElement(car,isAdmin){
     const carRowElement = document.createElement('tr');
     for (const carProperty in car){
         if(car.hasOwnProperty(carProperty)){
-            if(!(carProperty=="deleted" || carProperty=="rate" || carProperty=="id" || carProperty=="carDescription" || carProperty=="imagePath" || carProperty=="rentalDtos")){
+            if(!(carProperty=="deleted" || carProperty=="rate" || carProperty=="id" ||
+             carProperty=="carDescription" || carProperty=="imagePath" || carProperty=="rentalDtos"
+             || carProperty=="default_IMAGE_PATH")){
                 var createdTd = document.createElement('td');
-                createdTd.setAttribute("class","align-middle");
-                createdTd.innerText = capitalizeFirstLetter(`${car[carProperty]}`);
-                carRowElement.appendChild(createdTd);
+                if(carProperty=="sittingPlaces"){
+                    createdTd.setAttribute("class","align-middle text-center");
+                    createdTd.innerText = capitalizeFirstLetter(`${car[carProperty]}`);
+                    carRowElement.appendChild(createdTd);
+
+                }else{
+                    createdTd.setAttribute("class","align-middle");
+                    createdTd.innerText = capitalizeFirstLetter(`${car[carProperty]}`);
+                    carRowElement.appendChild(createdTd);
+                }
+                
             }
             else if(carProperty=="imagePath"){
                 var createdTd = document.createElement('td');
