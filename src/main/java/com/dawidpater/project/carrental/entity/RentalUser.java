@@ -44,8 +44,6 @@ public class RentalUser implements UserDetails{
     private String birthDate;
     @Column(name = "phone")
     private String phone;
-    @Column(name = "document_id")
-    private String documentId;
     @Column(name = "blocked")
     private Boolean blocked = false;
     @ToString.Exclude

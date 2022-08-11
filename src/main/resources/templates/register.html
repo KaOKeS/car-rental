@@ -139,14 +139,6 @@
                                     Validation error
                                 </p>
                             </div>
-    
-                            <div class="mb-3 col-md-6">
-                                <label>Document Id<span class="text-danger">*</span></label>
-                                <input th:field="*{documentId}" type="text" class="form-control" placeholder="Enter Document Id">
-                                <p th:each="error : ${#fields.errors('documentId')}" th:text="${error}" th:class="${#fields.hasErrors('documentId')}? 'error alert alert-danger'">
-                                    Validation error
-                                </p>
-                            </div>
 
                             <div class="col-md-12" id="signUpDisplay">
                                 <button class="btn btn-primary float-end" id="buttonSpinner" th:onclick="'javascript:spinnerOn()'">Sign Up</button>

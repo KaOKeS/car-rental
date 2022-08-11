@@ -43,8 +43,6 @@ public class RentalUserDto {
     private String birthDate;
     @NotEmpty(message = "Phone cannot be empty!")
     private String phone;
-    @NotEmpty(message = "Document Id cannot be empty!")
-    private String documentId;
     private Boolean blocked;
     private UserRoleDto userRoleDto;
     private List<RentalDto> rentalDtos;

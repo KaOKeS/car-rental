@@ -1,10 +1,8 @@
 package com.dawidpater.project.carrental.validator;
 
 import com.dawidpater.project.carrental.converter.IntegerTryParse;
-import com.dawidpater.project.carrental.dto.FilterCarsRequestDto;
-import com.dawidpater.project.carrental.dto.RentalUserDto;
+import com.dawidpater.project.carrental.dto.webrequest.FilterCarsRequestDto;
 import com.dawidpater.project.carrental.validator.annotation.IsPriceRangeOk;
-import com.dawidpater.project.carrental.validator.annotation.PasswordMatches;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;

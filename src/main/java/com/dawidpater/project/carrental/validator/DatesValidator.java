@@ -1,7 +1,7 @@
 package com.dawidpater.project.carrental.validator;
 
 import com.dawidpater.project.carrental.converter.LocalDateTimeFromStringConverter;
-import com.dawidpater.project.carrental.dto.FilterCarsRequestDto;
+import com.dawidpater.project.carrental.dto.webrequest.FilterCarsRequestDto;
 import com.dawidpater.project.carrental.exception.IncorrectDateFormat;
 import com.dawidpater.project.carrental.validator.annotation.StartDateLessThanEndDate;
 import lombok.extern.slf4j.Slf4j;

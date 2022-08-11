@@ -17,8 +17,9 @@ import java.util.List;
 @NoArgsConstructor
 public class CarDto {
     private final String DEFAULT_IMAGE_PATH = "/images/cars/no-car-image.png";
+
     private long id;
-    private String imagePath;
+    private String imagePath = DEFAULT_IMAGE_PATH;
     @NotEmpty(message = "Brand should be not empty")
     private String brand;
     @NotEmpty(message = "Model should be not empty")
@@ -43,10 +44,6 @@ public class CarDto {
     private float rate;
     private String carDescription;
     private List<RentalDto> rentalDtos;
-
-    public CarDto(String imagePath) {
-        this.imagePath = DEFAULT_IMAGE_PATH;
-    }
 
     @Override
     public String toString() {

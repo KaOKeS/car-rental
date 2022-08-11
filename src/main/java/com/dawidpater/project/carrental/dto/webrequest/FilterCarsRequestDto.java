@@ -1,4 +1,4 @@
-package com.dawidpater.project.carrental.dto;
+package com.dawidpater.project.carrental.dto.webrequest;
 
 import com.dawidpater.project.carrental.validator.annotation.IsPriceRangeOk;
 import com.dawidpater.project.carrental.validator.annotation.StartDateLessThanEndDate;

@@ -2,7 +2,7 @@ package com.dawidpater.project.carrental.controller;
 
 import com.dawidpater.project.carrental.converter.CarConverter;
 import com.dawidpater.project.carrental.dto.CarDto;
-import com.dawidpater.project.carrental.dto.FilterCarsRequestDto;
+import com.dawidpater.project.carrental.dto.webrequest.FilterCarsRequestDto;
 import com.dawidpater.project.carrental.service.CarService;
 import com.dawidpater.project.carrental.validator.UserRoleValdation;
 import lombok.AllArgsConstructor;

@@ -49,16 +49,15 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter{
 
         http
                 .authorizeRequests().antMatchers("/h2_console/**").permitAll()
-                .and().csrf().ignoringAntMatchers("/h2-console/**")
-                .and().headers().frameOptions().sameOrigin()
-                .and().authorizeRequests()
                 .antMatchers(staticResources).permitAll()
-                .antMatchers("/","/login**","/cars**","/api/cars**","/h2-console","/register","/api/registration/**")
-                .permitAll()
+                .antMatchers("/","/login**","/cars**","/api/cars**",
+                        "/h2-console","/register","/api/registration/**","/rent**").permitAll()
+                .antMatchers(HttpMethod.POST,"/rent**").permitAll()
                 .antMatchers(HttpMethod.POST,"/register").permitAll()
                 .antMatchers(HttpMethod.POST,"/api/registration/**").permitAll()
                 .antMatchers(HttpMethod.POST,"/api/cars/**").permitAll()
                 .antMatchers(HttpMethod.POST,"/logout").hasAnyRole("USER","ADMIN","MANAGER")
+                //.antMatchers("/rent**").hasAnyRole("USER","ADMIN","MANAGER")
                 .antMatchers("/management/**").hasAnyRole("ADMIN","MANAGER")
                 .antMatchers("/management/admin/**").hasRole("ADMIN")
                 .anyRequest()

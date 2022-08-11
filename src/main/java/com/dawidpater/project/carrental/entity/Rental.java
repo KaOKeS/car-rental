@@ -21,6 +21,24 @@ public class Rental {
     private LocalDateTime startDate;
     @Column(name = "end_date")
     private LocalDateTime endDate;
+    @Column(name = "company_driver")
+    private boolean companyDriver;
+    @Column(name = "rejected")
+    private boolean rejected;
+    @Column(name = "rejection_reason")
+    private String rejectionReason;
+    @Column(name = "confirmed")
+    private boolean confirmed;
+    @Column(name = "started")
+    private boolean started;
+    @Column(name = "ended")
+    private boolean ended;
+    @Column(name = "car_damaged")
+    private boolean carDamaged;
+    @Column(name = "damage_description")
+    private String damageDescription;
+    @Column(name = "driving_license")
+    private String drivingLicense;
 
     @ToString.Exclude
     @OneToOne(mappedBy = "rental", fetch = FetchType.LAZY)

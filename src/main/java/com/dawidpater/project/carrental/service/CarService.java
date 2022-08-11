@@ -4,7 +4,7 @@ import com.dawidpater.project.carrental.converter.CarConverter;
 import com.dawidpater.project.carrental.converter.IntegerTryParse;
 import com.dawidpater.project.carrental.converter.LocalDateTimeFromStringConverter;
 import com.dawidpater.project.carrental.dto.CarDto;
-import com.dawidpater.project.carrental.dto.FilterCarsRequestDto;
+import com.dawidpater.project.carrental.dto.webrequest.FilterCarsRequestDto;
 import com.dawidpater.project.carrental.entity.Car;
 import com.dawidpater.project.carrental.exception.CarNotFoundException;
 import com.dawidpater.project.carrental.repository.CarRepository;
