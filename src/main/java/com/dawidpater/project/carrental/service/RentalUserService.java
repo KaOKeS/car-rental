@@ -8,7 +8,7 @@ import com.dawidpater.project.carrental.entity.UserRole;
 import com.dawidpater.project.carrental.exception.UserAlreadyExistException;
 import com.dawidpater.project.carrental.repository.RentalUserRepository;
 import com.dawidpater.project.carrental.repository.UserRoleRepository;
-import com.dawidpater.project.carrental.service.contract.NotyficationSender;
+import com.dawidpater.project.carrental.contract.NotyficationSender;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;

@@ -47,11 +47,12 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter{
                 "/js/**",
         };
 
+        //TODO: rest post methods not working. Error page etc
         http
-                .authorizeRequests().antMatchers("/h2_console/**").permitAll()
+                .headers().frameOptions().disable().and().csrf().ignoringAntMatchers("/h2-console/**").and()
+                .authorizeRequests().antMatchers("/h2-console**").permitAll()
                 .antMatchers(staticResources).permitAll()
-                .antMatchers("/","/login**","/cars**","/api/cars**",
-                        "/h2-console","/register","/api/registration/**","/rent**").permitAll()
+                .antMatchers("/","/login**","/cars**","/api/cars**","/register","/api/registration/**","/rent**").permitAll()
                 .antMatchers(HttpMethod.POST,"/rent**").permitAll()
                 .antMatchers(HttpMethod.POST,"/register").permitAll()
                 .antMatchers(HttpMethod.POST,"/api/registration/**").permitAll()

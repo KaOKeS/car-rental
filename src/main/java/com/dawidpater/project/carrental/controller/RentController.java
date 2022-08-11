@@ -10,7 +10,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @Controller
 @AllArgsConstructor
@@ -20,18 +24,24 @@ public class RentController {
     private final RentalService rentalService;
 
     @GetMapping(value = "/{id}")
-    public String showRentFormFilled(@PathVariable Long id, Model model){
-        model.addAttribute("car",carService.getCarById(id));
-        model.addAttribute("rentalRequestDto",new RentalRequestDto());
+    public String showRentFormFilled(@PathVariable Long id,
+                                     @ModelAttribute RentalRequestDto rentalRequestDto,
+                                     Model model){
+        model.addAttribute("carDto",carService.getCarById(id));
         return "rent";
     }
 
     @PostMapping
-    public String makeRental(@ModelAttribute RentalRequestDto rentalRequestDto,
-                             @ModelAttribute CarDto carDto){
+    public String makeRental(@Valid @ModelAttribute RentalRequestDto rentalRequestDto,
+                             BindingResult result,
+                             @ModelAttribute CarDto carDto,
+                             Model model){
+        if(result.hasErrors()){
+            return "rent";
+        }
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         RentalUser user = (RentalUser)auth.getPrincipal();
-        rentalService.makeRental(rentalRequestDto,carDto);
+        rentalService.makeRental(rentalRequestDto,carDto,user);
         return "redirect:/user/rental";
     }
 }

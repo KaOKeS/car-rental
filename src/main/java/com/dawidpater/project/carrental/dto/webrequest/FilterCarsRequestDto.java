@@ -1,5 +1,6 @@
 package com.dawidpater.project.carrental.dto.webrequest;
 
+import com.dawidpater.project.carrental.contract.ComparableStringDates;
 import com.dawidpater.project.carrental.validator.annotation.IsPriceRangeOk;
 import com.dawidpater.project.carrental.validator.annotation.StartDateLessThanEndDate;
 import lombok.Getter;
@@ -15,7 +16,7 @@ import javax.validation.constraints.NotEmpty;
 @StartDateLessThanEndDate
 @IsPriceRangeOk
 @ToString
-public class FilterCarsRequestDto {
+public class FilterCarsRequestDto implements ComparableStringDates {
     private String type;
     private String searchBy;
     private String search;

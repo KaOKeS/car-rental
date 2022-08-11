@@ -45,7 +45,7 @@ CREATE TABLE rental (
   `user_id` BIGINT NOT NULL,
   `car_id` BIGINT NOT NULL,
   `company_driver` TINYINT DEFAULT '0',
-  `driving_license` VARCHAR(100) NOT NULL,
+  `driving_license` VARCHAR(100) NULL,
     `rejected` TINYINT DEFAULT '0',
     `rejection_reason` MEDIUMTEXT NULL DEFAULT NULL,
     `confirmed` TINYINT DEFAULT '0',

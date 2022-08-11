@@ -1,5 +1,6 @@
 package com.dawidpater.project.carrental.validator;
 
+import com.dawidpater.project.carrental.contract.ComparableStringDates;
 import com.dawidpater.project.carrental.converter.LocalDateTimeFromStringConverter;
 import com.dawidpater.project.carrental.dto.webrequest.FilterCarsRequestDto;
 import com.dawidpater.project.carrental.exception.IncorrectDateFormat;
@@ -24,9 +25,9 @@ public class DatesValidator implements ConstraintValidator<StartDateLessThanEndD
     @Override
     public boolean isValid(final Object obj, final ConstraintValidatorContext context) {
         LocalDateTimeFromStringConverter dateConverter = new LocalDateTimeFromStringConverter();
-        final FilterCarsRequestDto filterCarsRequestDto = (FilterCarsRequestDto) obj;
-        String startDateString = filterCarsRequestDto.getStartDate();
-        String endDateString = filterCarsRequestDto.getEndDate();
+        final ComparableStringDates objWithDatesToCompare = (ComparableStringDates) obj;
+        String startDateString = objWithDatesToCompare.getStartDate();
+        String endDateString = objWithDatesToCompare.getEndDate();
         if(startDateString==null || startDateString.isEmpty() || endDateString==null || endDateString.isEmpty())
             return false;
         Pattern datePattern = Pattern.compile("\\d\\d-\\d\\d-\\d\\d\\d\\d");
