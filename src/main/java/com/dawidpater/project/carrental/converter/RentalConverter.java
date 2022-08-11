@@ -4,8 +4,11 @@ import com.dawidpater.project.carrental.dto.CarDto;
 import com.dawidpater.project.carrental.dto.RentalDto;
 import com.dawidpater.project.carrental.entity.Car;
 import com.dawidpater.project.carrental.entity.Rental;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -13,7 +16,12 @@ import java.util.stream.Collectors;
 
 @Component
 @Slf4j
+@AllArgsConstructor
 public class RentalConverter {
+
+    private final CarConverter carConverter;
+    private final RentalUserConverter rentalUserConverter;
+
     public Rental dtoToEntity(RentalDto rentalDto){
         ModelMapper mapper = new ModelMapper();
         log.info("rentalDto to convert {}",rentalDto);
@@ -26,6 +34,8 @@ public class RentalConverter {
         ModelMapper mapper = new ModelMapper();
         log.info("rental to convert {}",rental);
         RentalDto rentalDto = mapper.map(rental, RentalDto.class);
+        rentalDto.setCarDto(carConverter.entityToDto(rental.getCar()));
+        rentalDto.setRentalUserDto(rentalUserConverter.entityToDto(rental.getRentalUser()));
         log.info("rentalDto after conversion {}",rentalDto);
         return rentalDto;
     }
@@ -38,5 +48,9 @@ public class RentalConverter {
     public List<RentalDto> entityToDto(List<Rental> rentals){
         log.info("Converting List<Rental>");
         return rentals.stream().map(rental -> entityToDto(rental)).collect(Collectors.toList());
+    }
+
+    public Page<RentalDto> entityToDto(Page<Rental> rentals){
+        return rentals.map(this::entityToDto);
     }
 }

@@ -97,6 +97,30 @@ INSERT INTO `rental`
 (`start_date`,`end_date`,`user_id`,`car_id`,`company_driver`,`driving_license`,`confirmed`,`started`,`ended`,`car_damaged`)
 VALUES
 ('2022-07-13 17:42:48','2022-07-14 17:42:48',1,7,0,'ASN916371',1,1,1,0);
+INSERT INTO `rental`
+(`start_date`,`end_date`,`user_id`,`car_id`,`company_driver`,`driving_license`,`confirmed`,`started`,`ended`,`car_damaged`)
+VALUES
+('2023-07-13 17:42:48','2023-07-14 17:42:48',1,7,0,'ASN916371',0,0,0,0);
+INSERT INTO `rental`
+(`start_date`,`end_date`,`user_id`,`car_id`,`company_driver`,`driving_license`,`confirmed`,`started`,`ended`,`car_damaged`)
+VALUES
+('2024-07-13 17:42:48','2024-07-14 17:42:48',1,2,0,'ASN916371',0,0,0,0);
+INSERT INTO `rental`
+(`start_date`,`end_date`,`user_id`,`car_id`,`company_driver`,`driving_license`,`confirmed`,`started`,`ended`,`car_damaged`)
+VALUES
+('2023-01-13 17:42:48','2023-01-14 17:42:48',1,3,0,'ASN916371',0,0,0,0);
+INSERT INTO `rental`
+(`start_date`,`end_date`,`user_id`,`car_id`,`company_driver`,`driving_license`,`confirmed`,`started`,`ended`,`car_damaged`)
+VALUES
+('2023-01-11 17:42:48','2023-01-12 17:42:48',1,1,0,'ASN916371',0,0,0,0);
+INSERT INTO `rental`
+(`start_date`,`end_date`,`user_id`,`car_id`,`company_driver`,`driving_license`,`confirmed`,`started`,`ended`,`car_damaged`)
+VALUES
+('2022-12-01 17:42:48','2022-12-03 17:42:48',1,8,0,'ASN916371',0,0,0,0);
+INSERT INTO `rental`
+(`start_date`,`end_date`,`user_id`,`car_id`,`company_driver`,`driving_license`,`confirmed`,`started`,`ended`,`car_damaged`)
+VALUES
+('2023-03-11 17:42:48','2023-04-12 17:42:48',1,7,0,'ASN916371',0,0,0,0);
 
 -- feedbackS
 INSERT INTO `feedback`
