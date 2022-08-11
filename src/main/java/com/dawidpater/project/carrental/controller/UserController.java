@@ -48,4 +48,14 @@ public class UserController {
         model.addAttribute("rentalSelector",rentalSelector);
         return "user_rental";
     }
+
+    @GetMapping(value = "/rental/{id}")
+    public String showUserRentalDetails(Model model,
+                                        @PathVariable Long id){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        RentalUser user = (RentalUser)auth.getPrincipal();
+        RentalDto rentalDto = rentalService.getRentalById(id);
+        model.addAttribute("rentalDto",rentalDto);
+        return "user_rental_details";
+    }
 }

@@ -53,4 +53,8 @@ public class Rental {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "car_id")
     private Car car;
+
+    @ToString.Exclude
+    @OneToOne(mappedBy = "rental", fetch = FetchType.LAZY)
+    private Invoice invoice;
 }

@@ -31,4 +31,5 @@ public class RentalDto {
     private boolean carDamaged;
     private String damageDescription;
     private String drivingLicense;
+    private InvoiceDto invoiceDto;
 }

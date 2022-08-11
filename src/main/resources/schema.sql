@@ -60,6 +60,7 @@ CREATE TABLE rental (
 CREATE TABLE invoice (
   `id` BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
   `rental_value` REAL NOT NULL,
+  `additional_cost` REAL NULL,
   `RENTAL_id` BIGINT NOT NULL,
   PRIMARY KEY (`id`),
   FOREIGN KEY (`rental_id`) REFERENCES `rental` (`id`));

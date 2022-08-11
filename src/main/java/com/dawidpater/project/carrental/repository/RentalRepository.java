@@ -24,5 +24,7 @@ public interface RentalRepository extends JpaRepository<Rental,Long> {
     @Query("SELECT r FROM Rental r JOIN r.car c JOIN r.rentalUser ru LEFT JOIN r.feedback f WHERE ru.id=:userId AND r.started=0 AND r.ended=0")
     Page<Rental> findAllNotStartedRentalsByUserId(@Param("userId") Long userId, Pageable page);
 
-
+    @Override
+    @Query("SELECT r FROM Rental r JOIN r.car c JOIN r.rentalUser ru LEFT JOIN r.feedback f JOIN r.invoice i WHERE r.id=:id")
+    Optional<Rental> findById(@Param("id") Long id);
 }

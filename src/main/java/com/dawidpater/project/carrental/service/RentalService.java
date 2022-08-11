@@ -65,4 +65,9 @@ public class RentalService {
         return rentalDtos;
     }
 
+    public RentalDto getRentalById(Long id) {
+        Rental rental = rentalRepository.findById(id).orElseThrow();
+        RentalDto rentalDto = rentalConverter.entityToDto(rental);
+        return rentalDto;
+    }
 }

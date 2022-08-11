@@ -21,6 +21,8 @@ public class RentalConverter {
 
     private final CarConverter carConverter;
     private final RentalUserConverter rentalUserConverter;
+    private final InvoiceConverter invoiceConverter;
+    private final FeedbackConverter feedbackConverter;
 
     public Rental dtoToEntity(RentalDto rentalDto){
         ModelMapper mapper = new ModelMapper();
@@ -36,6 +38,8 @@ public class RentalConverter {
         RentalDto rentalDto = mapper.map(rental, RentalDto.class);
         rentalDto.setCarDto(carConverter.entityToDto(rental.getCar()));
         rentalDto.setRentalUserDto(rentalUserConverter.entityToDto(rental.getRentalUser()));
+        rentalDto.setInvoiceDto(invoiceConverter.entityToDto(rental.getInvoice()));
+        rentalDto.setFeedbackDto(feedbackConverter.entityToDto(rental.getFeedback()));
         log.info("rentalDto after conversion {}",rentalDto);
         return rentalDto;
     }
