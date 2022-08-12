@@ -87,7 +87,7 @@ function carElement(car,isAdmin){
         var createdTd = document.createElement('td');
         createdTd.setAttribute("class","align-middle");
         var createdA2 = document.createElement('a');
-        createdA2.setAttribute("href","/rent/"+`${car["id"]}`);
+        createdA2.setAttribute("href","/rental/"+`${car["id"]}`);
         createdA2.setAttribute("class","btn btn-block btn-secondary btn-sm me-1");
         createdA2.innerText = "Rent";
         createdTd.appendChild(createdA2);
@@ -97,7 +97,7 @@ function carElement(car,isAdmin){
         var createdTd = document.createElement('td');
         createdTd.setAttribute("class","align-middle");
         var createdA = document.createElement('a');
-        createdA.setAttribute("href","/rent/"+`${car["id"]}`);
+        createdA.setAttribute("href","/rental/"+`${car["id"]}`);
         createdA.setAttribute("class","btn btn-block btn-secondary btn-sm me-1");
         createdA.innerText = "Rent";
         createdTd.appendChild(createdA);

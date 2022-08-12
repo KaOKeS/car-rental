@@ -6,6 +6,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.Column;
+import java.math.BigDecimal;
 
 @Getter
 @Setter
@@ -13,8 +14,8 @@ import javax.persistence.Column;
 @ToString
 public class InvoiceDto {
     private long id;
-    private double rentalValue;
-    private double additionalCost;
+    private BigDecimal rentalValue;
+    private BigDecimal additionalCost;
     private String status;
     private RentalDto rental;
 }

@@ -1,9 +1,12 @@
 package com.dawidpater.project.carrental.validator;
 
+import org.springframework.stereotype.Component;
+
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class UserRoleValdation {
     public final static String[] ALL_ROLES = {"USER","ADMIN","MANAGER"};
 

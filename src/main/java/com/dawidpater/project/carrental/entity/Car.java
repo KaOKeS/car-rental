@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -39,7 +40,7 @@ public class Car {
     @Column(name="sitting_places")
     private byte sittingPlaces;
     @Column(name="rent_price")
-    private double price;
+    private BigDecimal price;
     @Column(name="deleted")
     private boolean deleted;
     @Column(name="rate")

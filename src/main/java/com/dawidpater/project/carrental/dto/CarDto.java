@@ -10,6 +10,7 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 import java.util.List;
 
 @Getter
@@ -39,7 +40,7 @@ public class CarDto {
     private byte sittingPlaces;
     @NotNull
     @Min(value = 20L, message = "The value must be greather than 20")
-    private double price;
+    private BigDecimal price;
     private boolean deleted;
     private float rate;
     private String carDescription;

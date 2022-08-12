@@ -4,10 +4,12 @@ import com.dawidpater.project.carrental.dto.RentalUserDto;
 import com.dawidpater.project.carrental.dto.webrequest.RentalRequestDto;
 import com.dawidpater.project.carrental.validator.annotation.CompanyDriverOrLicenseRequired;
 import com.dawidpater.project.carrental.validator.annotation.PasswordMatches;
+import org.springframework.stereotype.Component;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
+@Component
 public class CompanyDriverOrLicenseValidator implements ConstraintValidator<CompanyDriverOrLicenseRequired, Object> {
 
     @Override

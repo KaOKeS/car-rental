@@ -2,10 +2,12 @@ package com.dawidpater.project.carrental.validator;
 
 import com.dawidpater.project.carrental.dto.RentalUserDto;
 import com.dawidpater.project.carrental.validator.annotation.PasswordMatches;
+import org.springframework.stereotype.Component;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
+@Component
 public class PasswordMatchesValidator implements ConstraintValidator<PasswordMatches, Object> {
 
     @Override

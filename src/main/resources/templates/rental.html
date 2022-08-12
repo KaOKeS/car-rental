@@ -78,7 +78,7 @@
   </div>
   <!--  -->
   <h4 class="mt-3">Rental form</h4>
-  <form id="rental" th:action="@{/rent}" th:object="${rentalRequestDto}" method="post">
+  <form id="rental" th:action="@{/rental}" th:object="${rentalRequestDto}" method="post">
     <!-- ERRORS DISPLAY -->
     <div th:if="${#fields.hasAnyErrors()}">
       <ul th:class="${#fields.hasAnyErrors()}? 'error alert alert-danger'">
@@ -110,6 +110,9 @@
                 </span>
             </span>
           </div>
+          <p th:each="error : ${#fields.errors('startDate')}" th:text="${error}" th:class="${#fields.hasErrors('startDate')}? 'error alert alert-danger'">
+            Validation error
+          </p>
         </div>
         <div class="row">
           <div th:field="*{endDate}" class="input-group date datepicker" id="datepicker2">
@@ -121,6 +124,9 @@
                 </span>
             </span>
           </div>
+          <p th:each="error : ${#fields.errors('endDate')}" th:text="${error}" th:class="${#fields.hasErrors('endDate')}? 'error alert alert-danger'">
+            Validation error
+          </p>
         </div>
 
       </div>

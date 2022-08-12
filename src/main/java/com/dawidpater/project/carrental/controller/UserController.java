@@ -5,6 +5,7 @@ import com.dawidpater.project.carrental.dto.RentalDto;
 import com.dawidpater.project.carrental.entity.RentalUser;
 import com.dawidpater.project.carrental.service.RentalService;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.repository.query.Param;
 import org.springframework.security.core.Authentication;
@@ -17,6 +18,7 @@ import java.util.List;
 
 @Controller
 @AllArgsConstructor
+@Slf4j
 @RequestMapping("/user")
 public class UserController {
     private final RentalService rentalService;

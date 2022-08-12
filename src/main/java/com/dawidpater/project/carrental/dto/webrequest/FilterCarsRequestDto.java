@@ -1,6 +1,7 @@
 package com.dawidpater.project.carrental.dto.webrequest;
 
 import com.dawidpater.project.carrental.contract.ComparableStringDates;
+import com.dawidpater.project.carrental.validator.annotation.DateIsNotPast;
 import com.dawidpater.project.carrental.validator.annotation.IsPriceRangeOk;
 import com.dawidpater.project.carrental.validator.annotation.StartDateLessThanEndDate;
 import lombok.Getter;
@@ -24,8 +25,10 @@ public class FilterCarsRequestDto implements ComparableStringDates {
     private String minPrice;
     @NotEmpty(message = "Maximum price cannot be empty.")
     private String maxPrice;
+    @DateIsNotPast
     @NotEmpty(message = "Start date cannot be empty.")
     private String startDate;
+    @DateIsNotPast
     @NotEmpty(message = "End date cannot be empty.")
     private String endDate;
     private String orderBy;

@@ -6,11 +6,11 @@ import com.dawidpater.project.carrental.entity.RentalUser;
 import com.dawidpater.project.carrental.service.CarService;
 import com.dawidpater.project.carrental.service.RentalService;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,8 +18,9 @@ import javax.validation.Valid;
 
 @Controller
 @AllArgsConstructor
-@RequestMapping("/rent")
-public class RentController {
+@Slf4j
+@RequestMapping("/rental")
+public class RentalController {
     private final CarService carService;
     private final RentalService rentalService;
 
@@ -27,8 +28,11 @@ public class RentController {
     public String showRentFormFilled(@PathVariable Long id,
                                      @ModelAttribute RentalRequestDto rentalRequestDto,
                                      Model model){
-        model.addAttribute("carDto",carService.getCarById(id));
-        return "rent";
+        log.info("Receiving CarDto by id={}",id);
+        CarDto carDto = carService.getCarById(id);
+        model.addAttribute("carDto",carDto);
+        log.info("Receiving CarDto received {}",carDto);
+        return "rental";
     }
 
     @PostMapping
@@ -37,11 +41,16 @@ public class RentController {
                              @ModelAttribute CarDto carDto,
                              Model model){
         if(result.hasErrors()){
-            return "rent";
+            log.debug("Rent request had errors");
+            return "rental";
         }
+        log.debug("Getting data about logged user");
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         RentalUser user = (RentalUser)auth.getPrincipal();
+        log.debug("Logged {}",user);
+        log.debug("Making rental");
         rentalService.makeRental(rentalRequestDto,carDto,user);
+        log.debug("Rental made");
         return "redirect:/user/rental";
     }
 }

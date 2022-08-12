@@ -38,14 +38,14 @@ public class InvoiceConverter {
     public List<Invoice> dtoToEntity(List<InvoiceDto> invoiceDtos){
         if(invoiceDtos==null)
             return null;
-        log.info("Converting List<CarDto>");
+        log.info("Converting List<InvoiceDto>");
         return invoiceDtos.stream().map(invoiceDto -> dtoToEntity(invoiceDto)).collect(Collectors.toList());
     }
 
     public List<InvoiceDto> entityToDto(List<Invoice> invoices){
         if(invoices==null)
             return null;
-        log.info("Converting List<Car>");
+        log.info("Converting List<Invoice>");
         return invoices.stream().map(invoice -> entityToDto(invoice)).collect(Collectors.toList());
     }
 

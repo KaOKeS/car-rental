@@ -3,10 +3,12 @@ package com.dawidpater.project.carrental.validator;
 import com.dawidpater.project.carrental.converter.IntegerTryParse;
 import com.dawidpater.project.carrental.dto.webrequest.FilterCarsRequestDto;
 import com.dawidpater.project.carrental.validator.annotation.IsPriceRangeOk;
+import org.springframework.stereotype.Component;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
+@Component
 public class PriceRangeValidator implements ConstraintValidator<IsPriceRangeOk, Object> {
 
     @Override

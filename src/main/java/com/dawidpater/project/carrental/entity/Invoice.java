@@ -3,21 +3,23 @@ package com.dawidpater.project.carrental.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
 @Getter
+@ToString
 public class Invoice {
     @Id
     @Column(name="id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @Column(name="rental_value")
-    private double rentalValue;
+    private BigDecimal rentalValue;
     @Column(name="additional_cost")
-    private double additionalCost;
+    private BigDecimal additionalCost;
     @Column(name="status")
     private String status;
     @ToString.Exclude
