@@ -5,13 +5,16 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import javax.persistence.Column;
+
 @Getter
 @Setter
 @NoArgsConstructor
 @ToString
 public class InvoiceDto {
     private long id;
-    private long rentalValue;
-    private long additionalCost;
+    private double rentalValue;
+    private double additionalCost;
+    private String status;
     private RentalDto rental;
 }

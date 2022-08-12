@@ -15,6 +15,8 @@ import java.util.stream.Collectors;
 @Slf4j
 public class FeedbackConverter {
     public Feedback dtoToEntity(FeedbackDto feedbackDto){
+        if(feedbackDto==null)
+            return null;
         ModelMapper mapper = new ModelMapper();
         log.info("feedbackDto to convert {}",feedbackDto);
         Feedback feedback = mapper.map(feedbackDto, Feedback.class);
@@ -23,6 +25,8 @@ public class FeedbackConverter {
     }
 
     public FeedbackDto entityToDto(Feedback feedback){
+        if(feedback==null)
+            return null;
         ModelMapper mapper = new ModelMapper();
         log.info("Feedback to convert {}",feedback);
         FeedbackDto feedbackDto = mapper.map(feedback, FeedbackDto.class);
@@ -31,11 +35,15 @@ public class FeedbackConverter {
     }
 
     public List<Feedback> dtoToEntity(List<FeedbackDto> feedbackDtos){
+        if(feedbackDtos==null)
+            return null;
         log.info("Converting List<FeedbackDto>");
         return feedbackDtos.stream().map(feedbackDto -> dtoToEntity(feedbackDto)).collect(Collectors.toList());
     }
 
     public List<FeedbackDto> entityToDto(List<Feedback> feedbacks){
+        if(feedbacks==null)
+            return null;
         log.info("Converting List<Feedback>");
         return feedbacks.stream().map(feedback -> entityToDto(feedback)).collect(Collectors.toList());
     }

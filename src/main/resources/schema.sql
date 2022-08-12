@@ -61,6 +61,7 @@ CREATE TABLE invoice (
   `id` BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
   `rental_value` REAL NOT NULL,
   `additional_cost` REAL NULL,
+  `status` VARCHAR(45) NOT NULL,
   `RENTAL_id` BIGINT NOT NULL,
   PRIMARY KEY (`id`),
   FOREIGN KEY (`rental_id`) REFERENCES `rental` (`id`));

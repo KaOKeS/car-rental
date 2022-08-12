@@ -15,9 +15,11 @@ public class Invoice {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @Column(name="rental_value")
-    private long rentalValue;
+    private double rentalValue;
     @Column(name="additional_cost")
-    private long additionalCost;
+    private double additionalCost;
+    @Column(name="status")
+    private String status;
     @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "rental_id")

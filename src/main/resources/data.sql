@@ -152,16 +152,16 @@ INSERT INTO `feedback`
 VALUES
 ('Im unhappy',2.5,'2022-07-11 12:47:48',7);
 -- invoices
-INSERT INTO `invoice` (`rental_value`, `additional_cost`, `RENTAL_id`) VALUES ('231.72', '0', '1');
-INSERT INTO `invoice` (`rental_value`, `additional_cost`, `RENTAL_id`) VALUES ('150', '0', '2');
-INSERT INTO `invoice` (`rental_value`, `additional_cost`, `RENTAL_id`) VALUES ('30', '0', '3');
-INSERT INTO `invoice` (`rental_value`, `additional_cost`, `RENTAL_id`) VALUES ('120', '0', '4');
-INSERT INTO `invoice` (`rental_value`, `additional_cost`, `RENTAL_id`) VALUES ('143', '0', '5');
-INSERT INTO `invoice` (`rental_value`, `additional_cost`, `RENTAL_id`) VALUES ('255.78', '0', '6');
-INSERT INTO `invoice` (`rental_value`, `additional_cost`, `RENTAL_id`) VALUES ('120.10', '0', '7');
-INSERT INTO `invoice` (`rental_value`, `additional_cost`, `RENTAL_id`) VALUES ('55.78', '0', '8');
-INSERT INTO `invoice` (`rental_value`, `additional_cost`, `RENTAL_id`) VALUES ('180', '0', '9');
-INSERT INTO `invoice` (`rental_value`, `additional_cost`, `RENTAL_id`) VALUES ('45.2', '0', '10');
-INSERT INTO `invoice` (`rental_value`, `additional_cost`, `RENTAL_id`) VALUES ('33.50', '0', '11');
-INSERT INTO `invoice` (`rental_value`, `additional_cost`, `RENTAL_id`) VALUES ('132.10', '0', '12');
-INSERT INTO `invoice` (`rental_value`, `additional_cost`, `RENTAL_id`) VALUES ('203.50', '0', '13');
+INSERT INTO `invoice` (`rental_value`, `additional_cost`, `RENTAL_id`,`status`) VALUES ('231.72', '0', '1','paid');
+INSERT INTO `invoice` (`rental_value`, `additional_cost`, `RENTAL_id`,`status`) VALUES ('150', '0', '2','paid');
+INSERT INTO `invoice` (`rental_value`, `additional_cost`, `RENTAL_id`,`status`) VALUES ('30', '0', '3','paid');
+INSERT INTO `invoice` (`rental_value`, `additional_cost`, `RENTAL_id`,`status`) VALUES ('120', '0', '4','unpaid');
+INSERT INTO `invoice` (`rental_value`, `additional_cost`, `RENTAL_id`,`status`) VALUES ('143', '0', '5','paid');
+INSERT INTO `invoice` (`rental_value`, `additional_cost`, `RENTAL_id`,`status`) VALUES ('255.78', '0', '6','paid');
+INSERT INTO `invoice` (`rental_value`, `additional_cost`, `RENTAL_id`,`status`) VALUES ('120.10', '0', '7','paid');
+INSERT INTO `invoice` (`rental_value`, `additional_cost`, `RENTAL_id`,`status`) VALUES ('55.78', '0', '8','paid');
+INSERT INTO `invoice` (`rental_value`, `additional_cost`, `RENTAL_id`,`status`) VALUES ('180', '0', '9','paid');
+INSERT INTO `invoice` (`rental_value`, `additional_cost`, `RENTAL_id`,`status`) VALUES ('45.2', '0', '10','unpaid');
+INSERT INTO `invoice` (`rental_value`, `additional_cost`, `RENTAL_id`,`status`) VALUES ('33.50', '0', '11','unpaid');
+INSERT INTO `invoice` (`rental_value`, `additional_cost`, `RENTAL_id`,`status`) VALUES ('132.10', '0', '12','paid');
+INSERT INTO `invoice` (`rental_value`, `additional_cost`, `RENTAL_id`,`status`) VALUES ('203.50', '0', '13','paid');
