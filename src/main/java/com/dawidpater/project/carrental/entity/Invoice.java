@@ -20,6 +20,8 @@ public class Invoice {
     private BigDecimal rentalValue;
     @Column(name="additional_cost")
     private BigDecimal additionalCost;
+    @Column(name="damage_cost")
+    private BigDecimal damageCost;
     @Column(name="status")
     private String status;
     @ToString.Exclude

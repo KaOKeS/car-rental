@@ -19,9 +19,9 @@ public class InvoiceConverter {
         if(invoiceDto==null)
             return null;
         ModelMapper mapper = new ModelMapper();
-        log.info("InvoiceDto to convert {}",invoiceDto);
+        log.debug("InvoiceDto to convert {}",invoiceDto);
         Invoice invoice = mapper.map(invoiceDto, Invoice.class);
-        log.info("Invoice after conversion {}",invoice);
+        log.debug("Invoice after conversion {}",invoice);
         return invoice;
     }
 
@@ -29,23 +29,23 @@ public class InvoiceConverter {
         if(invoice==null)
             return null;
         ModelMapper mapper = new ModelMapper();
-        log.info("Invoice to convert {}",invoice);
+        log.debug("Invoice to convert {}",invoice);
         InvoiceDto invoiceDto = mapper.map(invoice, InvoiceDto.class);
-        log.info("InvoiceDto after conversion {}",invoiceDto);
+        log.debug("InvoiceDto after conversion {}",invoiceDto);
         return invoiceDto;
     }
 
     public List<Invoice> dtoToEntity(List<InvoiceDto> invoiceDtos){
         if(invoiceDtos==null)
             return null;
-        log.info("Converting List<InvoiceDto>");
+        log.debug("Converting List<InvoiceDto>");
         return invoiceDtos.stream().map(invoiceDto -> dtoToEntity(invoiceDto)).collect(Collectors.toList());
     }
 
     public List<InvoiceDto> entityToDto(List<Invoice> invoices){
         if(invoices==null)
             return null;
-        log.info("Converting List<Invoice>");
+        log.debug("Converting List<Invoice>");
         return invoices.stream().map(invoice -> entityToDto(invoice)).collect(Collectors.toList());
     }
 

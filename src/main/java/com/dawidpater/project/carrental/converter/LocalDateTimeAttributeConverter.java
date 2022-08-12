@@ -15,13 +15,13 @@ public class LocalDateTimeAttributeConverter implements AttributeConverter<Local
 
     @Override
     public Timestamp convertToDatabaseColumn(LocalDateTime locDateTime) {
-        log.info("Converting to database column value: {}",locDateTime);
+        log.debug("Converting to database column value: {}",locDateTime);
         return locDateTime == null ? null : Timestamp.valueOf(locDateTime);
     }
 
     @Override
     public LocalDateTime convertToEntityAttribute(Timestamp sqlTimestamp) {
-        log.info("Converting to entity value: {}",sqlTimestamp);
+        log.debug("Converting to entity value: {}",sqlTimestamp);
         return sqlTimestamp == null ? null : sqlTimestamp.toLocalDateTime();
     }
 }

@@ -78,6 +78,12 @@
   </div>
   <!--  -->
   <h4 class="mt-3">Rental form</h4>
+  <!-- CAR ALREADY RENTED -->
+  <div th:if="${carAlreadyRented}">
+    <p th:text="${carAlreadyRented}" class="error alert alert-danger">
+      Validation error
+    </p>
+  </div>
   <form id="rental" th:action="@{/rental}" th:object="${rentalRequestDto}" method="post">
     <!-- ERRORS DISPLAY -->
     <div th:if="${#fields.hasAnyErrors()}">

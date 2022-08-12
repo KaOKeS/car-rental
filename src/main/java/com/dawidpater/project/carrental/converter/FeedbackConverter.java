@@ -18,9 +18,9 @@ public class FeedbackConverter {
         if(feedbackDto==null)
             return null;
         ModelMapper mapper = new ModelMapper();
-        log.info("feedbackDto to convert {}",feedbackDto);
+        log.debug("feedbackDto to convert {}",feedbackDto);
         Feedback feedback = mapper.map(feedbackDto, Feedback.class);
-        log.info("feedback after conversion {}",feedback);
+        log.debug("feedback after conversion {}",feedback);
         return feedback;
     }
 
@@ -28,23 +28,23 @@ public class FeedbackConverter {
         if(feedback==null)
             return null;
         ModelMapper mapper = new ModelMapper();
-        log.info("Feedback to convert {}",feedback);
+        log.debug("Feedback to convert {}",feedback);
         FeedbackDto feedbackDto = mapper.map(feedback, FeedbackDto.class);
-        log.info("feedbackDto after conversion {}",feedbackDto);
+        log.debug("feedbackDto after conversion {}",feedbackDto);
         return feedbackDto;
     }
 
     public List<Feedback> dtoToEntity(List<FeedbackDto> feedbackDtos){
         if(feedbackDtos==null)
             return null;
-        log.info("Converting List<FeedbackDto>");
+        log.debug("Converting List<FeedbackDto>");
         return feedbackDtos.stream().map(feedbackDto -> dtoToEntity(feedbackDto)).collect(Collectors.toList());
     }
 
     public List<FeedbackDto> entityToDto(List<Feedback> feedbacks){
         if(feedbacks==null)
             return null;
-        log.info("Converting List<Feedback>");
+        log.debug("Converting List<Feedback>");
         return feedbacks.stream().map(feedback -> entityToDto(feedback)).collect(Collectors.toList());
     }
 }

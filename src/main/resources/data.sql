@@ -69,9 +69,9 @@ VALUES
 ('2022-07-01 17:42:48','2022-07-02 17:22:48',3,5,0,'ASN916371',1,1,1,0);
 
 INSERT INTO `rental`
-(`start_date`,`end_date`,`user_id`,`car_id`,`company_driver`,`driving_license`,`confirmed`,`started`,`ended`,`car_damaged`)
+(`start_date`,`end_date`,`user_id`,`car_id`,`company_driver`,`driving_license`,`confirmed`,`started`,`ended`,`car_damaged`,`reclaim_protocol`,`closed`)
 VALUES
-('2022-07-03 17:42:48','2022-07-04 17:12:48',1,2,0,'ASN916371',1,1,1,0);
+('2022-07-03 17:42:48','2022-07-04 17:12:48',1,2,0,'ASN916371',1,1,1,1,'Car has scratches on rim of car. Some additional costs will be included to invoice',1);
 
 INSERT INTO `rental`
 (`start_date`,`end_date`,`user_id`,`car_id`,`company_driver`,`driving_license`,`confirmed`,`started`,`ended`,`car_damaged`)
@@ -89,9 +89,9 @@ VALUES
 ('2022-07-09 17:42:48','2022-07-10 17:42:48',3,5,0,'ASN916371',1,1,1,0);
 
 INSERT INTO `rental`
-(`start_date`,`end_date`,`user_id`,`car_id`,`company_driver`,`driving_license`,`confirmed`,`started`,`ended`,`car_damaged`)
+(`start_date`,`end_date`,`user_id`,`car_id`,`company_driver`,`driving_license`,`confirmed`,`started`,`ended`,`car_damaged`,`closed`,`reclaim_protocol`)
 VALUES
-('2022-07-11 17:42:48','2022-07-12 17:42:48',3,5,0,'ASN916371',1,1,1,0);
+('2022-07-11 17:42:48','2022-07-12 17:42:48',1,5,0,'ASN916371',1,1,1,0,1,'Everything was Ok.');
 
 INSERT INTO `rental`
 (`start_date`,`end_date`,`user_id`,`car_id`,`company_driver`,`driving_license`,`confirmed`,`started`,`ended`,`car_damaged`)

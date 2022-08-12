@@ -9,10 +9,12 @@ import java.time.format.DateTimeFormatter;
 @Component
 @Slf4j
 public class LocalDateTimeFromStringConverter {
+    public final String DAY_START_TIME = "00:00";
+    public final String DAY_END_TIME = "23:59";
 
     public LocalDateTime getDate(String stringDate, String stringTime){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
-        log.info("Trying to convert date string: {} and time string {} to LocalDateTime",stringDate,stringTime);
+        log.debug("Trying to convert date string: {} and time string {} to LocalDateTime",stringDate,stringTime);
         LocalDateTime date = LocalDateTime.parse(stringDate + " " + stringTime,formatter);
         return date;
     }

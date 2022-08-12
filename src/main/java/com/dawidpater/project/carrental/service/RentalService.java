@@ -9,6 +9,8 @@ import com.dawidpater.project.carrental.entity.Car;
 import com.dawidpater.project.carrental.entity.Invoice;
 import com.dawidpater.project.carrental.entity.Rental;
 import com.dawidpater.project.carrental.entity.RentalUser;
+import com.dawidpater.project.carrental.exception.CarAlreadyRentedException;
+import com.dawidpater.project.carrental.repository.CarRepository;
 import com.dawidpater.project.carrental.repository.RentalRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,10 +36,15 @@ public class RentalService {
     private final LocalDateTimeFromStringConverter dateConverter;
     private final RentalConverter rentalConverter;
     private final InvoiceService invoiceService;
+    private final CarService carService;
 
     @Transactional
-    public RentalDto makeRental(RentalRequestDto rentalRequestDto, CarDto carDto, RentalUser user) {
-        log.debug("Creating empty Rental object");
+    public RentalDto makeRental(RentalRequestDto rentalRequestDto, CarDto carDto, RentalUser user) throws CarAlreadyRentedException {
+        log.debug("Check if Car with id={} not rented between startDate={} and endDate={}",carDto.getId(), rentalRequestDto.getStartDate(), rentalRequestDto.getEndDate());
+        if(carService.isCarRentedInDates(carDto.getId(), rentalRequestDto.getStartDate(), rentalRequestDto.getEndDate()))
+            throw new CarAlreadyRentedException();
+
+        log.debug("Car not rented. Creating empty Rental object");
         Rental rental = new Rental();
 
         log.debug("Setting Car to Rental");

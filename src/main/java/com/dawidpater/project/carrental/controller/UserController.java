@@ -1,20 +1,16 @@
 package com.dawidpater.project.carrental.controller;
 
-import com.dawidpater.project.carrental.converter.RentalConverter;
 import com.dawidpater.project.carrental.dto.RentalDto;
 import com.dawidpater.project.carrental.entity.RentalUser;
 import com.dawidpater.project.carrental.service.RentalService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.repository.query.Param;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Controller
 @AllArgsConstructor
@@ -59,5 +55,15 @@ public class UserController {
         RentalDto rentalDto = rentalService.getRentalById(id);
         model.addAttribute("rentalDto",rentalDto);
         return "user_rental_details";
+    }
+
+    @GetMapping(value = "/rental/{id}/invoice")
+    public String showUserRentalInvoice(Model model,
+                                        @PathVariable Long id){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        RentalUser user = (RentalUser)auth.getPrincipal();
+        RentalDto rentalDto = rentalService.getRentalById(id);
+        model.addAttribute("rentalDto",rentalDto);
+        return "invoice";
     }
 }

@@ -16,32 +16,32 @@ import java.util.stream.Collectors;
 public class CarConverter {
     public Car dtoToEntity(CarDto carDto){
         ModelMapper mapper = new ModelMapper();
-        log.info("carDto to convert {}",carDto);
+        log.debug("carDto to convert {}",carDto);
         Car car = mapper.map(carDto, Car.class);
-        log.info("Car after conversion {}",car);
+        log.debug("Car after conversion {}",car);
         return car;
     }
 
     public CarDto entityToDto(Car car){
         ModelMapper mapper = new ModelMapper();
-        log.info("Car to convert {}",car);
+        log.debug("Car to convert {}",car);
         CarDto carDto = mapper.map(car, CarDto.class);
-        log.info("carDto after conversion {}",carDto);
+        log.debug("carDto after conversion {}",carDto);
         return carDto;
     }
 
     public List<Car> dtoToEntity(List<CarDto> carDtos){
-        log.info("Converting List<CarDto>");
+        log.debug("Converting List<CarDto>");
         return carDtos.stream().map(carDto -> dtoToEntity(carDto)).collect(Collectors.toList());
     }
 
     public List<CarDto> entityToDto(List<Car> cars){
-        log.info("Converting List<Car>");
+        log.debug("Converting List<Car>");
         return cars.stream().map(car -> entityToDto(car)).collect(Collectors.toList());
     }
 
     public Page<CarDto> entityToDto(Page<Car> cars){
-        log.info("Converting Page<CarDto>");
+        log.debug("Converting Page<CarDto>");
         Page<CarDto> dtoPage = cars.map(this::entityToDto);
         return dtoPage;
     }

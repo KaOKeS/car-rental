@@ -14,27 +14,27 @@ import java.util.stream.Collectors;
 public class RentalUserConverter {
     public RentalUser dtoToEntity(RentalUserDto userDto){
         ModelMapper mapper = new ModelMapper();
-        log.info("RentalUserDto to convert {}",userDto);
+        log.debug("RentalUserDto to convert {}",userDto);
         RentalUser user = mapper.map(userDto, RentalUser.class);
-        log.info("RentalUser after conversion {}",user);
+        log.debug("RentalUser after conversion {}",user);
         return user;
     }
 
     public RentalUserDto entityToDto(RentalUser user){
         ModelMapper mapper = new ModelMapper();
-        log.info("RentalUser to convert {}",user);
+        log.debug("RentalUser to convert {}",user);
         RentalUserDto userDto = mapper.map(user, RentalUserDto.class);
-        log.info("RentalUserDto after conversion {}",userDto);
+        log.debug("RentalUserDto after conversion {}",userDto);
         return userDto;
     }
 
     public List<RentalUser> dtoToEntity(List<RentalUserDto> userDtos){
-        log.info("Converting List<RentalUserDto>");
+        log.debug("Converting List<RentalUserDto>");
         return userDtos.stream().map(userDto -> dtoToEntity(userDto)).collect(Collectors.toList());
     }
 
     public List<RentalUserDto> entityToDto(List<RentalUser> users){
-        log.info("Converting List<RentalUser>");
+        log.debug("Converting List<RentalUser>");
         return users.stream().map(user -> entityToDto(user)).collect(Collectors.toList());
     }
 }

@@ -35,10 +35,12 @@ public class Rental {
     private boolean ended;
     @Column(name = "car_damaged")
     private boolean carDamaged;
-    @Column(name = "damage_description")
-    private String damageDescription;
+    @Column(name = "reclaim_protocol")
+    private String reclaimProtocol;
     @Column(name = "driving_license")
     private String drivingLicense;
+    @Column(name = "closed")
+    private boolean closed;
 
     @ToString.Exclude
     @OneToOne(mappedBy = "rental", fetch = FetchType.LAZY)

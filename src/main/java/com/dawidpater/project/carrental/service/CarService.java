@@ -26,6 +26,14 @@ import java.util.regex.Pattern;
 public class CarService {
     private final CarRepository carRepository;
     private final CarConverter carConverter;
+    private final LocalDateTimeFromStringConverter dateConverter;
+
+    public boolean isCarRentedInDates(Long id, String strStartDate, String strEndDate){
+        LocalDateTime startDate = dateConverter.getDate(strStartDate, dateConverter.DAY_START_TIME);
+        LocalDateTime endDate = dateConverter.getDate(strEndDate, dateConverter.DAY_END_TIME);
+        Car rentedCar = carRepository.findIfCarRentedInDates(id, startDate, endDate);
+        return (rentedCar==null) ? false : true;
+    }
 
     public Car addCar(CarDto carDto){
         Car car = carConverter.dtoToEntity(carDto);

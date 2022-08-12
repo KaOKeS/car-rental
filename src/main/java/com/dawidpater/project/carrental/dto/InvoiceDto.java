@@ -16,6 +16,7 @@ public class InvoiceDto {
     private long id;
     private BigDecimal rentalValue;
     private BigDecimal additionalCost;
+    private BigDecimal damageCost;
     private String status;
     private RentalDto rental;
 }

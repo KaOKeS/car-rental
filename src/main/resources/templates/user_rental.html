@@ -82,8 +82,8 @@
         <!--cars go here-->
         <tr th:each="rentalDto: ${rentalDtos}">
             <td th:text="${rentalDto.id}" class="align-middle"/>
-            <td th:text="${rentalDto.startDate}" class="align-middle"/>
-            <td th:text="${rentalDto.endDate}" class="align-middle"/>
+            <td th:text="${rentalDto.startDate.toLocalDate()}" class="align-middle"/>
+            <td th:text="${rentalDto.endDate.toLocalDate()}" class="align-middle"/>
             <td th:text="${rentalDto.companyDriver}" class="align-middle" />
             <td th:text="${rentalDto.confirmed}" class="align-middle" />
             <td th:text="${rentalDto.rejected}" class="align-middle" />

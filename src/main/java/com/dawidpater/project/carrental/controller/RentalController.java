@@ -3,6 +3,7 @@ package com.dawidpater.project.carrental.controller;
 import com.dawidpater.project.carrental.dto.CarDto;
 import com.dawidpater.project.carrental.dto.webrequest.RentalRequestDto;
 import com.dawidpater.project.carrental.entity.RentalUser;
+import com.dawidpater.project.carrental.exception.CarAlreadyRentedException;
 import com.dawidpater.project.carrental.service.CarService;
 import com.dawidpater.project.carrental.service.RentalService;
 import lombok.AllArgsConstructor;
@@ -49,7 +50,13 @@ public class RentalController {
         RentalUser user = (RentalUser)auth.getPrincipal();
         log.debug("Logged {}",user);
         log.debug("Making rental");
-        rentalService.makeRental(rentalRequestDto,carDto,user);
+        try{
+            rentalService.makeRental(rentalRequestDto,carDto,user);
+        }catch(CarAlreadyRentedException e){
+            log.debug("CarAlreadyRentedException occured with {} \n {}\n {}",rentalRequestDto,carDto,user);
+            model.addAttribute("carAlreadyRented","Car is already rented at this time.\n Please use Cars page(Main navigation) filtrater out cars rented in the dates you are interested in.");
+            return "rental";
+        }
         log.debug("Rental made");
         return "redirect:/user/rental";
     }

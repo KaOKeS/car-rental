@@ -52,7 +52,8 @@ CREATE TABLE rental (
     `started` TINYINT DEFAULT '0',
     `ended` TINYINT DEFAULT '0',
     `car_damaged` TINYINT DEFAULT '0',
-    `damage_description` MEDIUMTEXT NULL DEFAULT NULL,
+    `reclaim_protocol` MEDIUMTEXT NULL DEFAULT NULL,
+    `closed` TINYINT DEFAULT '0',
   PRIMARY KEY (`id`),
   FOREIGN KEY (`user_id`) REFERENCES `rental_user` (`id`),
   FOREIGN KEY (`car_id`) REFERENCES `car` (`id`));
@@ -61,8 +62,9 @@ CREATE TABLE invoice (
   `id` BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
   `rental_value` REAL NOT NULL,
   `additional_cost` REAL NULL,
-  `status` VARCHAR(45) NOT NULL,
+  `status` VARCHAR(45) NOT NULL DEFAULT 'Unpaid',
   `RENTAL_id` BIGINT NOT NULL,
+  `damage_cost` DOUBLE NULL DEFAULT 0,
   PRIMARY KEY (`id`),
   FOREIGN KEY (`rental_id`) REFERENCES `rental` (`id`));
 

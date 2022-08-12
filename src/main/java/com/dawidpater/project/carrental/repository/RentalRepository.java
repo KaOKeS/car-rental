@@ -15,13 +15,13 @@ import java.util.Optional;
 @Repository
 public interface RentalRepository extends JpaRepository<Rental,Long> {
 
-    @Query("SELECT r FROM Rental r JOIN r.car c JOIN r.rentalUser ru LEFT JOIN r.feedback f WHERE ru.id=:userId")
+    @Query("SELECT r FROM Rental r JOIN r.car c JOIN r.rentalUser ru LEFT JOIN r.feedback f JOIN r.invoice i WHERE ru.id=:userId")
     Page<Rental> findAllRentalsByUserId(@Param("userId") Long userId, Pageable page);
 
-    @Query("SELECT r FROM Rental r JOIN r.car c JOIN r.rentalUser ru LEFT JOIN r.feedback f WHERE ru.id=:userId AND r.ended=1")
+    @Query("SELECT r FROM Rental r JOIN r.car c JOIN r.rentalUser ru LEFT JOIN r.feedback f JOIN r.invoice i WHERE ru.id=:userId AND r.ended=1")
     Page<Rental> findAllEndedRentalsByUserId(@Param("userId") Long userId, Pageable page);
 
-    @Query("SELECT r FROM Rental r JOIN r.car c JOIN r.rentalUser ru LEFT JOIN r.feedback f WHERE ru.id=:userId AND r.started=0 AND r.ended=0")
+    @Query("SELECT r FROM Rental r JOIN r.car c JOIN r.rentalUser ru LEFT JOIN r.feedback f JOIN r.invoice i WHERE ru.id=:userId AND r.started=0 AND r.ended=0")
     Page<Rental> findAllNotStartedRentalsByUserId(@Param("userId") Long userId, Pageable page);
 
     @Override

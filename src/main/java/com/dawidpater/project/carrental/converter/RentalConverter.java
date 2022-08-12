@@ -26,31 +26,31 @@ public class RentalConverter {
 
     public Rental dtoToEntity(RentalDto rentalDto){
         ModelMapper mapper = new ModelMapper();
-        log.info("rentalDto to convert {}",rentalDto);
+        log.debug("rentalDto to convert {}",rentalDto);
         Rental rental = mapper.map(rentalDto, Rental.class);
-        log.info("rental after conversion {}",rental);
+        log.debug("rental after conversion {}",rental);
         return rental;
     }
 
     public RentalDto entityToDto(Rental rental){
         ModelMapper mapper = new ModelMapper();
-        log.info("rental to convert {}",rental);
+        log.debug("rental to convert {}",rental);
         RentalDto rentalDto = mapper.map(rental, RentalDto.class);
         rentalDto.setCarDto(carConverter.entityToDto(rental.getCar()));
         rentalDto.setRentalUserDto(rentalUserConverter.entityToDto(rental.getRentalUser()));
         rentalDto.setInvoiceDto(invoiceConverter.entityToDto(rental.getInvoice()));
         rentalDto.setFeedbackDto(feedbackConverter.entityToDto(rental.getFeedback()));
-        log.info("rentalDto after conversion {}",rentalDto);
+        log.debug("rentalDto after conversion {}",rentalDto);
         return rentalDto;
     }
 
     public List<Rental> dtoToEntity(List<RentalDto> rentalDtos){
-        log.info("Converting List<RentalDto>");
+        log.debug("Converting List<RentalDto>");
         return rentalDtos.stream().map(rentalDto -> dtoToEntity(rentalDto)).collect(Collectors.toList());
     }
 
     public List<RentalDto> entityToDto(List<Rental> rentals){
-        log.info("Converting List<Rental>");
+        log.debug("Converting List<Rental>");
         return rentals.stream().map(rental -> entityToDto(rental)).collect(Collectors.toList());
     }
 

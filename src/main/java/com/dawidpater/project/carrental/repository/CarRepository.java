@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.security.core.parameters.P;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -41,4 +42,10 @@ public interface CarRepository extends JpaRepository<Car,Long> {
 
     @Query("SELECT c FROM Car c WHERE c.deleted!=1")
     Page<Car> findAllNotDeletedCars(Pageable page);
+
+    @Query("SELECT DISTINCT c FROM Car c LEFT JOIN c.rental r WHERE c.id=:carId AND " +
+            "(r.startDate BETWEEN :startDate AND :endDate OR r.endDate BETWEEN :startDate AND :endDate)")
+    Car findIfCarRentedInDates(@Param("carId") Long id,
+                               @Param("startDate") LocalDateTime startDate,
+                               @Param("endDate") LocalDateTime endDate);
 }
