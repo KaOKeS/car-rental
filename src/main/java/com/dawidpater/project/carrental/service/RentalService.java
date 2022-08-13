@@ -26,7 +26,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -245,6 +247,28 @@ public class RentalService {
         log.debug("Setting rejection reason");
         rental.setRejectionReason(rejectionRequest.getRejectionReason());
         log.debug("Rejected rental with reason - saving");
+        rentalRepository.save(rental);
+    }
+
+    public void changeBasicPayment(Long id, String stringPaymentStatus) {
+        Rental rental = rentalRepository.findById(id).orElseThrow();
+        PaymentStatus paymentStatus = Arrays.stream(PaymentStatus.values())
+                .filter(pa -> pa.name().equalsIgnoreCase(stringPaymentStatus))
+                .findFirst()
+                        .orElseThrow();
+
+        rental.getInvoice().setBasicPaymentStatus(paymentStatus);
+        rentalRepository.save(rental);
+    }
+
+    public void changeDamagePayment(Long id, String stringPaymentStatus) {
+        Rental rental = rentalRepository.findById(id).orElseThrow();
+        PaymentStatus paymentStatus = Arrays.stream(PaymentStatus.values())
+                .filter(pa -> pa.name().equalsIgnoreCase(stringPaymentStatus))
+                .findFirst()
+                .orElseThrow();
+
+        rental.getInvoice().setDamagePaymentStatus(paymentStatus);
         rentalRepository.save(rental);
     }
 }

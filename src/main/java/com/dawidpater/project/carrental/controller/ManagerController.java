@@ -158,4 +158,20 @@ public class ManagerController {
         }
         return "redirect:/management/manager/rental/"+id;
     }
+
+    @GetMapping("/rental/{id}/changeBasicPayment/{paymentStatus}")
+    public String changeBasicPayment(Model model,
+                                     @PathVariable Long id,
+                                     @PathVariable String paymentStatus){
+        rentalService.changeBasicPayment(id,paymentStatus);
+        return "redirect:/management/manager/rental/"+id;
+    }
+
+    @GetMapping("/rental/{id}/changeDamagePayment/{paymentStatus}")
+    public String changeDamagePayment(Model model,
+                                     @PathVariable Long id,
+                                     @PathVariable String paymentStatus){
+        rentalService.changeDamagePayment(id,paymentStatus);
+        return "redirect:/management/manager/rental/"+id;
+    }
 }
