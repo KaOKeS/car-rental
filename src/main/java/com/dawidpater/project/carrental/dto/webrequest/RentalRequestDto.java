@@ -9,9 +9,11 @@ import com.dawidpater.project.carrental.validator.annotation.StartDateLessThanEn
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.stereotype.Component;
 
 import javax.validation.constraints.NotEmpty;
 
+@Component
 @Getter
 @Setter
 @NoArgsConstructor

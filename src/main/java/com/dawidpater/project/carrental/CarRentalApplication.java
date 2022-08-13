@@ -1,5 +1,6 @@
 package com.dawidpater.project.carrental;
 
+import com.dawidpater.project.carrental.entity.constant.PaymentStatus;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

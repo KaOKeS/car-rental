@@ -2,8 +2,7 @@ package com.dawidpater.project.carrental.validator;
 
 import com.dawidpater.project.carrental.contract.ComparableStringDates;
 import com.dawidpater.project.carrental.converter.LocalDateTimeFromStringConverter;
-import com.dawidpater.project.carrental.dto.webrequest.FilterCarsRequestDto;
-import com.dawidpater.project.carrental.exception.IncorrectDateFormat;
+import com.dawidpater.project.carrental.exception.IncorrectDateFormatException;
 import com.dawidpater.project.carrental.validator.annotation.StartDateLessThanEndDate;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -33,7 +32,7 @@ public class DatesValidator implements ConstraintValidator<StartDateLessThanEndD
         Pattern datePattern = Pattern.compile("\\d\\d-\\d\\d-\\d\\d\\d\\d");
         if(!datePattern.matcher(startDateString).find() || !datePattern.matcher(endDateString).find()){
             log.debug("Dates are not in correct format. Start date={} and End date={}",startDateString,endDateString);
-            throw new IncorrectDateFormat();
+            throw new IncorrectDateFormatException();
         }
         LocalDateTime startDate = dateConverter.getDate(startDateString, "00:00");
         LocalDateTime endDate = dateConverter.getDate(endDateString, "23:59");

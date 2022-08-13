@@ -1,5 +1,6 @@
 package com.dawidpater.project.carrental.entity;
 
+import com.dawidpater.project.carrental.entity.constant.PaymentStatus;
 import lombok.*;
 
 import javax.persistence.*;
@@ -22,8 +23,10 @@ public class Invoice {
     private BigDecimal additionalCost;
     @Column(name="damage_cost")
     private BigDecimal damageCost;
-    @Column(name="status")
-    private String status;
+    @Column(name="basic_payment_status")
+    private PaymentStatus basicPaymentStatus;
+    @Column(name="damage_payment_status")
+    private PaymentStatus damagePaymentStatus;
     @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "rental_id")

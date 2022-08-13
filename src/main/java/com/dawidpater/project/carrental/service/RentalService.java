@@ -2,20 +2,23 @@ package com.dawidpater.project.carrental.service;
 
 import com.dawidpater.project.carrental.converter.*;
 import com.dawidpater.project.carrental.dto.CarDto;
-import com.dawidpater.project.carrental.dto.FeedbackDto;
 import com.dawidpater.project.carrental.dto.RentalDto;
+import com.dawidpater.project.carrental.dto.webrequest.RejectionRequestDto;
 import com.dawidpater.project.carrental.dto.webrequest.RentalRequestDto;
 import com.dawidpater.project.carrental.entity.Car;
 import com.dawidpater.project.carrental.entity.Invoice;
 import com.dawidpater.project.carrental.entity.Rental;
 import com.dawidpater.project.carrental.entity.RentalUser;
+import com.dawidpater.project.carrental.entity.constant.PaymentStatus;
 import com.dawidpater.project.carrental.exception.CarAlreadyRentedException;
-import com.dawidpater.project.carrental.repository.CarRepository;
+import com.dawidpater.project.carrental.exception.rentalStatus.RentalAlreadyStartedException;
+import com.dawidpater.project.carrental.exception.rentalStatus.RentalNotConfirmedOrAlreadyRejectedException;
+import com.dawidpater.project.carrental.exception.rentalStatus.RentalNotEvenStartedException;
+import com.dawidpater.project.carrental.exception.rentalStatus.RentalNotPaidOrNotEndedException;
 import com.dawidpater.project.carrental.repository.RentalRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -23,9 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -77,7 +78,8 @@ public class RentalService {
         BigDecimal driverPrice = new BigDecimal(20);
         log.debug("Calculating additional costs");
         invoice.setAdditionalCost(invoiceService.calculateAdditionalCosts(startDate,endDate,rentalRequestDto.isCompanyDriver(),driverPrice));
-        invoice.setStatus("Unpaid");
+        invoice.setBasicPaymentStatus(PaymentStatus.UNPAID);
+        invoice.setDamagePaymentStatus(PaymentStatus.OK);
 
         log.debug("Setting {} to Rental",invoice);
         rental.setInvoice(invoice);
@@ -131,9 +133,9 @@ public class RentalService {
         return rentalDto;
     }
 
-    public int getAmountOfNotConfirmedRentals() {
+    public int getAmountOfNotConfirmedAndRejectedRentals() {
         log.debug("Fetching all not confirmed rentals");
-        List<Rental> allNotConfirmedRentals = rentalRepository.findAllByConfirmed(false);
+        List<Rental> allNotConfirmedRentals = rentalRepository.findAllByConfirmedAndRejected(false,false);
         return allNotConfirmedRentals.size();
     }
     
@@ -154,7 +156,7 @@ public class RentalService {
         PageRequest page = PageRequest.of(pageNumber, perPage);
         log.debug("Fetching all data according to rentalSelector={}",rentalSelector);
         if(rentalSelector.equals("new"))
-            allRequestedRentals = rentalRepository.findAllByConfirmed(false,page);
+            allRequestedRentals = rentalRepository.findAllByConfirmedAndRejected(false,false,page);
         else if(rentalSelector.equals("confirmed"))
             allRequestedRentals = rentalRepository.findAllByConfirmed(true,page);
         else if(rentalSelector.equals("rejected"))
@@ -169,5 +171,80 @@ public class RentalService {
             allRequestedRentals = rentalRepository.findAll(page);
 
         return rentalConverter.entityToDto(allRequestedRentals);
+    }
+
+    public void inverseStartedFieldById (Long id) throws RentalNotConfirmedOrAlreadyRejectedException {
+        Rental rental = rentalRepository.findById(id).orElseThrow();
+        if(!rental.isConfirmed() || rental.isRejected()){
+            log.debug("Rental state not changed to started. Rental.isConfirmed={}  OR  Rental.isRejected={}",rental.isConfirmed(),rental.isRejected());
+            throw new RentalNotConfirmedOrAlreadyRejectedException("Rental not confirmed or already rejected!");
+        }
+        log.debug("Changing rental state to started");
+        rental.setStarted(!rental.isStarted());
+        log.debug("Saving started Rental");
+        rentalRepository.save(rental);
+    }
+
+    public void inverseEndedFieldById(Long id) throws RentalNotEvenStartedException {
+        Rental rental = rentalRepository.findById(id).orElseThrow();
+        if(!rental.isStarted()){
+            log.debug("Rental can not be ended, because rental.isStarted()={}",rental.isStarted());
+            throw new RentalNotEvenStartedException("Not started rental can not be ended");
+        }
+        log.debug("Changing state of rental to ended");
+        rental.setEnded(!rental.isEnded());
+        log.debug("Saving ended Rental");
+        rentalRepository.save(rental);
+    }
+
+    public void inverseClosedFieldById(Long id) throws RentalNotPaidOrNotEndedException{
+        Rental rental = rentalRepository.findById(id).orElseThrow();
+        if(!rental.isEnded()
+                || rental.getInvoice().getBasicPaymentStatus().equals(PaymentStatus.UNPAID)
+                || rental.getInvoice().getDamagePaymentStatus().equals(PaymentStatus.UNPAID)){
+            log.debug("Rental not closed, because rental.isEnded={} or rental.getInvoice().getBasicPaymentStatus={}  or rental.getInvoice().getDamagePaymentStatus={}",
+                    rental.isEnded(), rental.getInvoice().getBasicPaymentStatus(), rental.getInvoice().getDamagePaymentStatus());
+            throw new RentalNotPaidOrNotEndedException("Rental is not ended or invoice not paid");
+        }
+        log.debug("Setting rental to closed");
+        rental.setClosed(!rental.isClosed());
+        log.debug("Saving closed rental");
+        rentalRepository.save(rental);
+    }
+
+    public void inverseConfirmedFieldById(Long id) throws RentalAlreadyStartedException{
+        Rental rental = rentalRepository.findById(id).orElseThrow();
+        if(rental.isStarted() || rental.isRejected()){
+            log.debug("Not possible to confirm rental, because it is already started or rejected");
+            throw new RentalAlreadyStartedException("Not possible to confirm rental, because it is already started or rejected");
+        }
+        rental.setConfirmed(!rental.isConfirmed());
+        if(rental.isRejected())
+            rental.setRejected(false);
+        rentalRepository.save(rental);
+    }
+
+    public void inverseRejectedFieldById(Long id) {
+        Rental rental = rentalRepository.findById(id).orElseThrow();
+        rental.setRejected(!rental.isRejected());
+        if(rental.isConfirmed())
+            rental.setConfirmed(false);
+        rentalRepository.save(rental);
+    }
+
+    public void rejectRentalAccordingToRequest(RejectionRequestDto rejectionRequest) throws RentalAlreadyStartedException {
+        Rental rental = rentalRepository.findById(rejectionRequest.getRentalId()).orElseThrow();
+        if(rental.isStarted()){
+            log.debug("Not possible to reject rental, because it is already STARTED");
+            throw new RentalAlreadyStartedException("Rental is already started. Can not be rejected");
+        }
+        log.debug("Rental Rejection True");
+        rental.setRejected(true);
+        log.debug("Rental Confirmation False");
+        rental.setConfirmed(false);
+        log.debug("Setting rejection reason");
+        rental.setRejectionReason(rejectionRequest.getRejectionReason());
+        log.debug("Rejected rental with reason - saving");
+        rentalRepository.save(rental);
     }
 }

@@ -9,12 +9,10 @@ import com.dawidpater.project.carrental.service.RentalUserService;
 import com.dawidpater.project.carrental.validator.UserRoleValdation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -29,15 +27,21 @@ public class UsersManagementController {
     private final RentalUserService rentalUserService;
 
     @GetMapping("/user")
-    public String manageUserPage(Model model, HttpServletRequest request){
+    public String manageUserPage(Model model,
+                                 HttpServletRequest request,
+                                 @RequestParam(required = false) String pageNumber,
+                                 @RequestParam(required = false) String perPage){
 
         List<String> currentUserRoles = UserRoleValdation.getCurrentUserRoles(request);
         log.debug("User managment feature displayed to user with role {}", currentUserRoles.toArray().toString());
 
-        List<RentalUserDto> allUsersWithRolesDto = rentalUserService.getAllUsersWithRoles();
+        Page<RentalUserDto> allUsersWithRolesDto = rentalUserService.getAllUsersWithRoles(pageNumber,perPage);
+
         log.info("All users fetched to display");
-        model.addAttribute("listUsers",allUsersWithRolesDto);
-        return "user";
+        model.addAttribute("users",allUsersWithRolesDto);
+        model.addAttribute("totalItems",allUsersWithRolesDto.getTotalElements());
+        model.addAttribute("totalPages",allUsersWithRolesDto.getTotalPages());
+        return "management_user";
     }
 
     @GetMapping("changeBlockedField/{id}")

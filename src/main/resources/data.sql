@@ -67,6 +67,17 @@ INSERT INTO `rental_user`
 VALUES
 ('user789','user789@myemail.com','$2a$10$oOUnroKCnl1EzEJLVrIAIeyODmH8O4NPJYErVayx/tu.kp5FcqnY2','Monika','Menna','France','Paris','Street 14/11','GU16 7HF','1992-02-05','75443332',true);
 
+INSERT INTO `rental_user`
+(`username`,`email`,`user_password`,`first_name`,`last_name`,`country`,`city`,`address`,`zip`,`birthdate`,`phone`,`blocked`)
+VALUES
+('user7891','user7891@myemail.com','$2a$10$oOUnroKCnl1EzEJLVrIAIeyODmH8O4NPJYErVayx/tu.kp5FcqnY2','Monika','Menna','France','Paris','Street 14/11','GU16 7HF','1992-02-05','75443332',true);
+
+INSERT INTO `rental_user`
+(`username`,`email`,`user_password`,`first_name`,`last_name`,`country`,`city`,`address`,`zip`,`birthdate`,`phone`,`blocked`)
+VALUES
+('user7892','user7892@myemail.com','$2a$10$oOUnroKCnl1EzEJLVrIAIeyODmH8O4NPJYErVayx/tu.kp5FcqnY2','Monika','Menna','France','Paris','Street 14/11','GU16 7HF','1992-02-05','75443332',true);
+
+
 -- RENTALS
 INSERT INTO `rental`
 (`start_date`,`end_date`,`user_id`,`car_id`,`company_driver`,`driving_license`,`confirmed`,`started`,`ended`,`car_damaged`)
@@ -157,16 +168,16 @@ INSERT INTO `feedback`
 VALUES
 ('Im unhappy',2.5,'2022-07-11 12:47:48',7);
 -- invoices
-INSERT INTO `invoice` (`rental_value`, `additional_cost`, `RENTAL_id`,`status`) VALUES ('231.72', '0', '1','paid');
-INSERT INTO `invoice` (`rental_value`, `additional_cost`, `RENTAL_id`,`status`) VALUES ('150', '0', '2','paid');
-INSERT INTO `invoice` (`rental_value`, `additional_cost`, `RENTAL_id`,`status`) VALUES ('30', '0', '3','paid');
-INSERT INTO `invoice` (`rental_value`, `additional_cost`, `RENTAL_id`,`status`) VALUES ('120', '0', '4','unpaid');
-INSERT INTO `invoice` (`rental_value`, `additional_cost`, `RENTAL_id`,`status`) VALUES ('143', '0', '5','paid');
-INSERT INTO `invoice` (`rental_value`, `additional_cost`, `RENTAL_id`,`status`) VALUES ('255.78', '0', '6','paid');
-INSERT INTO `invoice` (`rental_value`, `additional_cost`, `RENTAL_id`,`status`) VALUES ('120.10', '0', '7','paid');
-INSERT INTO `invoice` (`rental_value`, `additional_cost`, `RENTAL_id`,`status`) VALUES ('55.78', '0', '8','paid');
-INSERT INTO `invoice` (`rental_value`, `additional_cost`, `RENTAL_id`,`status`) VALUES ('180', '0', '9','paid');
-INSERT INTO `invoice` (`rental_value`, `additional_cost`, `RENTAL_id`,`status`) VALUES ('45.2', '0', '10','unpaid');
-INSERT INTO `invoice` (`rental_value`, `additional_cost`, `RENTAL_id`,`status`) VALUES ('33.50', '0', '11','unpaid');
-INSERT INTO `invoice` (`rental_value`, `additional_cost`, `RENTAL_id`,`status`) VALUES ('132.10', '0', '12','paid');
-INSERT INTO `invoice` (`rental_value`, `additional_cost`, `RENTAL_id`,`status`) VALUES ('203.50', '0', '13','paid');
+INSERT INTO `invoice` (`rental_value`, `additional_cost`, `RENTAL_id`,`basic_payment_status`) VALUES ('231.72', '0', '1','paid');
+INSERT INTO `invoice` (`rental_value`, `additional_cost`, `RENTAL_id`,`basic_payment_status`) VALUES ('150', '0', '2','paid');
+INSERT INTO `invoice` (`rental_value`, `additional_cost`, `RENTAL_id`,`basic_payment_status`) VALUES ('30', '0', '3','paid');
+INSERT INTO `invoice` (`rental_value`, `additional_cost`, `RENTAL_id`,`basic_payment_status`) VALUES ('120', '0', '4','unpaid');
+INSERT INTO `invoice` (`rental_value`, `additional_cost`, `RENTAL_id`,`basic_payment_status`) VALUES ('143', '0', '5','paid');
+INSERT INTO `invoice` (`rental_value`, `additional_cost`, `RENTAL_id`,`basic_payment_status`) VALUES ('255.78', '0', '6','paid');
+INSERT INTO `invoice` (`rental_value`, `additional_cost`, `RENTAL_id`,`basic_payment_status`) VALUES ('120.10', '0', '7','paid');
+INSERT INTO `invoice` (`rental_value`, `additional_cost`, `RENTAL_id`,`basic_payment_status`) VALUES ('55.78', '0', '8','paid');
+INSERT INTO `invoice` (`rental_value`, `additional_cost`, `RENTAL_id`,`basic_payment_status`) VALUES ('180', '0', '9','paid');
+INSERT INTO `invoice` (`rental_value`, `additional_cost`, `RENTAL_id`,`basic_payment_status`) VALUES ('45.2', '0', '10','unpaid');
+INSERT INTO `invoice` (`rental_value`, `additional_cost`, `RENTAL_id`,`basic_payment_status`) VALUES ('33.50', '0', '11','unpaid');
+INSERT INTO `invoice` (`rental_value`, `additional_cost`, `RENTAL_id`,`basic_payment_status`) VALUES ('132.10', '0', '12','paid');
+INSERT INTO `invoice` (`rental_value`, `additional_cost`, `RENTAL_id`,`basic_payment_status`) VALUES ('203.50', '0', '13','paid');

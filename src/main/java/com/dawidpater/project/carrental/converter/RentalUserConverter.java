@@ -1,9 +1,11 @@
 package com.dawidpater.project.carrental.converter;
 
 import com.dawidpater.project.carrental.dto.RentalUserDto;
+import com.dawidpater.project.carrental.dto.UserRoleDto;
 import com.dawidpater.project.carrental.entity.RentalUser;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -24,6 +26,7 @@ public class RentalUserConverter {
         ModelMapper mapper = new ModelMapper();
         log.debug("RentalUser to convert {}",user);
         RentalUserDto userDto = mapper.map(user, RentalUserDto.class);
+        userDto.setUserRoleDto(UserRoleDto.builder().role(user.getUserRole().getRole()).build());
         log.debug("RentalUserDto after conversion {}",userDto);
         return userDto;
     }
@@ -36,5 +39,10 @@ public class RentalUserConverter {
     public List<RentalUserDto> entityToDto(List<RentalUser> users){
         log.debug("Converting List<RentalUser>");
         return users.stream().map(user -> entityToDto(user)).collect(Collectors.toList());
+    }
+
+    public Page<RentalUserDto> entityToDto(Page<RentalUser> users){
+        log.debug("Converting List<RentalUser>");
+        return users.map(this::entityToDto);
     }
 }

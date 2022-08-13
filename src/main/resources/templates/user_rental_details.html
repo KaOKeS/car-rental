@@ -65,7 +65,7 @@
         </tr>
         <tr>
           <td style="width: 200px;">Status</td>
-          <td th:class="${rentalDto.invoiceDto.status.equals('paid')} ? 'text-success fw-bold' : 'text-danger fw-bold'" th:text="${rentalDto.invoiceDto.status}">Error</td>
+          <td th:class="${rentalDto.invoiceDto.basicPaymentStatus.name().equalsIgnoreCase('paid')} ? 'text-success fw-bold' : 'text-danger fw-bold'" th:text="${rentalDto.invoiceDto.basicPaymentStatus}">Error</td>
         </tr>
         </tbody>
       </table>
@@ -82,10 +82,7 @@
         </tr>
         <tr>
           <td style="width: 200px;">Status</td>
-          <td th:if="${!rentalDto.carDamaged and !rentalDto.closed}" class="text-success fw-bold" th:text="OK">Error</td>
-          <td th:if="${!rentalDto.carDamaged and rentalDto.closed}" class="text-success fw-bold" th:text="OK">Error</td>
-          <td th:if="${rentalDto.carDamaged and rentalDto.closed}" class="text-success fw-bold" th:text="Paid">Error</td>
-          <td th:if="${rentalDto.carDamaged and !rentalDto.closed}" class="text-danger fw-bold" th:text="Unpaid">Error</td>
+          <td class="fw-bold" th:text="${rentalDto.invoiceDto.damagePaymentStatus.name()}" th:classappend="${rentalDto.invoiceDto.damagePaymentStatus.name().equalsIgnoreCase('Unpaid')} ? 'text-danger' : 'text-success'">Error</td>
         </tr>
         </tbody>
       </table>

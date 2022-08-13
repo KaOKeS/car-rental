@@ -23,6 +23,11 @@
 <body>
 <div th:insert="../static/navbar"></div>
 <div class="container-lg">
+  <div th:if="${error}">
+    <p th:text="${error}" class="error alert alert-danger mt-3">
+      Processing error
+    </p>
+  </div>
   <div class="row mt-4">
     <!-- USER DETAILS -->
     <div class="col-md-2"></div>
@@ -168,6 +173,7 @@
     <!-- RENTAL DETAILS -->
     <div class="col-md-2"></div>
     <div class="col-md-5 col-7 align-items-end align-end">
+      <!-- RENTAL DETAILS -->
       <table class="table">
         <thead>
         <tr>
@@ -189,6 +195,7 @@
         </tr>
         </tbody>
       </table>
+      <!-- Basic rental payments -->
       <table class="table">
         <thead class="mt-2">
         <tr>
@@ -206,10 +213,11 @@
         </tr>
         <tr>
           <td style="width: 200px;">Status</td>
-          <td th:class="${rentalDto.invoiceDto.status.equals('paid')} ? 'text-success fw-bold' : 'text-danger fw-bold'" th:text="${rentalDto.invoiceDto.status}">Error</td>
+          <td th:class="${rentalDto.invoiceDto.basicPaymentStatus.name().equalsIgnoreCase('paid')} ? 'text-success fw-bold' : 'text-danger fw-bold'" th:text="${rentalDto.invoiceDto.basicPaymentStatus.name()}">Error</td>
         </tr>
         </tbody>
       </table>
+      <!-- After rental payments -->
       <table class="table">
         <thead class="mt-2">
         <tr>
@@ -223,13 +231,11 @@
         </tr>
         <tr>
           <td style="width: 200px;">Status</td>
-          <td th:if="${!rentalDto.carDamaged and !rentalDto.closed}" class="text-success fw-bold" th:text="OK">Error</td>
-          <td th:if="${!rentalDto.carDamaged and rentalDto.closed}" class="text-success fw-bold" th:text="OK">Error</td>
-          <td th:if="${rentalDto.carDamaged and rentalDto.closed}" class="text-success fw-bold" th:text="Paid">Error</td>
-          <td th:if="${rentalDto.carDamaged and !rentalDto.closed}" class="text-danger fw-bold" th:text="Unpaid">Error</td>
+          <td class="fw-bold" th:text="${rentalDto.invoiceDto.damagePaymentStatus.name()}" th:classappend="${rentalDto.invoiceDto.damagePaymentStatus.name().equalsIgnoreCase('Unpaid')} ? 'text-danger' : 'text-success'">Error</td>
         </tr>
         </tbody>
       </table>
+      <!-- Rental status -->
       <table class="table">
         <thead class="mt-2">
         <tr>
@@ -249,7 +255,130 @@
 
       </table>
     </div>
+    <!-- RENTAL UPDATE FORM -->
     <div class="col-md-3 col-5 text-start">
+      <div class="row my-2">
+        <h3>Rental aproval:</h3>
+        <!-- Confirm -->
+        <div class="row justify-content-center">
+          <div class="col mb-1 mt-1">
+            Confirmed:
+          </div>
+          <div class="col mb-1 mt-1">
+            <p th:text="${rentalDto.confirmed}"></p>
+          </div>
+          <div class="col mb-1 mt-1">
+            <a th:href = "@{/management/manager/rental/changeConfirmed/{id}(id=${rentalDto.id})}"
+               th:classappend="${rentalDto.confirmed} ? ' btn-primary' : ' btn-secondary'"
+               class="btn btn-sm" th:text="${rentalDto.confirmed} ? 'Set false' : 'Set true'">
+              Start
+            </a>
+          </div>
+        </div>
+        <!-- Reject -->
+        <div class="row justify-content-center" th:classappend="${rentalDto.rejected ? 'error alert alert-danger' : ''}">
+          <div class="col mb-1 mt-1">
+            Reject:
+          </div>
+          <div class="col mb-1 mt-1">
+            <p th:text="${rentalDto.rejected}"></p>
+          </div>
+          <div class="col mb-1 mt-1">
+            <a th:href = "@{rejection/{id}(id=${rentalDto.id})}"
+               th:classappend="${rentalDto.rejected} ? ' btn-primary' : ' btn-danger'"
+               class="btn btn-sm" th:text="${rentalDto.rejected} ? 'Set false' : 'Set true'">
+              Start
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="row my-2">
+        <h3>Change rental status:</h3>
+        <!-- Started -->
+        <div class="row justify-content-center">
+          <div class="col mb-1 mt-1">
+            Started:
+          </div>
+          <div class="col mb-1 mt-1">
+            <p th:text="${rentalDto.started}"></p>
+          </div>
+          <div class="col mb-1 mt-1">
+            <a th:href = "@{/management/manager/rental/changeStarted/{id}(id=${rentalDto.id})}"
+               th:classappend="${rentalDto.started} ? ' btn-primary' : ' btn-secondary'"
+               class="btn btn-sm" th:text="${rentalDto.started} ? 'Set false' : 'Set true'">
+              Start
+            </a>
+          </div>
+        </div>
+        <!-- Ended -->
+        <div class="row justify-content-center">
+          <div class="col mb-1 mt-1">
+            Ended:
+          </div>
+          <div class="col mb-1 mt-1">
+            <p th:text="${rentalDto.ended}"></p>
+          </div>
+          <div class="col mb-1 mt-1">
+            <a th:href = "@{/management/manager/rental/changeEnded/{id}(id=${rentalDto.id})}"
+               th:classappend="${rentalDto.ended} ? ' btn-primary' : ' btn-secondary'"
+               class="btn btn-sm" th:text="${rentalDto.ended} ? 'Set false' : 'Set true'">
+              End
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="row my-2">
+        <h3>Change rental payments:</h3>
+        <!-- Basic payments-->
+        <div class="row justify-content-center">
+          <div class="col mb-1 mt-1">
+            Basic payments:
+          </div>
+          <div class="col mb-1 mt-1">
+            <a th:href = "@{/management/manager/rental/changeStarted/{id}(id=${rentalDto.id})}"
+               th:classappend="${rentalDto.invoiceDto.basicPaymentStatus.name().equalsIgnoreCase('UNPAID')} ? ' btn-primary' : ' btn-secondary'"
+               class="btn btn-sm" th:text="${rentalDto.invoiceDto.basicPaymentStatus.name().equalsIgnoreCase('UNPAID')} ? 'Set PAID' : 'Set UNPAID'">
+              basic
+            </a>
+          </div>
+        </div>
+        <!-- Damage payments -->
+        <div class="row justify-content-center">
+          <div class="col mb-1 mt-1">
+            Damage payments:
+          </div>
+          <div class="col mb-1 mt-1">
+            <a th:href = "@{/management/manager/rental/changeStarted/{id}(id=${rentalDto.id})}" th:classappend="${rentalDto.invoiceDto.damagePaymentStatus.name().equalsIgnoreCase('UNPAID')} ? 'disabled' : ''" class="btn btn-sm btn-primary">
+              Set Unpaid
+            </a>
+            <a th:href = "@{/management/manager/rental/changeStarted/{id}(id=${rentalDto.id})}" class="btn btn-sm btn-primary">
+              Set OK
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="row my-2">
+        <h3>Close rental:</h3>
+      <!-- Closed -->
+      <div class="row justify-content-center">
+        <div class="col mb-1 mt-1">
+          Closed:
+        </div>
+        <div class="col mb-1 mt-1">
+          <p th:text="${rentalDto.closed}"></p>
+        </div>
+        <div class="col mb-1 mt-1">
+          <a th:href = "@{/management/manager/rental/changeClosed/{id}(id=${rentalDto.id})}"
+             th:classappend="${rentalDto.closed} ? ' btn-primary' : ' btn-secondary'"
+             class="btn btn-sm" th:text="${rentalDto.closed} ? 'Set false' : 'Set true'">
+            End
+          </a>
+        </div>
+      </div>
+      </div>
 
     </div>
     <div class="col-md-2"></div>

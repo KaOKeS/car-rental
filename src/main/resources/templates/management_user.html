@@ -48,7 +48,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="user : ${listUsers}">
+        <tr th:each="user : ${users}">
             <td th:text="${user.id}"></td>
             <td th:text="${user.firstName}"></td>
             <td th:text="${user.lastName}"></td>
@@ -65,6 +65,26 @@
         </tr>
         </tbody>
     </table>
+
+    <!-- PAGES DISPLAY -->
+    <div class = "row col-sm-10 align-middle align-items-middle">
+        <div class = "col-sm-4">
+            Total Rows: [[${totalItems}]]
+        </div>
+        <div th:if = "${totalPages > 1}" class="col-sm-2">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination" id="pagination">
+                    <span th:each="i: ${#numbers.sequence(1, totalPages)}">
+                        <li class="page-item">
+                            <a class="page-link" th:href="'/management/admin/user?pageNumber=' + ${i}">
+                                [[${i}]]
+                            </a>
+                        </li>
+                    </span>
+                </ul>
+            </nav>
+        </div>
+    </div>
 </div>
 </body>
 </html>

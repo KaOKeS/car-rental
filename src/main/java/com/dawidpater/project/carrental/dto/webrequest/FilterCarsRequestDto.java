@@ -8,12 +8,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.stereotype.Component;
 
 import javax.validation.constraints.NotEmpty;
 
 @Setter
 @Getter
 @NoArgsConstructor
+@Component
 @StartDateLessThanEndDate
 @IsPriceRangeOk
 @ToString

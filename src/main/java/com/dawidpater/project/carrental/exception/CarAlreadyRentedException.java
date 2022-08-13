@@ -1,9 +1,12 @@
 package com.dawidpater.project.carrental.exception;
 
-public class CarAlreadyRentedException extends RuntimeException{
+import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Component;
+
+@Component
+@NoArgsConstructor
+public class CarAlreadyRentedException extends IllegalStateException{
     public CarAlreadyRentedException(String msg){
         super(msg);
     }
-
-    public CarAlreadyRentedException(){};
 }

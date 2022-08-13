@@ -41,7 +41,7 @@ public class MainPageController {
         model.addAttribute("feedbacks", latestReviewsLimited);
 
         log.info("If user is Admin or Manager then check how many new rentals exists");
-        int newRentals = (request.isUserInRole("MANAGER") || request.isUserInRole("ADMIN")) ? rentalService.getAmountOfNotConfirmedRentals() : 0;
+        int newRentals = (request.isUserInRole("MANAGER") || request.isUserInRole("ADMIN")) ? rentalService.getAmountOfNotConfirmedAndRejectedRentals() : 0;
         model.addAttribute("newRentals", newRentals);
 
         log.info("Returning view");

@@ -1,11 +1,14 @@
 package com.dawidpater.project.carrental.dto;
 
+import com.dawidpater.project.carrental.entity.constant.PaymentStatus;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.Column;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import java.math.BigDecimal;
 
 @Getter
@@ -17,6 +20,7 @@ public class InvoiceDto {
     private BigDecimal rentalValue;
     private BigDecimal additionalCost;
     private BigDecimal damageCost;
-    private String status;
     private RentalDto rental;
+    private PaymentStatus basicPaymentStatus;
+    private PaymentStatus damagePaymentStatus;
 }

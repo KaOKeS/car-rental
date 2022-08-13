@@ -28,7 +28,9 @@ public interface RentalRepository extends JpaRepository<Rental,Long> {
     @Query("SELECT r FROM Rental r JOIN r.car c JOIN r.rentalUser ru LEFT JOIN r.feedback f JOIN r.invoice i WHERE r.id=:id")
     Optional<Rental> findById(@Param("id") Long id);
 
-    List<Rental> findAllByConfirmed(boolean confirmed);
+    List<Rental> findAllByConfirmedAndRejected(boolean confirmed, boolean rejected);
+
+    Page<Rental> findAllByConfirmedAndRejected(boolean confirmed, boolean rejected,Pageable page);
 
     Page<Rental> findAllByConfirmed(boolean confirmed,Pageable page);
 

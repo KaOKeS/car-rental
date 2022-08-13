@@ -5,5 +5,5 @@ import org.springframework.stereotype.Component;
 
 @Component
 @NoArgsConstructor
-public class UserAlreadyExistException extends IllegalStateException{
+public class IncorrectDateFormatException extends IllegalArgumentException {
 }

@@ -1,5 +1,6 @@
 package com.dawidpater.project.carrental.service;
 
+import com.dawidpater.project.carrental.converter.IntegerTryParse;
 import com.dawidpater.project.carrental.converter.RentalUserConverter;
 import com.dawidpater.project.carrental.dto.RentalUserDto;
 import com.dawidpater.project.carrental.dto.UserRoleDto;
@@ -11,6 +12,9 @@ import com.dawidpater.project.carrental.repository.UserRoleRepository;
 import com.dawidpater.project.carrental.contract.NotyficationSender;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -62,13 +66,13 @@ public class RentalUserService implements UserDetailsService {
         return rentalUser;
     }
 
-    public List<RentalUserDto> getAllUsersWithRoles(){
-        List<RentalUser> allUsers = rentalUserRepository.getAllUsersWithTheirRole();
-        List<RentalUserDto> rentalUserDtos = rentalUserConverter.entityToDto(allUsers);
-        List<String> usersRole = allUsers.stream().map(user -> user.getUserRole().getRole()).collect(Collectors.toList());
-        for (int i = 0; i < rentalUserDtos.size(); i++) {
-            rentalUserDtos.get(i).setUserRoleDto(UserRoleDto.builder().role(usersRole.get(i)).build());
-        }
+    public Page<RentalUserDto> getAllUsersWithRoles(String reqPageNumber, String reqPerPage){
+        log.debug("Parsing to int pageNumber={} and perPage={}. If null default value will be set",reqPageNumber,reqPerPage);
+        int pageNumber = IntegerTryParse.parse(reqPageNumber,1)-1;
+        int perPage = IntegerTryParse.parse(reqPerPage,5);
+
+        Page<RentalUser> allUsers = rentalUserRepository.getAllUsersWithTheirRole(PageRequest.of(pageNumber,perPage, Sort.by(Sort.Direction.ASC,"id")));
+        Page<RentalUserDto> rentalUserDtos = rentalUserConverter.entityToDto(allUsers);
         return rentalUserDtos;
     }
 
