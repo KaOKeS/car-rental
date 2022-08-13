@@ -35,19 +35,20 @@
         </thead>
         <tbody>
         <tr>
-          <td>Start date</td>
+          <td style="width: 200px;">Start date</td>
           <td th:text="${rentalDto.startDate.toLocalDate()}">2022-05-06</td>
         </tr>
         <tr>
-          <td>End date</td>
+          <td style="width: 200px;">End date</td>
           <td th:text="${rentalDto.endDate.toLocalDate()}">2022-05-08</td>
         </tr>
         <tr>
-          <td>Company driver</td>
+          <td style="width: 200px;">Company driver</td>
           <td th:text="${rentalDto.companyDriver} ? 'Yes' : 'No'">Yes</td>
         </tr>
         </tbody>
-
+      </table>
+      <table class="table">
         <thead class="mt-2">
         <tr>
           <th>Basic rental payments</th>
@@ -55,19 +56,20 @@
         </thead>
         <tbody>
         <tr>
-          <td>Rental costs</td>
+          <td style="width: 200px;">Rental costs</td>
           <td th:text="${rentalDto.invoiceDto.rentalValue}">450.23</td>
         </tr>
         <tr>
-          <td>Additional costs</td>
+          <td style="width: 200px;">Additional costs</td>
           <td th:text="${rentalDto.invoiceDto.additionalCost}">100.00</td>
         </tr>
         <tr>
-          <td>Status</td>
+          <td style="width: 200px;">Status</td>
           <td th:class="${rentalDto.invoiceDto.status.equals('paid')} ? 'text-success fw-bold' : 'text-danger fw-bold'" th:text="${rentalDto.invoiceDto.status}">Error</td>
         </tr>
         </tbody>
-
+      </table>
+      <table class="table">
         <thead class="mt-2">
         <tr>
           <th>After rental payments</th>
@@ -75,15 +77,19 @@
         </thead>
         <tbody>
         <tr>
-          <td>Costs of damage</td>
-          <td th:text="${rentalDto.invoiceDto.rentalValue}">450.23</td>
+          <td style="width: 200px;">Costs of damage</td>
+          <td th:text="${rentalDto.invoiceDto.damageCost}">450.23</td>
         </tr>
         <tr>
-          <td>Status</td>
-          <td th:class="${rentalDto.invoiceDto.status.equals('paid')} ? 'text-success fw-bold' : 'text-danger fw-bold'" th:text="${rentalDto.invoiceDto.status}">Error</td>
+          <td style="width: 200px;">Status</td>
+          <td th:if="${!rentalDto.carDamaged and !rentalDto.closed}" class="text-success fw-bold" th:text="OK">Error</td>
+          <td th:if="${!rentalDto.carDamaged and rentalDto.closed}" class="text-success fw-bold" th:text="OK">Error</td>
+          <td th:if="${rentalDto.carDamaged and rentalDto.closed}" class="text-success fw-bold" th:text="Paid">Error</td>
+          <td th:if="${rentalDto.carDamaged and !rentalDto.closed}" class="text-danger fw-bold" th:text="Unpaid">Error</td>
         </tr>
         </tbody>
-
+      </table>
+      <table class="table">
         <thead class="mt-2">
         <tr>
           <th>Rental status</th>
@@ -91,11 +97,11 @@
         </thead>
         <tbody>
         <tr>
-          <td>Returned car status</td>
+          <td style="width: 200px;">Returned car status</td>
           <td th:class="${rentalDto.carDamaged} ? 'text-danger fw-bold' : 'text-success fw-bold'" th:text="${rentalDto.carDamaged} ? 'Damaged' : 'OK' ">Error</td>
         </tr>
         <tr>
-          <td>Reclaim protocol</td>
+          <td style="width: 200px;">Reclaim protocol</td>
           <td th:text="${rentalDto.reclaimProtocol}">Error</td>
         </tr>
         </tbody>
@@ -180,10 +186,16 @@
             Error
           </div>
         </div>
+        <div class="row mt-5 justify-content-center">
+          <div class="col-2 justify-content-center">
+            <a class="btn btn-block btn-warning btn-sm me-1" th:href="'/user/rental/' + ${rentalDto.id} + '/invoice'">Invoice</a>
+          </div>
+        </div>
       </div>
     <div class="col-md-2"></div>
   </div>
 </div>
+<br>
 <br><br><br>
 <script type="text/javascript">
   function driverLicenseFieldOn(){

@@ -18,12 +18,18 @@ import java.time.temporal.TemporalAmount;
 public class InvoiceService {
     private final InvoiceRepository invoiceRepository;
 
-    public BigDecimal calculateCosts(Car car, LocalDateTime startDate, LocalDateTime endDate, boolean withDriver, BigDecimal driverPrice){
+    public BigDecimal calculateRentalCosts(Car car, LocalDateTime startDate, LocalDateTime endDate){
+        Period period = Period.between(startDate.toLocalDate(), endDate.toLocalDate());
+        int amountOfDays = period.getDays() + 1;
+        BigDecimal rentalCosts = car.getPrice().multiply(new BigDecimal(amountOfDays));
+        return rentalCosts;
+    }
+
+    public BigDecimal calculateAdditionalCosts(LocalDateTime startDate, LocalDateTime endDate, boolean withDriver, BigDecimal driverPrice){
         Period period = Period.between(startDate.toLocalDate(), endDate.toLocalDate());
         int amountOfDays = period.getDays() + 1;
         BigDecimal extraCosts = (withDriver) ? driverPrice.multiply(new BigDecimal(amountOfDays)) : new BigDecimal(0);
-        BigDecimal rentalCosts = car.getPrice().multiply(new BigDecimal(amountOfDays));
-        return rentalCosts.add(extraCosts);
+        return extraCosts;
     }
 
     public Invoice saveInvoice(Invoice invoice){

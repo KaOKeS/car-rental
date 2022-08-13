@@ -73,8 +73,10 @@ public class RentalService {
         Invoice invoice = new Invoice();
         log.debug("Calculating costs of rental for:\s startDate={}\n endDate={}\n car.price={}\n With driver={}",
                 startDate,endDate,car.getPrice(),rentalRequestDto.isCompanyDriver());
-        invoice.setRentalValue(invoiceService.calculateCosts(car,startDate,endDate,isDriverPresent,new BigDecimal(20)));
-        invoice.setAdditionalCost(BigDecimal.valueOf(0));
+        invoice.setRentalValue(invoiceService.calculateRentalCosts(car,startDate,endDate));
+        BigDecimal driverPrice = new BigDecimal(20);
+        log.debug("Calculating additional costs");
+        invoice.setAdditionalCost(invoiceService.calculateAdditionalCosts(startDate,endDate,rentalRequestDto.isCompanyDriver(),driverPrice));
         invoice.setStatus("Unpaid");
 
         log.debug("Setting {} to Rental",invoice);

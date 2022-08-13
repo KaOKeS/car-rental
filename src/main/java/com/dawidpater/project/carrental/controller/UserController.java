@@ -12,6 +12,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 @Controller
 @AllArgsConstructor
 @Slf4j
@@ -61,9 +64,12 @@ public class UserController {
     public String showUserRentalInvoice(Model model,
                                         @PathVariable Long id){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        RentalUser user = (RentalUser)auth.getPrincipal();
         RentalDto rentalDto = rentalService.getRentalById(id);
         model.addAttribute("rentalDto",rentalDto);
+        model.addAttribute("date",LocalDateTime.now().toLocalDate());
+        model.addAttribute("time",LocalDateTime.now().toLocalTime().getHour() +
+                                                            ":"
+                                                            + LocalDateTime.now().toLocalTime().getMinute());
         return "invoice";
     }
 }

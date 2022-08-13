@@ -21,97 +21,98 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
 </head>
 <body>
-<div class="card">
-  <div class="card-header bg-black"></div>
-  <div class="card-body">
-
-    <div class="container">
-      <div class="row">
-        <div class="col-xl-12">
-          <i class="far fa-building text-danger fa-6x float-start"></i>
-        </div>
-      </div>
-
-
-      <div class="row">
-        <div class="col-xl-12">
-
-          <ul class="list-unstyled float-end">
-            <li style="font-size: 30px; color: red;">Company</li>
-            <li>123, Elm Street</li>
-            <li>123-456-789</li>
-            <li>mail@mail.com</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="row text-center">
-        <h3 class="text-uppercase text-center mt-3" style="font-size: 40px;">Invoice</h3>
-        <p>123456789</p>
-      </div>
-
-      <div class="row mx-3">
+<div class="container">
+  <div class="row mt-5 mb-5">
+    <div class="col-6">
+      <span class="fw-bold text-secondary">
+          <img src="../../../../../images/Muscle-Car-Chevrolet-Camaro-SS-icon.png" alt="menu-icon">
+          Take That Car
+      </span>
+    </div>
+    <!-- USER/ADDRESS -->
+    <div class="col-6 float-end">
+      <ul class="list-unstyled text-center">
+        <li th:text="${rentalDto.rentalUserDto.firstName} + ' ' + ${rentalDto.rentalUserDto.lastName}">Error</li>
+        <li th:text="${rentalDto.rentalUserDto.phone}">Error</li>
+        <li th:text="${rentalDto.rentalUserDto.address}">Error</li>
+        <li th:text="${rentalDto.rentalUserDto.city}">Error</li>
+        <li th:text="${rentalDto.rentalUserDto.zip}">Error</li>
+        <li th:text="${rentalDto.rentalUserDto.email}">Error</li>
+      </ul>
+    </div>
+  </div>
+  <div class="row text-center">
+    <h3 class="text-uppercase text-center mt-3" style="font-size: 40px;">Invoice</h3>
+    <p>Nr.123456789</p>
+  </div>
+      <div class="row mx-4 mt-2">
         <table class="table">
           <thead>
           <tr>
-            <th scope="col">Description</th>
+            <th scope="col" style="width: 600px;">Description</th>
             <th scope="col">Amount</th>
           </tr>
           </thead>
           <tbody>
           <tr>
-            <td>Samsung TV</td>
-            <td><i class="fas fa-dollar-sign"></i> 500,00</td>
+            <td style="width: 600px;">Rental costs</td>
+            <td th:text="${rentalDto.invoiceDto.rentalValue}">500,00</td>
           </tr>
           <tr>
-            <td>JBL Speaker</td>
-            <td><i class="fas fa-dollar-sign"></i> 300,00</td>
+            <td style="width: 600px;">Additional costs</td>
+            <td th:text="${rentalDto.invoiceDto.additionalCost}"> 300,00</td>
           </tr>
           <tr>
-            <td>Macbook Air</td>
-            <td><i class="fas fa-dollar-sign"></i> 1000,00</td>
-          </tr>
-          <tr>
-            <td>Iphone 11 PRO</td>
-            <td><i class="fas fa-dollar-sign"></i> 5000,00</td>
+            <td style="width: 600px;">Damage costs</td>
+            <td th:text="${rentalDto.invoiceDto.damageCost}"> 5000,00</td>
           </tr>
           </tbody>
         </table>
 
       </div>
       <div class="row">
-        <div class="col-xl-8">
-          <ul class="list-unstyled float-end me-0">
-            <li><span class="me-3 float-start">Total Amount:</span><i class="fas fa-dollar-sign"></i> 6850,00
+        <div class="col-8">
+        </div>
+        <div class="col-4">
+          <ul class="list-unstyled float-start me-0">
+            <li> <span class="me-5">Discount:</span>
+              <span class="float-end">
+                0,00
+              </span>
             </li>
-            <li> <span class="me-5">Discount:</span><i class="fas fa-dollar-sign"></i> 500,00</li>
-            <li><span class="float-start" style="margin-right: 35px;">Shippment: </span><i
-                    class="fas fa-dollar-sign"></i> 500,00</li>
+            <li>
+              <span class="me-3 float-start">Total Amount:</span>
+              <span class="float-end" th:text="${rentalDto.invoiceDto.rentalValue} + ${rentalDto.invoiceDto.additionalCost} + ${rentalDto.invoiceDto.damageCost}">
+                5000
+              </span>
+            </li>
+            <li><span class="float-start" style="margin-right: 35px;">Tax: </span>
+              <span class="float-end" th:text="(${rentalDto.invoiceDto.rentalValue} + ${rentalDto.invoiceDto.additionalCost} + ${rentalDto.invoiceDto.damageCost}) * 0.15">
+                3214
+              </span>
           </ul>
         </div>
-      </div>
-      <hr>
-      <div class="row">
-        <div class="col-xl-8" style="margin-left:60px">
-          <p class="float-end"
-             style="font-size: 30px; color: red; font-weight: 400;font-family: Arial, Helvetica, sans-serif;">
-            Total:
-            <span><i class="fas fa-dollar-sign"></i> 6350,00</span></p>
-        </div>
 
+        </div>
+      <div class="row">
+        <div class="col-8"></div>
+        <div class="col-4">
+          <p class="float-start"
+             style="font-size: 20px; color: red; font-weight: 400;font-family: Arial, Helvetica, sans-serif;">
+            Total:
+            <span th:text="(${rentalDto.invoiceDto.rentalValue} + ${rentalDto.invoiceDto.additionalCost} + ${rentalDto.invoiceDto.damageCost}) * 1.15">
+              6350,00
+            </span>
+          </p>
+        </div>
       </div>
 
       <div class="row mt-2 mb-5">
-        <p class="fw-bold">Date: <span class="text-muted">23 June 20221</span></p>
+        <p class="fw-bold">Date: <BR>
+          <span class="text-muted" th:text="${date} + ' ' + ${time}">23 June 2022</span></p>
         <p class="fw-bold mt-3">Signature:</p>
       </div>
 
-    </div>
-
-
-
-  </div>
-  <div class="card-footer bg-black"></div>
 </div>
 </body>
 </html>
