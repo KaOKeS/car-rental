@@ -54,12 +54,13 @@ public class CarService {
         return true;
     }
 
-    public List<Car> getBestCarFromEachType(){
+    public List<CarDto> getBestCarFromEachType(){
         List<Car> topCars = new ArrayList<>();
         topCars.add(carRepository.findFirstDistinctByCarTypeOrderByRateDesc("family"));
         topCars.add(carRepository.findFirstDistinctByCarTypeOrderByRateDesc("transport"));
         topCars.add(carRepository.findFirstDistinctByCarTypeOrderByRateDesc("sport"));
-        return topCars;
+        List<CarDto> carsDto = carConverter.entityToDto(topCars);
+        return carsDto;
     }
 
     public List<String> getAllCarsTypes(){

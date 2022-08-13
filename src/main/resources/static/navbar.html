@@ -13,7 +13,7 @@
         <div class="container-lg">
             <a href="/" class="navbar-brand">
                 <span class="fw-bold text-secondary">
-                    <img th:src="@{../../images/Muscle-Car-Chevrolet-Camaro-SS-icon.png}" alt="menu-icon">
+                    <img th:src="@{../../../images/Muscle-Car-Chevrolet-Camaro-SS-icon.png}" alt="menu-icon">
                     Take That Car
                 </span>
             </a>
@@ -81,6 +81,17 @@
                         <a class="btn btn-sm btn-warning" href="/user/settings">Settings</a>
                     </li>
                 </ul>
+            </div>
+
+            <!-- MIDDLE -->
+            <div class="justify-content-center align-center my-2" sec:authorize="hasAnyRole('ROLE_MANAGER','ROLE_ADMIN')">
+                <a href="/management/manager/rental" type="button" class="btn btn-sm btn-light position-relative">
+                    Orders Review
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" th:text="${newRentals}">
+                        99+
+                        <span class="visually-hidden">Rentals to check</span>
+                    </span>
+                </a>
             </div>
 
             <!-- RIGHT SIDE -->

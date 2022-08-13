@@ -130,4 +130,44 @@ public class RentalService {
         RentalDto rentalDto = rentalConverter.entityToDto(rental);
         return rentalDto;
     }
+
+    public int getAmountOfNotConfirmedRentals() {
+        log.debug("Fetching all not confirmed rentals");
+        List<Rental> allNotConfirmedRentals = rentalRepository.findAllByConfirmed(false);
+        return allNotConfirmedRentals.size();
+    }
+    
+    public Page<RentalDto> getAllRentals(String reqPageNumber, String reqPerPage){
+        log.debug("Parsing to int pageNumber={} and perPage={}. If null default value will be set",reqPageNumber,reqPerPage);
+        int pageNumber = IntegerTryParse.parse(reqPageNumber,1)-1;
+        int perPage = IntegerTryParse.parse(reqPerPage,5);
+        log.debug("Fetching all rentals");
+        Page<Rental> allRentals = rentalRepository.findAll(PageRequest.of(pageNumber, perPage, Sort.by(Sort.Direction.DESC, "id")));
+        return rentalConverter.entityToDto(allRentals);
+    }
+
+    public Page<RentalDto> getAllRequestedRentals(String reqPageNumber, String reqPerPage, String rentalSelector) {
+        log.debug("Parsing to int pageNumber={} and perPage={}. If null default value will be set",reqPageNumber,reqPerPage);
+        int pageNumber = IntegerTryParse.parse(reqPageNumber,1)-1;
+        int perPage = IntegerTryParse.parse(reqPerPage,5);
+        Page<Rental> allRequestedRentals;
+        PageRequest page = PageRequest.of(pageNumber, perPage);
+        log.debug("Fetching all data according to rentalSelector={}",rentalSelector);
+        if(rentalSelector.equals("new"))
+            allRequestedRentals = rentalRepository.findAllByConfirmed(false,page);
+        else if(rentalSelector.equals("confirmed"))
+            allRequestedRentals = rentalRepository.findAllByConfirmed(true,page);
+        else if(rentalSelector.equals("rejected"))
+            allRequestedRentals = rentalRepository.findAllByRejected(true,page);
+        else if(rentalSelector.equals("withDamagedCar"))
+            allRequestedRentals = rentalRepository.findAllByCarDamaged(true,page);
+        else if(rentalSelector.equals("ended"))
+            allRequestedRentals = rentalRepository.findAllByEnded(true,page);
+        else if(rentalSelector.equals("closed"))
+            allRequestedRentals = rentalRepository.findAllByClosed(true,page);
+        else
+            allRequestedRentals = rentalRepository.findAll(page);
+
+        return rentalConverter.entityToDto(allRequestedRentals);
+    }
 }

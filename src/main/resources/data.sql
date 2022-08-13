@@ -53,14 +53,19 @@ VALUES
 ('admin','admin@myemail.com','$2a$10$amPAOVNolNd1xmv34322OenZEBrU3JFPKshau3jYN0oqaY8pDUPOW','Dawid','Pater','Poland','Tychy','Street 55/14','43-100','1950-01-01','754432532',2);
 
 INSERT INTO `rental_user`
-(`username`,`email`,`user_password`,`first_name`,`last_name`,`country`,`city`,`address`,`zip`,`birthdate`,`phone`,`blocked`)
-VALUES
-('user123','user123@myemail.com','$2a$10$tAxU2qOSwUjqflCXmLe8k..RSA/O2/ry2/UthdNHYtQ5b4dB/xq0y','Danil','Petrov','UK','London','Street 158','GU16 7HF','1987-01-01','75447632',true);
-
-INSERT INTO `rental_user`
 (`username`,`email`,`user_password`,`first_name`,`last_name`,`country`,`city`,`address`,`zip`,`birthdate`,`phone`)
 VALUES
-('user456','user456@myemail.com','$2a$10$SJcu7P0uYGUDdQHfQRhRpOEOI7l7fv3ccyFZVYFInM8tnxa/kLWpC','Андрій','Максим','Ukraine','Київ','вулиця Володимирська 43','02000','1987-01-01','75447632');
+('user123','user123@myemail.com','$2a$10$tAxU2qOSwUjqflCXmLe8k..RSA/O2/ry2/UthdNHYtQ5b4dB/xq0y','Danil','Petrov','UK','London','Street 158','GU16 7HF','1987-01-01','75447632');
+
+INSERT INTO `rental_user`
+(`username`,`email`,`user_password`,`first_name`,`last_name`,`country`,`city`,`address`,`zip`,`birthdate`,`phone`,`role_id`)
+VALUES
+('user456','user456@myemail.com','$2a$10$SJcu7P0uYGUDdQHfQRhRpOEOI7l7fv3ccyFZVYFInM8tnxa/kLWpC','Андрій','Максим','Ukraine','Київ','вулиця Володимирська 43','02000','1987-01-01','75447632',3);
+
+INSERT INTO `rental_user`
+(`username`,`email`,`user_password`,`first_name`,`last_name`,`country`,`city`,`address`,`zip`,`birthdate`,`phone`,`blocked`)
+VALUES
+('user789','user789@myemail.com','$2a$10$oOUnroKCnl1EzEJLVrIAIeyODmH8O4NPJYErVayx/tu.kp5FcqnY2','Monika','Menna','France','Paris','Street 14/11','GU16 7HF','1992-02-05','75443332',true);
 
 -- RENTALS
 INSERT INTO `rental`

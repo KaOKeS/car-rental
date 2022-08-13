@@ -66,10 +66,9 @@ public class UserController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         RentalDto rentalDto = rentalService.getRentalById(id);
         model.addAttribute("rentalDto",rentalDto);
-        model.addAttribute("date",LocalDateTime.now().toLocalDate());
-        model.addAttribute("time",LocalDateTime.now().toLocalTime().getHour() +
-                                                            ":"
-                                                            + LocalDateTime.now().toLocalTime().getMinute());
+        LocalDateTime now = LocalDateTime.now();
+        model.addAttribute("date",now.toLocalDate());
+        model.addAttribute("time",now.toLocalTime().getHour() + ":" + now.toLocalTime().getMinute());
         return "invoice";
     }
 }
