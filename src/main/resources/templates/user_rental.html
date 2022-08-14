@@ -80,13 +80,13 @@
         </thead>
         <tbody id="carTable">
         <!--cars go here-->
-        <tr th:each="rentalDto: ${rentalDtos}">
+        <tr th:each="rentalDto: ${rentalDtos}" th:style="${rentalDto.rejected} ? 'background-color:#ffd3d3' : ''">
             <td th:text="${rentalDto.id}" class="align-middle"/>
             <td th:text="${rentalDto.startDate.toLocalDate()}" class="align-middle"/>
             <td th:text="${rentalDto.endDate.toLocalDate()}" class="align-middle"/>
             <td th:text="${rentalDto.companyDriver}" class="align-middle" />
             <td th:text="${rentalDto.confirmed}" class="align-middle" />
-            <td th:text="${rentalDto.rejected}" class="align-middle" />
+            <td th:text="${rentalDto.rejected}" class="align-middle" th:classappend="${rentalDto.rejected} ? 'fw-bold text-danger' : ''"/>
             <td class="align-middle text-center">
                 <a class="btn btn-block btn-warning btn-sm me-1" th:href="@{/user/rental/{id}(id=${rentalDto.id})}">Details</a>
             </td>

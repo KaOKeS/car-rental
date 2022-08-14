@@ -257,6 +257,7 @@
     </div>
     <!-- RENTAL UPDATE FORM -->
     <div class="col-md-4 col-6 text-start">
+      <!-- Rental aproval -->
       <div class="row my-2">
         <h3>Rental aproval:</h3>
         <!-- Confirm -->
@@ -328,6 +329,61 @@
             </a>
           </div>
         </div>
+        <!-- Reclaim protocol -->
+        <div class="row justify-content-center">
+          <div class="col mb-1 mt-1">
+            Reclaim protocol:
+          </div>
+          <div class="col mb-1 mt-1">
+            <p th:text="(${rentalDto.reclaimProtocol} != null AND ${!rentalDto.reclaimProtocol.isEmpty()} ) ? 'Done' : 'Not done'"
+            th:classappend="(${rentalDto.reclaimProtocol} != null AND ${!rentalDto.reclaimProtocol.isEmpty()} ) ? 'text-success' : 'text-danger'"></p>
+          </div>
+          <div class="col mb-1 mt-1">
+            <a th:if="${rentalDto.reclaimProtocol} != null AND ${!rentalDto.reclaimProtocol.isEmpty()}"
+               class="btn btn-primary btn-sm"
+               th:href="@{/management/manager/rental/updateReclaimProtocol/{id}(id=${rentalDto.id})}">
+              Update
+            </a>
+            <a th:href = "@{/management/manager/rental/reclaimProtocol/{id}(id=${rentalDto.id})}"
+               class="btn btn-sm btn-warning" th:if="${rentalDto.reclaimProtocol} == null OR ${rentalDto.reclaimProtocol.isEmpty()}">
+              Fill protocol
+            </a>
+            <form id="deleteProtocol" method="post" th:action="@{/management/manager/rental/deleteReclaimProtocol}"
+                  th:object="${rentalDto}" th:if="${rentalDto.reclaimProtocol} != null AND ${!rentalDto.reclaimProtocol.isEmpty()}">
+              <a href="#" th:onclick="'javascript:submitDelete()'" class="btn btn-sm btn-danger">
+                Delete
+              </a>
+              <input type="hidden" name="id" th:value="*{id}">
+            </form>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Car damage status -->
+      <div class="row my-2">
+        <h3>Damage status:</h3>
+        <!-- Damaged -->
+        <div class="row justify-content-center">
+          <div class="col mb-1 mt-1">
+            Car damaged:
+          </div>
+          <div class="col mb-1 mt-1">
+            <p th:text="${rentalDto.carDamaged} ? 'Yes' : 'No'"
+               th:class="${rentalDto.carDamaged} ? 'text-danger' : 'text-success'"></p>
+          </div>
+          <div class="col mb-1 mt-1">
+            <form id="carDamaged" method="post" th:action="@{/management/manager/rental/changeCarDamagedStatus}"
+                  th:object="${rentalDto}">
+              <a href="#" th:onclick="'javascript:submitDamaged()'" class="btn btn-sm"
+                 th:classappend="${rentalDto.carDamaged} ? ' btn-primary' : ' btn-warning'"
+                 th:text="${rentalDto.carDamaged} ? 'Set No' : 'Set Yes'">
+                Delete
+              </a>
+              <input type="hidden" name="id" th:value="*{id}">
+            </form>
+          </div>
+        </div>
       </div>
 
       <!-- Change rental payments -->
@@ -375,7 +431,7 @@
           Closed:
         </div>
         <div class="col mb-1 mt-1">
-          <p th:text="${rentalDto.closed}"></p>
+          <p th:text="${rentalDto.closed}" th:class="${rentalDto.closed} ? 'text-success' : 'text-danger'">></p>
         </div>
         <div class="col mb-1 mt-1">
           <a th:href = "@{/management/manager/rental/changeClosed/{id}(id=${rentalDto.id})}"
@@ -396,6 +452,14 @@
 <br>
 <br><br><br>
 <script type="text/javascript">
+function submitDelete(){
+  document.getElementById('deleteProtocol').submit();
+}
+
+function submitDamaged(){
+  document.getElementById('carDamaged').submit();
+}
+
   function driverLicenseFieldOn(){
   if(document.getElementById("NoDriver").checked)
     document.getElementById("drivingLicense").style.display = "block";

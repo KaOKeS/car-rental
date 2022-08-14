@@ -1,21 +1,17 @@
 package com.dawidpater.project.carrental.controller;
 
 import com.dawidpater.project.carrental.dto.RentalDto;
+import com.dawidpater.project.carrental.dto.webrequest.ReclaimProtocolRequestDto;
 import com.dawidpater.project.carrental.dto.webrequest.RejectionRequestDto;
 import com.dawidpater.project.carrental.entity.RentalUser;
-import com.dawidpater.project.carrental.entity.constant.PaymentStatus;
-import com.dawidpater.project.carrental.exception.rentalStatus.RentalAlreadyStartedException;
-import com.dawidpater.project.carrental.exception.rentalStatus.RentalNotConfirmedOrAlreadyRejectedException;
-import com.dawidpater.project.carrental.exception.rentalStatus.RentalNotEvenStartedException;
-import com.dawidpater.project.carrental.exception.rentalStatus.RentalNotPaidOrNotEndedException;
+import com.dawidpater.project.carrental.exception.rentalStatus.*;
+import com.dawidpater.project.carrental.service.ReclaimProtocolRequestService;
 import com.dawidpater.project.carrental.service.RentalService;
-import com.dawidpater.project.carrental.validator.UserRoleValdation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -23,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.List;
 
 @Controller
 @Slf4j
@@ -32,6 +27,7 @@ import java.util.List;
 public class ManagerController {
 
     private final RentalService rentalService;
+    private final ReclaimProtocolRequestService reclaimProtocolRequestService;
 
     @RequestMapping("rental")
     public String showAllRentals(Model model,
@@ -110,13 +106,14 @@ public class ManagerController {
                                @PathVariable(value = "id") Long id){
         try{
             rentalService.inverseClosedFieldById(id);
-        }catch (RentalNotPaidOrNotEndedException e){
+        }catch (RentalNotPaidOrNoReclaimProtocol e){
             model.addAttribute("error",e.getMessage());
             return showUserRentalDetails(model,id);
         }
         return "redirect:/management/manager/rental/"+id;
     }
 
+    //TODO: Post methods
     @GetMapping("rental/changeConfirmed/{id}")
     public String changeConfirmed(Model model,
                                   @PathVariable(value = "id") Long id){
@@ -163,7 +160,12 @@ public class ManagerController {
     public String changeBasicPayment(Model model,
                                      @PathVariable Long id,
                                      @PathVariable String paymentStatus){
-        rentalService.changeBasicPayment(id,paymentStatus);
+        try{
+            rentalService.changeBasicPayment(id,paymentStatus);
+        }catch (RentalNotConfirmedOrAlreadyRejectedException e){
+            model.addAttribute("error",e.getMessage());
+            return showUserRentalDetails(model,id);
+        }
         return "redirect:/management/manager/rental/"+id;
     }
 
@@ -171,7 +173,79 @@ public class ManagerController {
     public String changeDamagePayment(Model model,
                                      @PathVariable Long id,
                                      @PathVariable String paymentStatus){
-        rentalService.changeDamagePayment(id,paymentStatus);
+        try{
+            rentalService.changeDamagePayment(id,paymentStatus);
+        }catch (NoReclaimProtocolException e){
+            model.addAttribute("error",e.getMessage());
+            return showUserRentalDetails(model,id);
+        }
+        return "redirect:/management/manager/rental/"+id;
+    }
+
+    @GetMapping("/rental/reclaimProtocol/{id}")
+    public String showReclaimProtocolForm(Model model,
+                                          @PathVariable Long id){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        model.addAttribute("manager",authentication.getName());
+        if(!model.containsAttribute("reclaimProtocol"))
+            model.addAttribute("reclaimProtocol", new ReclaimProtocolRequestDto());
+        model.addAttribute("rentalId",id);
+        return "reclaim_protocol";
+    }
+
+    @PostMapping("/rental/reclaimProtocol/")
+    public String saveReclaimProtocol(Model model,
+                                      @Valid @ModelAttribute ReclaimProtocolRequestDto reclaimProtocol,
+                                      BindingResult result){
+        if(result.hasErrors()){
+            log.debug("Validation error for {}",reclaimProtocol);
+            Long id = reclaimProtocol.getRentalId();
+            return "redirect:/management/manager/rental/rejection/"+id;
+        }
+
+        Long id = reclaimProtocol.getRentalId();
+        try{
+            rentalService.saveReclaimProtocol(id,reclaimProtocol);
+        }catch (RentalNotEndedException e){
+            model.addAttribute("error",e.getMessage());
+            return showUserRentalDetails(model,id);
+        }
+
+        return "redirect:/management/manager/rental/"+id;
+    }
+
+    @PostMapping("/rental/deleteReclaimProtocol")
+    public String deleteReclaimProtocol(Model model,
+                                        @ModelAttribute RentalDto rentalDto){
+        Long id = rentalDto.getId();
+        try{
+            rentalService.deleteReclaimProtocol(id);
+        }catch (NoReclaimProtocolException e){
+            model.addAttribute("error",e.getMessage());
+            return showUserRentalDetails(model,id);
+        }
+        return "redirect:/management/manager/rental/"+id;
+    }
+
+    @GetMapping("/rental/updateReclaimProtocol/{id}")
+    public String updateReclaimProtocol(Model model,
+                                        @PathVariable Long id){
+
+        ReclaimProtocolRequestDto reclaimProtocolRequestDto = reclaimProtocolRequestService.getReclaimProtocolFromRental(id);
+        model.addAttribute("reclaimProtocol",reclaimProtocolRequestDto);
+        return showReclaimProtocolForm(model,id);
+    }
+
+    @PostMapping("/rental/changeCarDamagedStatus")
+    public String changeCarDamagedStatus(Model model,
+                                        @ModelAttribute RentalDto rentalDto){
+        Long id = rentalDto.getId();
+        try{
+            rentalService.changeCarDamageStatus(id);
+        }catch (Exception e){
+            model.addAttribute("error",e.getMessage());
+            return showUserRentalDetails(model,id);
+        }
         return "redirect:/management/manager/rental/"+id;
     }
 }

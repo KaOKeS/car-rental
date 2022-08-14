@@ -3,6 +3,7 @@ package com.dawidpater.project.carrental.service;
 import com.dawidpater.project.carrental.converter.*;
 import com.dawidpater.project.carrental.dto.CarDto;
 import com.dawidpater.project.carrental.dto.RentalDto;
+import com.dawidpater.project.carrental.dto.webrequest.ReclaimProtocolRequestDto;
 import com.dawidpater.project.carrental.dto.webrequest.RejectionRequestDto;
 import com.dawidpater.project.carrental.dto.webrequest.RentalRequestDto;
 import com.dawidpater.project.carrental.entity.Car;
@@ -11,10 +12,7 @@ import com.dawidpater.project.carrental.entity.Rental;
 import com.dawidpater.project.carrental.entity.RentalUser;
 import com.dawidpater.project.carrental.entity.constant.PaymentStatus;
 import com.dawidpater.project.carrental.exception.CarAlreadyRentedException;
-import com.dawidpater.project.carrental.exception.rentalStatus.RentalAlreadyStartedException;
-import com.dawidpater.project.carrental.exception.rentalStatus.RentalNotConfirmedOrAlreadyRejectedException;
-import com.dawidpater.project.carrental.exception.rentalStatus.RentalNotEvenStartedException;
-import com.dawidpater.project.carrental.exception.rentalStatus.RentalNotPaidOrNotEndedException;
+import com.dawidpater.project.carrental.exception.rentalStatus.*;
 import com.dawidpater.project.carrental.repository.RentalRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -199,14 +197,14 @@ public class RentalService {
         rentalRepository.save(rental);
     }
 
-    public void inverseClosedFieldById(Long id) throws RentalNotPaidOrNotEndedException{
+    public void inverseClosedFieldById(Long id) throws RentalNotPaidOrNoReclaimProtocol{
         Rental rental = rentalRepository.findById(id).orElseThrow();
-        if(!rental.isEnded()
+        if(rental.getReclaimProtocol()==null || rental.getReclaimProtocol().isEmpty()
                 || rental.getInvoice().getBasicPaymentStatus().equals(PaymentStatus.UNPAID)
                 || rental.getInvoice().getDamagePaymentStatus().equals(PaymentStatus.UNPAID)){
-            log.debug("Rental not closed, because rental.isEnded={} or rental.getInvoice().getBasicPaymentStatus={}  or rental.getInvoice().getDamagePaymentStatus={}",
-                    rental.isEnded(), rental.getInvoice().getBasicPaymentStatus(), rental.getInvoice().getDamagePaymentStatus());
-            throw new RentalNotPaidOrNotEndedException("Rental is not ended or invoice not paid");
+            log.debug("Rental not closed, because rental.getReclaimProtocol={} or rental.getInvoice().getBasicPaymentStatus={}  or rental.getInvoice().getDamagePaymentStatus={}",
+                    rental.getReclaimProtocol(), rental.getInvoice().getBasicPaymentStatus(), rental.getInvoice().getDamagePaymentStatus());
+            throw new RentalNotPaidOrNoReclaimProtocol("Rental does not have reclaim protocol or invoice not paid");
         }
         log.debug("Setting rental to closed");
         rental.setClosed(!rental.isClosed());
@@ -226,6 +224,7 @@ public class RentalService {
         rentalRepository.save(rental);
     }
 
+    // TODO: Unreject rental?
     public void inverseRejectedFieldById(Long id) {
         Rental rental = rentalRepository.findById(id).orElseThrow();
         rental.setRejected(!rental.isRejected());
@@ -250,10 +249,13 @@ public class RentalService {
         rentalRepository.save(rental);
     }
 
-    public void changeBasicPayment(Long id, String stringPaymentStatus) {
+    public void changeBasicPayment(Long id, String stringPaymentStatus) throws RentalNotConfirmedOrAlreadyRejectedException{
         Rental rental = rentalRepository.findById(id).orElseThrow();
+        if(!rental.isConfirmed() || rental.isRejected()){
+            throw new RentalNotConfirmedOrAlreadyRejectedException("Payment should not be accepted, because rental not confirmed or rejected");
+        }
         PaymentStatus paymentStatus = Arrays.stream(PaymentStatus.values())
-                .filter(pa -> pa.name().equalsIgnoreCase(stringPaymentStatus))
+                .filter(ps -> ps.name().equalsIgnoreCase(stringPaymentStatus))
                 .findFirst()
                         .orElseThrow();
 
@@ -261,14 +263,48 @@ public class RentalService {
         rentalRepository.save(rental);
     }
 
-    public void changeDamagePayment(Long id, String stringPaymentStatus) {
+    public void changeDamagePayment(Long id, String stringPaymentStatus) throws NoReclaimProtocolException{
         Rental rental = rentalRepository.findById(id).orElseThrow();
+        if(rental.getReclaimProtocol()==null || rental.getReclaimProtocol().isEmpty()){
+            throw new NoReclaimProtocolException("Rental reclaim protocol is empty.");
+        }
         PaymentStatus paymentStatus = Arrays.stream(PaymentStatus.values())
                 .filter(pa -> pa.name().equalsIgnoreCase(stringPaymentStatus))
                 .findFirst()
                 .orElseThrow();
 
         rental.getInvoice().setDamagePaymentStatus(paymentStatus);
+        rentalRepository.save(rental);
+    }
+
+    public void saveReclaimProtocol(Long id, ReclaimProtocolRequestDto reclaimProtocol) throws RentalNotEndedException {
+        Rental rental = rentalRepository.findById(id).orElseThrow();
+        if(!rental.isEnded()){
+            log.debug("Not ended rental can not accept reclaim protocol");
+            throw new RentalNotEndedException("Not ended rental can not accept reclaim protocol");
+        }
+        String reclaimText = "Reclaimed by: " + reclaimProtocol.getManagerDetails() + ". \n" + reclaimProtocol.getProtocol();
+        log.debug("Setting reclaim protocol to Rental: {}",reclaimProtocol);
+        rental.setReclaimProtocol(reclaimText);
+        log.debug("Saving rental with reclaim protocol");
+        rentalRepository.save(rental);
+    }
+
+    public void deleteReclaimProtocol(Long id) throws NoReclaimProtocolException {
+        Rental rental = rentalRepository.findById(id).orElseThrow();
+        if(rental.getReclaimProtocol()==null || rental.getReclaimProtocol().isEmpty()){
+            log.debug("Protocol does not exists, can not be deleted to {}",rental);
+            throw new NoReclaimProtocolException("Protocol does not exists, can not be deleted");
+        }
+        rental.setReclaimProtocol(null);
+        log.debug("Saving rental with NULL reclaim protocol");
+        rentalRepository.save(rental);
+    }
+
+    public void changeCarDamageStatus(Long id) {
+        Rental rental = rentalRepository.findById(id).orElseThrow();
+        rental.setCarDamaged(!rental.isCarDamaged());
+        rental.getInvoice().setDamagePaymentStatus(PaymentStatus.UNPAID);
         rentalRepository.save(rental);
     }
 }

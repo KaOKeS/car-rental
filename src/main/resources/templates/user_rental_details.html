@@ -23,6 +23,11 @@
 <body>
 <div th:insert="../static/navbar"></div>
 <div class="container-lg">
+  <div th:if="${rentalDto.rejected}" class="row my-3">
+    <p th:text="${rentalDto.rejectionReason}" class="error alert alert-danger mt-3">
+      Processing error
+    </p>
+  </div>
   <div class="row mt-4">
     <!-- RENTAL DETAILS -->
     <div class="col-md-2"></div>
