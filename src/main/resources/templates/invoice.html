@@ -82,13 +82,23 @@
             </li>
             <li>
               <span class="me-3 float-start">Total Amount:</span>
-              <span class="float-end" th:text="${rentalDto.invoiceDto.rentalValue} + ${rentalDto.invoiceDto.additionalCost} + ${rentalDto.invoiceDto.damageCost}">
+              <span class="float-end" th:text="${rentalDto.invoiceDto.rentalValue} + ${rentalDto.invoiceDto.additionalCost} + ${rentalDto.invoiceDto.damageCost}"
+              th:if="${rentalDto.invoiceDto.damageCost} != null">
+                5000
+              </span>
+              <span class="float-end" th:text="${rentalDto.invoiceDto.rentalValue} + ${rentalDto.invoiceDto.additionalCost}"
+                    th:if="${rentalDto.invoiceDto.damageCost} == null">
                 5000
               </span>
             </li>
             <li><span class="float-start" style="margin-right: 35px;">Tax: </span>
-              <span class="float-end" th:text="(${rentalDto.invoiceDto.rentalValue} + ${rentalDto.invoiceDto.additionalCost} + ${rentalDto.invoiceDto.damageCost}) * 0.15">
+              <span class="float-end" th:text="(${rentalDto.invoiceDto.rentalValue} + ${rentalDto.invoiceDto.additionalCost} + ${rentalDto.invoiceDto.damageCost}) * 0.15"
+                    th:if="${rentalDto.invoiceDto.damageCost} != null">
                 3214
+              </span>
+              <span class="float-end" th:text="(${rentalDto.invoiceDto.rentalValue} + ${rentalDto.invoiceDto.additionalCost}) * 0.15"
+              th:if="${rentalDto.invoiceDto.damageCost} == null">
+              3214
               </span>
           </ul>
         </div>

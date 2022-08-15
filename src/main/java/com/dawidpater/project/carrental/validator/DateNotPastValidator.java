@@ -19,6 +19,8 @@ public class DateNotPastValidator  implements ConstraintValidator<DateIsNotPast,
 
     @Override
     public boolean isValid(final String stringDate, final ConstraintValidatorContext context) {
+        if(stringDate==null || stringDate.isEmpty())
+            return false;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         LocalDate localDate = LocalDate.parse(stringDate, formatter);
         return (validateDateNotPast(localDate));

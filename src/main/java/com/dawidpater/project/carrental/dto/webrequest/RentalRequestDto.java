@@ -20,11 +20,11 @@ import javax.validation.constraints.NotEmpty;
 @StartDateLessThanEndDate
 @CompanyDriverOrLicenseRequired
 public class RentalRequestDto implements ComparableStringDates {
-    @DateIsNotPast
     @NotEmpty(message = "Start date cannot be empty.")
-    private String startDate;
     @DateIsNotPast
+    private String startDate;
     @NotEmpty(message = "End date cannot be empty.")
+    @DateIsNotPast
     private String endDate;
     private boolean companyDriver;
     private String drivingLicense;
