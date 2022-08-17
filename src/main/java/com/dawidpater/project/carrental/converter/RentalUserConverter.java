@@ -33,12 +33,12 @@ public class RentalUserConverter {
 
     public List<RentalUser> dtoToEntity(List<RentalUserDto> userDtos){
         log.debug("Converting List<RentalUserDto>");
-        return userDtos.stream().map(userDto -> dtoToEntity(userDto)).collect(Collectors.toList());
+        return userDtos.stream().map(this::dtoToEntity).toList();
     }
 
     public List<RentalUserDto> entityToDto(List<RentalUser> users){
         log.debug("Converting List<RentalUser>");
-        return users.stream().map(user -> entityToDto(user)).collect(Collectors.toList());
+        return users.stream().map(this::entityToDto).toList();
     }
 
     public Page<RentalUserDto> entityToDto(Page<RentalUser> users){

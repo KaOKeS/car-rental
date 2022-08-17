@@ -9,6 +9,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,16 +38,16 @@ public class InvoiceConverter {
 
     public List<Invoice> dtoToEntity(List<InvoiceDto> invoiceDtos){
         if(invoiceDtos==null)
-            return null;
+            return Collections.emptyList();
         log.debug("Converting List<InvoiceDto>");
-        return invoiceDtos.stream().map(invoiceDto -> dtoToEntity(invoiceDto)).collect(Collectors.toList());
+        return invoiceDtos.stream().map(this::dtoToEntity).toList();
     }
 
     public List<InvoiceDto> entityToDto(List<Invoice> invoices){
         if(invoices==null)
-            return null;
+            return Collections.emptyList();
         log.debug("Converting List<Invoice>");
-        return invoices.stream().map(invoice -> entityToDto(invoice)).collect(Collectors.toList());
+        return invoices.stream().map(this::entityToDto).toList();
     }
 
 }

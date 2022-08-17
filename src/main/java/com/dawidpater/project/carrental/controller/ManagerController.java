@@ -1,9 +1,11 @@
 package com.dawidpater.project.carrental.controller;
 
+import com.dawidpater.project.carrental.dto.InvoiceDto;
 import com.dawidpater.project.carrental.dto.RentalDto;
 import com.dawidpater.project.carrental.dto.webrequest.ReclaimProtocolRequestDto;
 import com.dawidpater.project.carrental.dto.webrequest.RejectionRequestDto;
 import com.dawidpater.project.carrental.entity.RentalUser;
+import com.dawidpater.project.carrental.entity.constant.PaymentStatus;
 import com.dawidpater.project.carrental.exception.rentalStatus.*;
 import com.dawidpater.project.carrental.service.ReclaimProtocolRequestService;
 import com.dawidpater.project.carrental.service.RentalService;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.math.BigDecimal;
 
 @Controller
 @Slf4j
@@ -28,8 +31,10 @@ public class ManagerController {
 
     private final RentalService rentalService;
     private final ReclaimProtocolRequestService reclaimProtocolRequestService;
+    private final String REDIRECT_TO_RENTAL = "redirect:/management/manager/rental/";
+    private final String ERROR = "error";
 
-    @RequestMapping("rental")
+    @GetMapping("rental")
     public String showAllRentals(Model model,
                                  HttpServletRequest request,
                                  @RequestParam(required = false) String pageNumber,
@@ -47,7 +52,7 @@ public class ManagerController {
         return "management_rental";
     }
 
-    @RequestMapping(value = "rental",params = "rentalSelector")
+    @GetMapping(value = "rental",params = "rentalSelector")
     public String showAllRentalsAccordingToSelector(Model model,
                                                     HttpServletRequest request,
                                                     @RequestParam(required = false) String pageNumber,
@@ -58,8 +63,6 @@ public class ManagerController {
         int newRentals = (request.isUserInRole("MANAGER") || request.isUserInRole("ADMIN")) ? rentalService.getAmountOfNotConfirmedAndRejectedRentals() : 0;
         model.addAttribute("newRentals", newRentals);
 
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        RentalUser user = (RentalUser)auth.getPrincipal();
         Page<RentalDto> rentalDtos = rentalService.getAllRequestedRentals(pageNumber,perPage,rentalSelector);
         model.addAttribute("rentalDtos",rentalDtos);
         model.addAttribute("totalItems",rentalDtos.getTotalElements());
@@ -74,57 +77,62 @@ public class ManagerController {
                                         @PathVariable Long id){
         RentalDto rentalDto = rentalService.getRentalById(id);
         model.addAttribute("rentalDto",rentalDto);
+        model.addAttribute("invoiceDto",rentalDto.getInvoiceDto());
         return "management_rental_details";
     }
 
-    @GetMapping("rental/changeStarted/{id}")
+    @PostMapping("rental/changeStarted/")
     public String changeStarted(Model model,
-                                @PathVariable(value = "id") Long id){
+                                @ModelAttribute RentalDto rentalDto){
+        Long id = rentalDto.getId();
         try{
             rentalService.inverseStartedFieldById(id);
         }catch (RentalNotConfirmedOrAlreadyRejectedException e){
-            model.addAttribute("error",e.getMessage());
+            model.addAttribute(ERROR,e.getMessage());
             return showUserRentalDetails(model,id);
         }
-        return "redirect:/management/manager/rental/"+id;
+        return REDIRECT_TO_RENTAL+id;
     }
 
-    @GetMapping("rental/changeEnded/{id}")
+    @PostMapping("rental/changeEnded/")
     public String changeEnded(Model model,
-                              @PathVariable(value = "id") Long id){
+                              @ModelAttribute RentalDto rentalDto){
+        Long id = rentalDto.getId();
         try{
             rentalService.inverseEndedFieldById(id);
         }catch (RentalNotEvenStartedException e){
-            model.addAttribute("error",e.getMessage());
+            model.addAttribute(ERROR,e.getMessage());
             return showUserRentalDetails(model,id);
         }
-        return "redirect:/management/manager/rental/"+id;
+        return REDIRECT_TO_RENTAL+id;
     }
 
-    @GetMapping("rental/changeClosed/{id}")
+    @PostMapping("rental/changeClosed/")
     public String changeClosed(Model model,
-                               @PathVariable(value = "id") Long id){
+                               @ModelAttribute RentalDto rentalDto){
+        Long id = rentalDto.getId();
         try{
             rentalService.inverseClosedFieldById(id);
         }catch (RentalNotPaidOrNoReclaimProtocol e){
-            model.addAttribute("error",e.getMessage());
+            model.addAttribute(ERROR,e.getMessage());
             return showUserRentalDetails(model,id);
         }
-        return "redirect:/management/manager/rental/"+id;
+        return REDIRECT_TO_RENTAL+id;
     }
 
-    //TODO: Post methods
-    @GetMapping("rental/changeConfirmed/{id}")
+
+    @PostMapping("rental/changeConfirmed/")
     public String changeConfirmed(Model model,
-                                  @PathVariable(value = "id") Long id){
+                                  @ModelAttribute RentalDto rentalDto){
+        Long id = rentalDto.getId();
         try{
             rentalService.inverseConfirmedFieldById(id);
         }catch (RentalAlreadyStartedException e){
-            model.addAttribute("error",e.getMessage());
+            model.addAttribute(ERROR,e.getMessage());
             return showUserRentalDetails(model,id);
         }
 
-        return "redirect:/management/manager/rental/"+id;
+        return REDIRECT_TO_RENTAL+id;
     }
 
     @GetMapping("/rental/rejection/{id}")
@@ -150,36 +158,54 @@ public class ManagerController {
         try{
             rentalService.rejectRentalAccordingToRequest(rejectionRequest);
         }catch (RentalAlreadyStartedException e){
-            model.addAttribute("error",e.getMessage());
+            model.addAttribute(ERROR,e.getMessage());
             return showUserRentalDetails(model,id);
         }
-        return "redirect:/management/manager/rental/"+id;
+        return REDIRECT_TO_RENTAL+id;
     }
 
-    @GetMapping("/rental/{id}/changeBasicPayment/{paymentStatus}")
+    @PostMapping("/rental/rejection/delete")
+    public String deleteRejectionOfRental(Model model,
+                                          @ModelAttribute RentalDto rentalDto){
+            Long id = rentalDto.getId();
+            try{
+                rentalService.inverseRejectedAndDeleteReason(id);
+            }catch (RentalAlreadyStartedException e){
+                model.addAttribute(ERROR,e.getMessage());
+                return showUserRentalDetails(model,id);
+            }
+
+            return REDIRECT_TO_RENTAL+id;
+    }
+
+    @PostMapping("/rental/changeBasicPayment/")
     public String changeBasicPayment(Model model,
-                                     @PathVariable Long id,
-                                     @PathVariable String paymentStatus){
+                                     @ModelAttribute RentalDto rentalDto,
+                                     @ModelAttribute InvoiceDto invoiceDto){
+        Long id = rentalDto.getId();
+        PaymentStatus basicPaymentStatus = invoiceDto.getBasicPaymentStatus();
         try{
-            rentalService.changeBasicPayment(id,paymentStatus);
+            rentalService.changeBasicPayment(id,basicPaymentStatus);
         }catch (RentalNotConfirmedOrAlreadyRejectedException e){
-            model.addAttribute("error",e.getMessage());
+            model.addAttribute(ERROR,e.getMessage());
             return showUserRentalDetails(model,id);
         }
-        return "redirect:/management/manager/rental/"+id;
+        return REDIRECT_TO_RENTAL+id;
     }
 
-    @GetMapping("/rental/{id}/changeDamagePayment/{paymentStatus}")
+    @PostMapping("/rental/changeDamagePayment/")
     public String changeDamagePayment(Model model,
-                                     @PathVariable Long id,
-                                     @PathVariable String paymentStatus){
+                                      @ModelAttribute RentalDto rentalDto,
+                                      @ModelAttribute InvoiceDto invoiceDto){
+        Long id = rentalDto.getId();
+        PaymentStatus damagePaymentStatus = invoiceDto.getDamagePaymentStatus();
         try{
-            rentalService.changeDamagePayment(id,paymentStatus);
+            rentalService.changeDamagePayment(id,damagePaymentStatus);
         }catch (NoReclaimProtocolException e){
-            model.addAttribute("error",e.getMessage());
+            model.addAttribute(ERROR,e.getMessage());
             return showUserRentalDetails(model,id);
         }
-        return "redirect:/management/manager/rental/"+id;
+        return REDIRECT_TO_RENTAL+id;
     }
 
     @GetMapping("/rental/reclaimProtocol/{id}")
@@ -207,11 +233,11 @@ public class ManagerController {
         try{
             rentalService.saveReclaimProtocol(id,reclaimProtocol);
         }catch (RentalNotEndedException e){
-            model.addAttribute("error",e.getMessage());
+            model.addAttribute(ERROR,e.getMessage());
             return showUserRentalDetails(model,id);
         }
 
-        return "redirect:/management/manager/rental/"+id;
+        return REDIRECT_TO_RENTAL+id;
     }
 
     @PostMapping("/rental/deleteReclaimProtocol")
@@ -221,10 +247,10 @@ public class ManagerController {
         try{
             rentalService.deleteReclaimProtocol(id);
         }catch (NoReclaimProtocolException e){
-            model.addAttribute("error",e.getMessage());
+            model.addAttribute(ERROR,e.getMessage());
             return showUserRentalDetails(model,id);
         }
-        return "redirect:/management/manager/rental/"+id;
+        return REDIRECT_TO_RENTAL+id;
     }
 
     @GetMapping("/rental/updateReclaimProtocol/{id}")
@@ -243,9 +269,23 @@ public class ManagerController {
         try{
             rentalService.changeCarDamageStatus(id);
         }catch (Exception e){
-            model.addAttribute("error",e.getMessage());
+            model.addAttribute(ERROR,e.getMessage());
             return showUserRentalDetails(model,id);
         }
-        return "redirect:/management/manager/rental/"+id;
+        return REDIRECT_TO_RENTAL+id;
+    }
+
+    @PostMapping("/rental/setDamageCost")
+    public String setDamageCost(Model model,
+                                @ModelAttribute RentalDto rentalDto,
+                                @ModelAttribute InvoiceDto invoiceDto){
+        Long id = rentalDto.getId();
+        try{
+            rentalService.setDamageCost(id,invoiceDto.getDamageCost());
+        }catch (NoReclaimProtocolException e){
+            model.addAttribute(ERROR,e.getMessage());
+            return showUserRentalDetails(model,id);
+        }
+        return REDIRECT_TO_RENTAL+id;
     }
 }

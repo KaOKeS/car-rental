@@ -15,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,7 +34,7 @@ public class UsersManagementController {
                                  @RequestParam(required = false) String perPage){
 
         List<String> currentUserRoles = UserRoleValdation.getCurrentUserRoles(request);
-        log.debug("User managment feature displayed to user with role {}", currentUserRoles.toArray().toString());
+        log.debug("User managment feature displayed to user with role {}", Arrays.toString(currentUserRoles.toArray()));
 
         Page<RentalUserDto> allUsersWithRolesDto = rentalUserService.getAllUsersWithRoles(pageNumber,perPage);
 
@@ -47,7 +48,7 @@ public class UsersManagementController {
     @GetMapping("changeBlockedField/{id}")
     public String blockUser(@PathVariable(value = "id") Long id, Model model,HttpServletRequest request){
         List<String> currentUserRoles = UserRoleValdation.getCurrentUserRoles(request);
-        log.debug("User blocking feature displayed to user with role {}", currentUserRoles.toArray().toString());
+        log.debug("User blocking feature displayed to user with role {}", Arrays.toString(currentUserRoles.toArray()));
 
         rentalUserService.inverseBlockedFieldOfUserById(id);
         log.debug("User with id={} has changed blocked state",id);
@@ -57,7 +58,7 @@ public class UsersManagementController {
     @GetMapping("makeManager/{id}")
     public String makeManager(@PathVariable(value = "id") Long id, Model model, HttpServletRequest request){
         List<String> currentUserRoles = UserRoleValdation.getCurrentUserRoles(request);
-        log.debug("User to MANAGER feature displayed to user with role {}", currentUserRoles.toArray().toString());
+        log.debug("User to MANAGER feature displayed to user with role {}", Arrays.toString(currentUserRoles.toArray()));
 
         rentalUserService.changeRoleToManager(id);
         log.debug("User with id={} is MANAGER",id);
@@ -67,7 +68,7 @@ public class UsersManagementController {
     @GetMapping("makeAdmin/{id}")
     public String makeAdmin(@PathVariable(value = "id") Long id, Model model,HttpServletRequest request){
         List<String> currentUserRoles = UserRoleValdation.getCurrentUserRoles(request);
-        log.debug("User to ADMIN feature displayed to user with role {}", currentUserRoles.toArray().toString());
+        log.debug("User to ADMIN feature displayed to user with role {}", Arrays.toString(currentUserRoles.toArray()));
 
         rentalUserService.changeRoleToAdmin(id);
         log.debug("User with id={} is ADMIN",id);
@@ -77,7 +78,7 @@ public class UsersManagementController {
     @GetMapping("makeUser/{id}")
     public String makeUser(@PathVariable(value = "id") Long id, Model model,HttpServletRequest request){
         List<String> currentUserRoles = UserRoleValdation.getCurrentUserRoles(request);
-        log.debug("Change role to USER feature displayed to user with role {}", currentUserRoles.toArray().toString());
+        log.debug("Change role to USER feature displayed to user with role {}", Arrays.toString(currentUserRoles.toArray()));
 
         rentalUserService.changeRoleToUser(id);
         log.debug("User with id={} has USER role.",id);

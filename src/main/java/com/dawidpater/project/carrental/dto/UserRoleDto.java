@@ -1,9 +1,7 @@
 package com.dawidpater.project.carrental.dto;
 
-import com.dawidpater.project.carrental.entity.RentalUser;
 import lombok.*;
 
-import javax.persistence.*;
 import java.util.List;
 
 @Getter

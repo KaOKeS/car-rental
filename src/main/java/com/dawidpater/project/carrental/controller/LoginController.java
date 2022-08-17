@@ -1,13 +1,10 @@
 package com.dawidpater.project.carrental.controller;
 
-import com.dawidpater.project.carrental.dto.RentalUserDto;
-import com.dawidpater.project.carrental.entity.RentalUser;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.WebAttributes;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 

@@ -10,10 +10,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 @Controller
 @AllArgsConstructor
@@ -53,8 +55,6 @@ public class UserController {
     @GetMapping(value = "/rental/{id}")
     public String showUserRentalDetails(Model model,
                                         @PathVariable Long id){
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        RentalUser user = (RentalUser)auth.getPrincipal();
         RentalDto rentalDto = rentalService.getRentalById(id);
         model.addAttribute("rentalDto",rentalDto);
         return "user_rental_details";
@@ -63,7 +63,6 @@ public class UserController {
     @GetMapping(value = "/rental/{id}/invoice")
     public String showUserRentalInvoice(Model model,
                                         @PathVariable Long id){
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         RentalDto rentalDto = rentalService.getRentalById(id);
         model.addAttribute("rentalDto",rentalDto);
         LocalDateTime now = LocalDateTime.now();

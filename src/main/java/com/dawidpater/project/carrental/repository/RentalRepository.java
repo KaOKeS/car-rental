@@ -1,6 +1,5 @@
 package com.dawidpater.project.carrental.repository;
 
-import com.dawidpater.project.carrental.entity.Car;
 import com.dawidpater.project.carrental.entity.Rental;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -43,4 +42,6 @@ public interface RentalRepository extends JpaRepository<Rental,Long> {
     Page<Rental> findAllByClosed(boolean closed,Pageable page);
 
     Page<Rental> findAll(Pageable page);
+
+    List<Rental> findAllByCarId(Long id);
 }

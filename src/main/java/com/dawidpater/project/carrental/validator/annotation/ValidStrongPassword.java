@@ -1,14 +1,12 @@
 package com.dawidpater.project.carrental.validator.annotation;
 
-import com.dawidpater.project.carrental.validator.EmailValidator;
 import com.dawidpater.project.carrental.validator.StrongPasswordValidator;
-
-import java.lang.annotation.Documented;
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
+import java.lang.annotation.Documented;
+import java.lang.annotation.Retention;
+import java.lang.annotation.Target;
 
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;

@@ -49,7 +49,7 @@ public class RentalUserService implements UserDetailsService {
     public RentalUser save(RentalUserDto rentalUserDto) throws UserAlreadyExistException {
         log.debug("Before saving user. Checking if already exists. Username={}  email={}",rentalUserDto.getUsername(),rentalUserDto.getEmail());
         rentalUserRepository.findByUsernameOrEmail(rentalUserDto.getUsername(),rentalUserDto.getEmail())
-                .ifPresent((user) -> {throw new UserAlreadyExistException();});
+                .ifPresent(user -> {throw new UserAlreadyExistException();});
         log.debug("Building rentalUser from rentalUserDto={}",rentalUserDto);
         RentalUser rentalUser = rentalUserConverter.dtoToEntity(rentalUserDto);
         log.debug("Encoding user password");
@@ -72,8 +72,7 @@ public class RentalUserService implements UserDetailsService {
         int perPage = IntegerTryParse.parse(reqPerPage,5);
 
         Page<RentalUser> allUsers = rentalUserRepository.getAllUsersWithTheirRole(PageRequest.of(pageNumber,perPage, Sort.by(Sort.Direction.ASC,"id")));
-        Page<RentalUserDto> rentalUserDtos = rentalUserConverter.entityToDto(allUsers);
-        return rentalUserDtos;
+        return rentalUserConverter.entityToDto(allUsers);
     }
 
     public void inverseBlockedFieldOfUserById(Long id) {

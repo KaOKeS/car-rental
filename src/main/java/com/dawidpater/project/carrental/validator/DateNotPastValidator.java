@@ -1,17 +1,12 @@
 package com.dawidpater.project.carrental.validator;
 
-import ch.qos.logback.classic.pattern.DateConverter;
 import com.dawidpater.project.carrental.validator.annotation.DateIsNotPast;
 import org.springframework.stereotype.Component;
 
-import javax.swing.text.DateFormatter;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
-import java.text.DateFormat;
-import java.text.Format;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.Period;
 import java.time.format.DateTimeFormatter;
 
 @Component

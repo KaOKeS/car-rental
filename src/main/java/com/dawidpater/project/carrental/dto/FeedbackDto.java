@@ -1,6 +1,5 @@
 package com.dawidpater.project.carrental.dto;
 
-import com.dawidpater.project.carrental.entity.Rental;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

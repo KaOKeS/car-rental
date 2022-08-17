@@ -1,7 +1,5 @@
 package com.dawidpater.project.carrental.dto;
 
-import com.dawidpater.project.carrental.entity.Rental;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,7 +15,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 public class CarDto {
-    private final String DEFAULT_IMAGE_PATH = "/images/cars/no-car-image.png";
+    private static final String DEFAULT_IMAGE_PATH = "/images/cars/no-car-image.png";
 
     private long id;
     private String imagePath = DEFAULT_IMAGE_PATH;

@@ -24,6 +24,7 @@ import javax.validation.Valid;
 public class RentalController {
     private final CarService carService;
     private final RentalService rentalService;
+    private final String RENTAL_TEMPLATE = "rental";
 
     @GetMapping(value = "/{id}")
     public String showRentFormFilled(@PathVariable Long id,
@@ -33,7 +34,7 @@ public class RentalController {
         CarDto carDto = carService.getCarById(id);
         model.addAttribute("carDto",carDto);
         log.info("Receiving CarDto received {}",carDto);
-        return "rental";
+        return RENTAL_TEMPLATE;
     }
 
     @PostMapping
@@ -43,7 +44,7 @@ public class RentalController {
                              Model model){
         if(result.hasErrors()){
             log.debug("Rent request had errors");
-            return "rental";
+            return RENTAL_TEMPLATE;
         }
         log.debug("Getting data about logged user");
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -54,8 +55,8 @@ public class RentalController {
             rentalService.makeRental(rentalRequestDto,carDto,user);
         }catch(CarAlreadyRentedException e){
             log.debug("CarAlreadyRentedException occured with {} \n {}\n {}",rentalRequestDto,carDto,user);
-            model.addAttribute("carAlreadyRented","Car is already rented at this time.\n Please use Cars page(Main navigation) filtrater out cars rented in the dates you are interested in.");
-            return "rental";
+            model.addAttribute("carAlreadyRented","Car is already rented at this time.\n Please use Cars page(Main navigation) filter out cars rented in the dates you are interested in.");
+            return RENTAL_TEMPLATE;
         }
         log.debug("Rental made");
         return "redirect:/user/rental";

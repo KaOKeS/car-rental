@@ -23,9 +23,9 @@ import java.util.*;
 @AllArgsConstructor
 @Slf4j
 public class CarController {
+    private final String CAR_TEMPLATE = "new_car";
 
     private final CarService carService;
-    private final CarConverter carConverter;
 
     @GetMapping("/cars")
     public String displayCars(@RequestParam(required = false) String perPage,
@@ -46,7 +46,7 @@ public class CarController {
         model.addAttribute("filterCarsRequestDto", new FilterCarsRequestDto());
 
         List<String> currentUserRoles = UserRoleValdation.getCurrentUserRoles(request);
-        log.debug("Displaying cars for user with role {}", currentUserRoles.toArray().toString());
+        log.debug("Displaying cars for user with role {}", Arrays.toString(currentUserRoles.toArray()));
         model.addAttribute("isAdmin",request.isUserInRole("ADMIN"));
         return "car";
     }
@@ -78,7 +78,7 @@ public class CarController {
         model.addAttribute("filterCarsRequestDto", new FilterCarsRequestDto());
 
         List<String> currentUserRoles = UserRoleValdation.getCurrentUserRoles(request);
-        log.debug("Displaying cars for user with role {}", currentUserRoles.toArray().toString());
+        log.debug("Displaying cars for user with role {}", Arrays.toString(currentUserRoles.toArray()));
         model.addAttribute("isAdmin",request.isUserInRole("ADMIN"));
         return "car";
     }
@@ -89,8 +89,8 @@ public class CarController {
     public String showNewCarForm(@ModelAttribute CarDto carDto, Model model, HttpServletRequest request){
         log.info("Showing add car webpage");
         List<String> currentUserRoles = UserRoleValdation.getCurrentUserRoles(request);
-        log.debug("Displaying admin add car page for user with role {}", currentUserRoles.toArray().toString());
-        return "new_car";
+        log.debug("Displaying admin add car page for user with role {}", Arrays.toString(currentUserRoles.toArray()));
+        return CAR_TEMPLATE;
     }
 
     @GetMapping("/management/admin/updateCar/{id}")
@@ -100,8 +100,8 @@ public class CarController {
         log.info("Car with requested id={} is {}",id,carDto);
         model.addAttribute("carDto",carDto);
         List<String> currentUserRoles = UserRoleValdation.getCurrentUserRoles(request);
-        log.debug("Displaying admin update car page for user with role {}", currentUserRoles.toArray().toString());
-        return "new_car";
+        log.debug("Displaying admin update car page for user with role {}", Arrays.toString(currentUserRoles.toArray()));
+        return CAR_TEMPLATE;
     }
 
     @PostMapping("/management/admin/saveCar")
@@ -109,11 +109,11 @@ public class CarController {
         log.debug("Car dto provided by admin: {}",carDto);
         if (result.hasErrors()) {
             log.debug("Validation failure");
-            return "new_car";
+            return CAR_TEMPLATE;
         }
         carService.addCar(carDto);
         List<String> currentUserRoles = UserRoleValdation.getCurrentUserRoles(request);
-        log.debug("Displaying admin update car page for user with role {}", currentUserRoles.toArray().toString());
+        log.debug("Displaying admin update car page for user with role {}", Arrays.toString(currentUserRoles.toArray()));
         return "redirect:/management/admin/addCar?success";
     }
 
@@ -122,7 +122,7 @@ public class CarController {
         log.debug("Admin deleting car with id={}",id);
         carService.deleteCarById(id);
         List<String> currentUserRoles = UserRoleValdation.getCurrentUserRoles(request);
-        log.debug("Displaying admin update car page for user with role {}", currentUserRoles.toArray().toString());
+        log.debug("Displaying admin update car page for user with role {}", Arrays.toString(currentUserRoles.toArray()));
         return "redirect:/cars?deletionSucced";
     }
 }

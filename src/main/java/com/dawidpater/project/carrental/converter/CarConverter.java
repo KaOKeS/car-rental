@@ -32,18 +32,17 @@ public class CarConverter {
 
     public List<Car> dtoToEntity(List<CarDto> carDtos){
         log.debug("Converting List<CarDto>");
-        return carDtos.stream().map(carDto -> dtoToEntity(carDto)).collect(Collectors.toList());
+        return carDtos.stream().map(this::dtoToEntity).toList();
     }
 
     public List<CarDto> entityToDto(List<Car> cars){
         log.debug("Converting List<Car>");
-        return cars.stream().map(car -> entityToDto(car)).collect(Collectors.toList());
+        return cars.stream().map(this::entityToDto).toList();
     }
 
     public Page<CarDto> entityToDto(Page<Car> cars){
         log.debug("Converting Page<CarDto>");
-        Page<CarDto> dtoPage = cars.map(this::entityToDto);
-        return dtoPage;
+        return cars.map(this::entityToDto);
     }
 
 

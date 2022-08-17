@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,15 +37,15 @@ public class FeedbackConverter {
 
     public List<Feedback> dtoToEntity(List<FeedbackDto> feedbackDtos){
         if(feedbackDtos==null)
-            return null;
+            return Collections.EMPTY_LIST;
         log.debug("Converting List<FeedbackDto>");
-        return feedbackDtos.stream().map(feedbackDto -> dtoToEntity(feedbackDto)).collect(Collectors.toList());
+        return feedbackDtos.stream().map(this::dtoToEntity).toList();
     }
 
     public List<FeedbackDto> entityToDto(List<Feedback> feedbacks){
         if(feedbacks==null)
-            return null;
+            return Collections.EMPTY_LIST;
         log.debug("Converting List<Feedback>");
-        return feedbacks.stream().map(feedback -> entityToDto(feedback)).collect(Collectors.toList());
+        return feedbacks.stream().map(this::entityToDto).toList();
     }
 }

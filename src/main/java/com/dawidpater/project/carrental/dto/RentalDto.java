@@ -1,14 +1,10 @@
 package com.dawidpater.project.carrental.dto;
 
-import com.dawidpater.project.carrental.converter.LocalDateTimeFromStringConverter;
-import com.dawidpater.project.carrental.entity.Car;
-import com.dawidpater.project.carrental.entity.Feedback;
-import com.dawidpater.project.carrental.entity.RentalUser;
-import lombok.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
-import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Getter

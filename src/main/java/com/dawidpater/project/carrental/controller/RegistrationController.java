@@ -38,7 +38,7 @@ public class RegistrationController {
 
         log.debug("Registering user account with information: {}", rentalUserDto);
         try {
-            RentalUser user = rentalUserService.save(rentalUserDto);
+            rentalUserService.save(rentalUserDto);
         } catch (UserAlreadyExistException uaeEx) {
             model.addAttribute("user", rentalUserDto);
             log.debug("User already exists: {}", rentalUserDto);

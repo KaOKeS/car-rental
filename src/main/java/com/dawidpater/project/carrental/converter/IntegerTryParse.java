@@ -4,6 +4,9 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class IntegerTryParse {
+
+    private IntegerTryParse(){}
+
     public static Integer parse(String obj, int defaultValue) {
         log.debug("Trying to parse {} to int",obj);
         Integer retVal;

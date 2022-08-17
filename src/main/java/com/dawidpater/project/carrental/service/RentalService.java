@@ -38,6 +38,7 @@ public class RentalService {
     private final RentalConverter rentalConverter;
     private final InvoiceService invoiceService;
     private final CarService carService;
+    private final String PARSER_LOGGER = "Parsing to int pageNumber={} and perPage={}. If null default value will be set";
 
     @Transactional
     public RentalDto makeRental(RentalRequestDto rentalRequestDto, CarDto carDto, RentalUser user) throws CarAlreadyRentedException {
@@ -96,16 +97,15 @@ public class RentalService {
     }
 
     public Page<RentalDto> getAllRentalsByUserId(Long id, String reqPageNumber, String reqPerPage ) {
-        log.debug("Parsing to int pageNumber={} and perPage={}. If null default value will be set",reqPageNumber,reqPerPage);
+        log.debug(PARSER_LOGGER,reqPageNumber,reqPerPage);
         int pageNumber = IntegerTryParse.parse(reqPageNumber,1)-1;
         int perPage = IntegerTryParse.parse(reqPerPage,5);
         Page<Rental> rentals = rentalRepository.findAllRentalsByUserId(id, PageRequest.of(pageNumber, perPage, Sort.by(Sort.Direction.DESC, "id")));
-        Page<RentalDto> rentalDtos = rentalConverter.entityToDto(rentals);
-        return rentalDtos;
+        return rentalConverter.entityToDto(rentals);
     }
 
     public Page<RentalDto> getRequestedRentalsByUserId(Long id, String reqPageNumber, String reqPerPage, String rentalSelector) {
-        log.debug("Parsing to int pageNumber={} and perPage={}. If null default value will be set",reqPageNumber,reqPerPage);
+        log.debug(PARSER_LOGGER,reqPageNumber,reqPerPage);
         int pageNumber = IntegerTryParse.parse(reqPageNumber,1)-1;
         int perPage = IntegerTryParse.parse(reqPerPage,5);
         Page<Rental> rentals;
@@ -129,8 +129,7 @@ public class RentalService {
         log.debug("Getting Rental by id={}",id);
         Rental rental = rentalRepository.findById(id).orElseThrow();
         log.debug("Fetched {}",rental);
-        RentalDto rentalDto = rentalConverter.entityToDto(rental);
-        return rentalDto;
+        return rentalConverter.entityToDto(rental);
     }
 
     public int getAmountOfNotConfirmedAndRejectedRentals() {
@@ -140,7 +139,7 @@ public class RentalService {
     }
     
     public Page<RentalDto> getAllRentals(String reqPageNumber, String reqPerPage){
-        log.debug("Parsing to int pageNumber={} and perPage={}. If null default value will be set",reqPageNumber,reqPerPage);
+        log.debug(PARSER_LOGGER,reqPageNumber,reqPerPage);
         int pageNumber = IntegerTryParse.parse(reqPageNumber,1)-1;
         int perPage = IntegerTryParse.parse(reqPerPage,5);
         log.debug("Fetching all rentals");
@@ -149,7 +148,7 @@ public class RentalService {
     }
 
     public Page<RentalDto> getAllRequestedRentals(String reqPageNumber, String reqPerPage, String rentalSelector) {
-        log.debug("Parsing to int pageNumber={} and perPage={}. If null default value will be set",reqPageNumber,reqPerPage);
+        log.debug(PARSER_LOGGER,reqPageNumber,reqPerPage);
         int pageNumber = IntegerTryParse.parse(reqPageNumber,1)-1;
         int perPage = IntegerTryParse.parse(reqPerPage,5);
         Page<Rental> allRequestedRentals;
@@ -199,9 +198,10 @@ public class RentalService {
 
     public void inverseClosedFieldById(Long id) throws RentalNotPaidOrNoReclaimProtocol{
         Rental rental = rentalRepository.findById(id).orElseThrow();
-        if(rental.getReclaimProtocol()==null || rental.getReclaimProtocol().isEmpty()
+        if((rental.getReclaimProtocol()==null || rental.getReclaimProtocol().isEmpty()
                 || rental.getInvoice().getBasicPaymentStatus().equals(PaymentStatus.UNPAID)
-                || rental.getInvoice().getDamagePaymentStatus().equals(PaymentStatus.UNPAID)){
+                || rental.getInvoice().getDamagePaymentStatus().equals(PaymentStatus.UNPAID))
+                && !rental.isRejected()){
             log.debug("Rental not closed, because rental.getReclaimProtocol={} or rental.getInvoice().getBasicPaymentStatus={}  or rental.getInvoice().getDamagePaymentStatus={}",
                     rental.getReclaimProtocol(), rental.getInvoice().getBasicPaymentStatus(), rental.getInvoice().getDamagePaymentStatus());
             throw new RentalNotPaidOrNoReclaimProtocol("Rental does not have reclaim protocol or invoice not paid");
@@ -224,12 +224,10 @@ public class RentalService {
         rentalRepository.save(rental);
     }
 
-    // TODO: Unreject rental?
-    public void inverseRejectedFieldById(Long id) {
+    public void inverseRejectedAndDeleteReason(Long id) {
         Rental rental = rentalRepository.findById(id).orElseThrow();
-        rental.setRejected(!rental.isRejected());
-        if(rental.isConfirmed())
-            rental.setConfirmed(false);
+        rental.setRejected(false);
+        rental.setRejectionReason(null);
         rentalRepository.save(rental);
     }
 
@@ -249,30 +247,20 @@ public class RentalService {
         rentalRepository.save(rental);
     }
 
-    public void changeBasicPayment(Long id, String stringPaymentStatus) throws RentalNotConfirmedOrAlreadyRejectedException{
+    public void changeBasicPayment(Long id, PaymentStatus paymentStatus) throws RentalNotConfirmedOrAlreadyRejectedException{
         Rental rental = rentalRepository.findById(id).orElseThrow();
         if(!rental.isConfirmed() || rental.isRejected()){
             throw new RentalNotConfirmedOrAlreadyRejectedException("Payment should not be accepted, because rental not confirmed or rejected");
         }
-        PaymentStatus paymentStatus = Arrays.stream(PaymentStatus.values())
-                .filter(ps -> ps.name().equalsIgnoreCase(stringPaymentStatus))
-                .findFirst()
-                        .orElseThrow();
-
         rental.getInvoice().setBasicPaymentStatus(paymentStatus);
         rentalRepository.save(rental);
     }
 
-    public void changeDamagePayment(Long id, String stringPaymentStatus) throws NoReclaimProtocolException{
+    public void changeDamagePayment(Long id, PaymentStatus paymentStatus) throws NoReclaimProtocolException{
         Rental rental = rentalRepository.findById(id).orElseThrow();
         if(rental.getReclaimProtocol()==null || rental.getReclaimProtocol().isEmpty()){
             throw new NoReclaimProtocolException("Rental reclaim protocol is empty.");
         }
-        PaymentStatus paymentStatus = Arrays.stream(PaymentStatus.values())
-                .filter(pa -> pa.name().equalsIgnoreCase(stringPaymentStatus))
-                .findFirst()
-                .orElseThrow();
-
         rental.getInvoice().setDamagePaymentStatus(paymentStatus);
         rentalRepository.save(rental);
     }
@@ -305,6 +293,14 @@ public class RentalService {
         Rental rental = rentalRepository.findById(id).orElseThrow();
         rental.setCarDamaged(!rental.isCarDamaged());
         rental.getInvoice().setDamagePaymentStatus(PaymentStatus.UNPAID);
+        rentalRepository.save(rental);
+    }
+
+    public void setDamageCost(Long id, BigDecimal cost) throws NoReclaimProtocolException{
+        Rental rental = rentalRepository.findById(id).orElseThrow();
+        if(!rental.isEnded())
+            throw new NoReclaimProtocolException("No reclaim protocol to count amount of damage costs");
+        rental.getInvoice().setDamageCost(cost);
         rentalRepository.save(rental);
     }
 }

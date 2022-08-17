@@ -6,8 +6,10 @@ import com.dawidpater.project.carrental.converter.LocalDateTimeFromStringConvert
 import com.dawidpater.project.carrental.dto.CarDto;
 import com.dawidpater.project.carrental.dto.webrequest.FilterCarsRequestDto;
 import com.dawidpater.project.carrental.entity.Car;
+import com.dawidpater.project.carrental.entity.Rental;
 import com.dawidpater.project.carrental.exception.CarNotFoundException;
 import com.dawidpater.project.carrental.repository.CarRepository;
+import com.dawidpater.project.carrental.repository.RentalRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -27,12 +29,18 @@ public class CarService {
     private final CarRepository carRepository;
     private final CarConverter carConverter;
     private final LocalDateTimeFromStringConverter dateConverter;
+    private final RentalRepository rentalRepository;
 
     public boolean isCarRentedInDates(Long id, String strStartDate, String strEndDate){
         LocalDateTime startDate = dateConverter.getDate(strStartDate, dateConverter.DAY_START_TIME);
         LocalDateTime endDate = dateConverter.getDate(strEndDate, dateConverter.DAY_END_TIME);
-        Car rentedCar = carRepository.findIfCarRentedInDates(id, startDate, endDate);
-        return (rentedCar==null) ? false : true;
+        List<Rental> rentalsOfCar = rentalRepository.findAllByCarId(id);
+        long amountOfCarRentalsInPeriodOfTime = rentalsOfCar.stream().filter(rental -> {
+            LocalDateTime rentalStartDate = rental.getStartDate();
+            LocalDateTime rentalEndDate = rental.getEndDate();
+            return !(startDate.isBefore(rentalStartDate) && endDate.isBefore(rentalEndDate) || startDate.isAfter(rentalEndDate) && endDate.isAfter(rentalEndDate));
+        }).count();
+        return amountOfCarRentalsInPeriodOfTime>0;
     }
 
     public Car addCar(CarDto carDto){
@@ -42,7 +50,7 @@ public class CarService {
 
     public CarDto getCarById(Long id){
         Car car = carRepository.findById(id)
-                .orElseThrow(() -> new CarNotFoundException());
+                .orElseThrow(CarNotFoundException::new);
         return carConverter.entityToDto(car);
     }
 
@@ -59,8 +67,7 @@ public class CarService {
         topCars.add(carRepository.findFirstDistinctByCarTypeOrderByRateDesc("family"));
         topCars.add(carRepository.findFirstDistinctByCarTypeOrderByRateDesc("transport"));
         topCars.add(carRepository.findFirstDistinctByCarTypeOrderByRateDesc("sport"));
-        List<CarDto> carsDto = carConverter.entityToDto(topCars);
-        return carsDto;
+        return carConverter.entityToDto(topCars);
     }
 
     public List<String> getAllCarsTypes(){
@@ -71,8 +78,7 @@ public class CarService {
         Integer pageNumber = IntegerTryParse.parse(reqPageNumber,1)-1;
         Integer perPage = IntegerTryParse.parse(reqPerPage,5);
         Page<Car> allNotDeletedCars = carRepository.findAllNotDeletedCars(PageRequest.of(pageNumber, perPage));
-        Page<CarDto> carDtos = carConverter.entityToDto(allNotDeletedCars);
-        return carDtos;
+        return carConverter.entityToDto(allNotDeletedCars);
     }
 
     public Page<CarDto> getCarsAsRequested(FilterCarsRequestDto filterCarsRequestDto, String reqPageNumber,String reqPerPage){
@@ -94,16 +100,14 @@ public class CarService {
         Page<Car> allCarsAccordingToRequestOrderBy = getAllCarsAccordingToRequestOrderBy(type, searchBy, search, minPrice, maxPrice,
                                                                                     startDate, endDate, orderBy, pageNumber, perPage);
         log.debug("allCarsAccordingToRequestOrderBy received from function.");
-        Page<CarDto> allCarsAccordingToRequest = carConverter.entityToDto(allCarsAccordingToRequestOrderBy);
 
-        return allCarsAccordingToRequest;
+        return carConverter.entityToDto(allCarsAccordingToRequestOrderBy);
     }
 
     private Page<Car> getAllCarsAccordingToRequestOrderBy(String reqType, String reqSearchBy, String reqSearch, String reqMinPrice, String reqMaxPrice,
                                                           String reqStartDate, String reqEndDate, String reqOrderBy, int pageNumber, int perPage){
         Page<Car> allCarsAccordingToRequest;
 
-        LocalDateTimeFromStringConverter dateConverter = new LocalDateTimeFromStringConverter();
         LocalDateTime startDate = dateConverter.getDate(reqStartDate,"00:00");
         LocalDateTime endDate = dateConverter.getDate(reqEndDate,"23:59");
 

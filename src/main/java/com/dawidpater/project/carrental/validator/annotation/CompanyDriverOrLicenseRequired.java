@@ -1,7 +1,6 @@
 package com.dawidpater.project.carrental.validator.annotation;
 
 import com.dawidpater.project.carrental.validator.CompanyDriverOrLicenseValidator;
-import com.dawidpater.project.carrental.validator.PriceRangeValidator;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;

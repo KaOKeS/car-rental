@@ -46,7 +46,7 @@ public class FeedbackService {
             feedbackDto.getRentalDto().setRentalUserDto(rentalUserConverter.entityToDto(feedback.getRental().getRentalUser()));
             feedbackDto.getRentalDto().setCarDto((carConverter.entityToDto(feedback.getRental().getCar())));
             return feedbackDto;
-        }).collect(Collectors.toList());
+        }).toList();
         log.debug("Returning List of FeedbackDto");
         return feedbackDtos;
     }

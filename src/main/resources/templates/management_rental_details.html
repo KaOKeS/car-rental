@@ -231,7 +231,8 @@
         </tr>
         <tr>
           <td style="width: 200px;">Status</td>
-          <td class="fw-bold" th:text="${rentalDto.invoiceDto.damagePaymentStatus.name()}" th:classappend="${rentalDto.invoiceDto.damagePaymentStatus.name().equalsIgnoreCase('Unpaid')} ? 'text-danger' : 'text-success'">Error</td>
+          <td th:if="${rentalDto.ended}" class="fw-bold" th:text="${rentalDto.invoiceDto.damagePaymentStatus.name()}" th:classappend="${rentalDto.invoiceDto.damagePaymentStatus.name().equalsIgnoreCase('Unpaid')} ? 'text-danger' : 'text-success'">Error</td>
+          <td th:if="${!rentalDto.ended}"></td>
         </tr>
         </tbody>
       </table>
@@ -245,7 +246,8 @@
         <tbody>
         <tr>
           <td style="width: 200px;">Returned car status</td>
-          <td th:class="${rentalDto.carDamaged} ? 'text-danger fw-bold' : 'text-success fw-bold'" th:text="${rentalDto.carDamaged} ? 'Damaged' : 'OK' ">Error</td>
+          <td th:if="${rentalDto.ended}" th:class="${rentalDto.carDamaged} ? 'text-danger fw-bold' : 'text-success fw-bold'" th:text="${rentalDto.carDamaged} ? 'Damaged' : 'OK' ">Error</td>
+          <td th:if="${!rentalDto.ended}"></td>
         </tr>
         <tr>
           <td style="width: 200px;">Reclaim protocol</td>
@@ -269,11 +271,15 @@
             <p th:text="${rentalDto.confirmed}"></p>
           </div>
           <div class="col mb-1 mt-1">
-            <a th:href = "@{/management/manager/rental/changeConfirmed/{id}(id=${rentalDto.id})}"
-               th:classappend="${rentalDto.confirmed} ? ' btn-primary' : ' btn-secondary'"
-               class="btn btn-sm" th:text="${rentalDto.confirmed} ? 'Set false' : 'Set true'">
-              Start
-            </a>
+            <form id="confirmRental" method="post" th:action="@{/management/manager/rental/changeConfirmed/}"
+                  th:object="${rentalDto}">
+              <a href="#" th:onclick="'javascript:submitConfirm()'" class="btn btn-sm"
+                 th:classappend="${rentalDto.confirmed} ? ' btn-primary' : ' btn-secondary'"
+                 th:text="${rentalDto.confirmed} ? 'Set false' : 'Set true'">
+                Confirm
+              </a>
+              <input type="hidden" name="id" th:value="*{id}">
+            </form>
           </div>
         </div>
         <!-- Reject -->
@@ -286,10 +292,19 @@
           </div>
           <div class="col mb-1 mt-1">
             <a th:href = "@{rejection/{id}(id=${rentalDto.id})}"
-               th:classappend="${rentalDto.rejected} ? ' btn-primary' : ' btn-danger'"
-               class="btn btn-sm" th:text="${rentalDto.rejected} ? 'Set false' : 'Set true'">
-              Start
+               th:if="${!rentalDto.rejected}"
+               class="btn btn-sm btn-danger">
+              Set true
             </a>
+            <form id="confirmUnreject" method="post"
+                  th:if="${rentalDto.rejected}"
+                  th:action="@{/management/manager/rental/rejection/delete/}"
+                  th:object="${rentalDto}">
+              <a href="#" th:onclick="'javascript:submitUnreject()'" class="btn btn-sm btn-primary">
+                Set false
+              </a>
+              <input type="hidden" name="id" th:value="*{id}">
+            </form>
           </div>
         </div>
       </div>
@@ -306,11 +321,15 @@
             <p th:text="${rentalDto.started}"></p>
           </div>
           <div class="col mb-1 mt-1">
-            <a th:href = "@{/management/manager/rental/changeStarted/{id}(id=${rentalDto.id})}"
-               th:classappend="${rentalDto.started} ? ' btn-primary' : ' btn-secondary'"
-               class="btn btn-sm" th:text="${rentalDto.started} ? 'Set false' : 'Set true'">
-              Start
-            </a>
+            <form id="startRental" method="post" th:action="@{/management/manager/rental/changeStarted/}"
+                  th:object="${rentalDto}">
+              <a href="#" th:onclick="'javascript:submitStart()'" class="btn btn-sm"
+                 th:classappend="${(rentalDto.started ? ' btn-primary' : ' btn-secondary') + (rentalDto.rejected ? ' disabled' : '')}"
+                 th:text="${rentalDto.started} ? 'Set false' : 'Set true'">
+                Start
+              </a>
+              <input type="hidden" name="id" th:value="*{id}">
+            </form>
           </div>
         </div>
         <!-- Ended -->
@@ -322,11 +341,15 @@
             <p th:text="${rentalDto.ended}"></p>
           </div>
           <div class="col mb-1 mt-1">
-            <a th:href = "@{/management/manager/rental/changeEnded/{id}(id=${rentalDto.id})}"
-               th:classappend="${rentalDto.ended} ? ' btn-primary' : ' btn-secondary'"
-               class="btn btn-sm" th:text="${rentalDto.ended} ? 'Set false' : 'Set true'">
-              End
-            </a>
+            <form id="endRental" method="post" th:action="@{/management/manager/rental/changeEnded/}"
+                  th:object="${rentalDto}">
+              <a href="#" th:onclick="'javascript:submitEnd()'" class="btn btn-sm"
+                 th:classappend="${(rentalDto.ended ? ' btn-primary' : ' btn-secondary')  + (rentalDto.rejected ? ' disabled' : '')}"
+                 th:text="${rentalDto.ended} ? 'Set false' : 'Set true'">
+                End
+              </a>
+              <input type="hidden" name="id" th:value="*{id}">
+            </form>
           </div>
         </div>
         <!-- Reclaim protocol -->
@@ -345,7 +368,8 @@
               Update
             </a>
             <a th:href = "@{/management/manager/rental/reclaimProtocol/{id}(id=${rentalDto.id})}"
-               class="btn btn-sm btn-warning" th:if="${rentalDto.reclaimProtocol} == null OR ${rentalDto.reclaimProtocol.isEmpty()}">
+               class="btn btn-sm btn-warning" th:if="${rentalDto.reclaimProtocol} == null OR ${rentalDto.reclaimProtocol.isEmpty()}"
+               th:classappend="${rentalDto.rejected} ? ' disabled' : ''">
               Fill protocol
             </a>
             <form id="deleteProtocol" method="post" th:action="@{/management/manager/rental/deleteReclaimProtocol}"
@@ -376,10 +400,31 @@
             <form id="carDamaged" method="post" th:action="@{/management/manager/rental/changeCarDamagedStatus}"
                   th:object="${rentalDto}">
               <a href="#" th:onclick="'javascript:submitDamaged()'" class="btn btn-sm"
-                 th:classappend="${rentalDto.carDamaged} ? ' btn-primary' : ' btn-warning'"
+                 th:classappend="${(rentalDto.carDamaged ? ' btn-primary' : ' btn-warning') + (rentalDto.rejected ? ' disabled' : '')}"
                  th:text="${rentalDto.carDamaged} ? 'Set No' : 'Set Yes'">
                 Delete
               </a>
+              <input type="hidden" name="id" th:value="*{id}">
+            </form>
+          </div>
+        </div>
+        <!-- Damaged cost -->
+        <div class="row justify-content-center">
+          <div class="col mb-1 mt-1">
+            Damaged cost:
+          </div>
+          <div class="col mb-1 mt-1">
+            <form id="damageCost" method="post" th:action="@{/management/manager/rental/setDamageCost}" th:object="${rentalDto}">
+              <div th:object="${rentalDto.invoiceDto}">
+                <div class="input-group mb-3">
+                  <input type="text" class="form-control" placeholder="Put costs here.." name="damageCost" th:value="*{damageCost}">
+                  <div class="input-group-append">
+                    <button th:onclick="'javascript:damageCost()'" class="btn btn-sm btn-secondary"
+                            th:classappend="${rentalDto.rejected ? ' disabled' : ''}"
+                            th:text="Add">Add</button>
+                  </div>
+                </div>
+              </div>
               <input type="hidden" name="id" th:value="*{id}">
             </form>
           </div>
@@ -395,12 +440,20 @@
             Basic payments:
           </div>
           <div class="col mb-1 mt-1">
-            <a th:href = "@{/management/manager/rental/{id}/changeBasicPayment/paid(id=${rentalDto.id})}" class="btn btn-sm btn-secondary">
-              Paid
-            </a>
-            <a th:href = "@{/management/manager/rental/{id}/changeBasicPayment/unpaid(id=${rentalDto.id})}" class="btn btn-sm btn-warning">
-              Unpaid
-            </a>
+            <form id="basicPayment" method="post" th:action="@{/management/manager/rental/changeBasicPayment/}">
+
+              <a href="#" th:onclick="'javascript:submitBasicPaymentPaid()'" class="btn btn-sm btn-secondary"
+                 th:classappend="${rentalDto.rejected} ? ' disabled' : ''">
+                Paid
+              </a>
+              <a href="#" th:onclick="'javascript:submitBasicPaymentUnpaid()'" class="btn btn-sm btn-warning"
+                 th:classappend="${rentalDto.rejected} ? ' disabled' : ''">
+                Unpaid
+              </a>
+
+              <input type="hidden" name="id" th:value="${rentalDto.id}">
+              <input type="hidden" name="basicPaymentStatus" value="unpaid" id="basicPaymentStatus">
+            </form>
           </div>
         </div>
         <!-- Damage payments -->
@@ -409,15 +462,22 @@
             Damage payments:
           </div>
           <div class="col mb-1 mt-1">
-            <a th:href = "@{/management/manager/rental/{id}/changeDamagePayment/paid(id=${rentalDto.id})}" class="btn btn-sm btn-secondary">
-              Paid
-            </a>
-            <a th:href = "@{/management/manager/rental/{id}/changeDamagePayment/unpaid(id=${rentalDto.id})}" class="btn btn-sm btn-warning">
-              Unpaid
-            </a>
-            <a th:href = "@{/management/manager/rental/{id}/changeDamagePayment/ok(id=${rentalDto.id})}" class="btn btn-sm btn-secondary">
-              OK
-            </a>
+            <form id="damagePayment" method="post" th:action="@{/management/manager/rental/changeDamagePayment/}">
+              <a href="#" th:onclick="'javascript:submitDamagePaymentPaid()'" class="btn btn-sm btn-secondary"
+                 th:classappend="${rentalDto.rejected} ? ' disabled' : ''">
+                Paid
+              </a>
+              <a href="#" th:onclick="'javascript:submitDamagePaymentUnpaid()'" class="btn btn-sm btn-warning"
+                 th:classappend="${rentalDto.rejected} ? ' disabled' : ''">
+                Unpaid
+              </a>
+              <a href="#" th:onclick="'javascript:submitDamagePaymentOk()'" class="btn btn-sm btn-secondary"
+                 th:classappend="${rentalDto.rejected} ? ' disabled' : ''">
+                OK
+              </a>
+              <input type="hidden" name="id" th:value="${rentalDto.id}">
+              <input type="hidden" name="damagePaymentStatus" value="unpaid" id="damagePaymentStatus">
+            </form>
           </div>
         </div>
       </div>
@@ -431,14 +491,18 @@
           Closed:
         </div>
         <div class="col mb-1 mt-1">
-          <p th:text="${rentalDto.closed}" th:class="${rentalDto.closed} ? 'text-success' : 'text-danger'">></p>
+          <p th:text="${rentalDto.closed}" th:class="${rentalDto.closed} ? 'text-success' : 'text-danger'"></p>
         </div>
         <div class="col mb-1 mt-1">
-          <a th:href = "@{/management/manager/rental/changeClosed/{id}(id=${rentalDto.id})}"
-             th:classappend="${rentalDto.closed} ? ' btn-primary' : ' btn-secondary'"
-             class="btn btn-sm" th:text="${rentalDto.closed} ? 'Set false' : 'Set true'">
-            End
-          </a>
+          <form id="closeRental" method="post" th:action="@{/management/manager/rental/changeClosed/}"
+                th:object="${rentalDto}">
+            <a href="#" th:onclick="'javascript:submitClose()'" class="btn btn-sm"
+               th:classappend="${rentalDto.closed ? ' btn-primary' : ' btn-secondary'}"
+               th:text="${rentalDto.closed} ? 'Set false' : 'Set true'">
+              End
+            </a>
+            <input type="hidden" name="id" th:value="*{id}">
+          </form>
         </div>
       </div>
       </div>
@@ -452,8 +516,54 @@
 <br>
 <br><br><br>
 <script type="text/javascript">
+function submitStart(){
+  document.getElementById('startRental').submit();
+}
+
+function submitBasicPaymentPaid(){
+  document.getElementById('basicPaymentStatus').value="PAID";
+  document.getElementById('basicPayment').submit();
+}
+function submitBasicPaymentUnpaid(){
+  document.getElementById('basicPaymentStatus').value="UNPAID";
+  document.getElementById('basicPayment').submit();
+}
+
+function submitDamagePaymentPaid(){
+  document.getElementById('damagePaymentStatus').value="PAID";
+  document.getElementById('damagePayment').submit();
+}
+function submitDamagePaymentUnpaid(){
+  document.getElementById('damagePaymentStatus').value="UNPAID";
+  document.getElementById('damagePayment').submit();
+}
+function submitDamagePaymentOk(){
+  document.getElementById('damagePaymentStatus').value="OK";
+  document.getElementById('damagePayment').submit();
+}
+
+function submitUnreject(){
+  document.getElementById('confirmUnreject').submit();
+}
+
+function submitConfirm(){
+  document.getElementById('confirmRental').submit();
+}
+
+function submitEnd(){
+  document.getElementById('endRental').submit();
+}
+
 function submitDelete(){
   document.getElementById('deleteProtocol').submit();
+}
+
+function submitClose(){
+  document.getElementById('closeRental').submit();
+}
+
+function damageCost(){
+  document.getElementById('damageCost').submit();
 }
 
 function submitDamaged(){
