@@ -13,6 +13,7 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
@@ -23,6 +24,11 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter{
 
     private final PasswordEncoder passwordEncoder;
     private final RentalUserService rentalUserService;
+
+    @Bean
+    public AccessDeniedHandler accessDeniedHandler(){
+        return new RentalAccessDeniedHandler();
+    }
 
     @Override
     public void configure(WebSecurity web) throws Exception {
@@ -70,7 +76,8 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter{
                     .deleteCookies("JSESSIONID")
                 .and()
                 .exceptionHandling() // 1
-                .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED));
+                //.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
+                .accessDeniedHandler(accessDeniedHandler());;
     }
 
     @Override
