@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @Controller
@@ -32,19 +33,19 @@ public class MainPageController {
 
     @GetMapping("/")
     public String goToMain(Model model, HttpServletRequest request){
-        log.info("Preparing Top 3 cars to dispaly");
+        log.debug("Preparing Top 3 cars to dispaly");
         List<CarDto> carsDto = carService.getBestCarFromEachType();
         model.addAttribute("cars", carsDto);
 
-        log.info("Preparing latest reviews to display");
+        log.debug("Preparing latest reviews to display");
         List<FeedbackDto> latestReviewsLimited = feedbackService.getLatestFeedbacksLimitedTo(5);
         model.addAttribute("feedbacks", latestReviewsLimited);
 
-        log.info("If user is Admin or Manager then check how many new rentals exists");
+        log.debug("If user is Admin or Manager then check how many new rentals exists");
         int newRentals = (request.isUserInRole("MANAGER") || request.isUserInRole("ADMIN")) ? rentalService.getAmountOfNotConfirmedAndRejectedRentals() : 0;
         model.addAttribute("newRentals", newRentals);
 
-        log.info("Returning view");
+        log.debug("Returning view");
         return "main";
     }
 }

@@ -5,8 +5,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 @NoArgsConstructor
-public class RentalNotEvenStartedException extends IllegalStateException{
-    public RentalNotEvenStartedException(String msg) {
-        super(msg);
+public class RentalNotEvenStartedException extends RentalStatusException {
+    public RentalNotEvenStartedException(String message, Long rentalId) {
+        super(message, rentalId);
     }
 }

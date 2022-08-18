@@ -85,12 +85,7 @@ public class ManagerController {
     public String changeStarted(Model model,
                                 @ModelAttribute RentalDto rentalDto){
         Long id = rentalDto.getId();
-        try{
-            rentalService.inverseStartedFieldById(id);
-        }catch (RentalNotConfirmedOrAlreadyRejectedException e){
-            model.addAttribute(ERROR,e.getMessage());
-            return showUserRentalDetails(model,id);
-        }
+        rentalService.inverseStartedFieldById(id);
         return REDIRECT_TO_RENTAL+id;
     }
 
@@ -98,12 +93,7 @@ public class ManagerController {
     public String changeEnded(Model model,
                               @ModelAttribute RentalDto rentalDto){
         Long id = rentalDto.getId();
-        try{
-            rentalService.inverseEndedFieldById(id);
-        }catch (RentalNotEvenStartedException e){
-            model.addAttribute(ERROR,e.getMessage());
-            return showUserRentalDetails(model,id);
-        }
+        rentalService.inverseEndedFieldById(id);
         return REDIRECT_TO_RENTAL+id;
     }
 
@@ -111,12 +101,7 @@ public class ManagerController {
     public String changeClosed(Model model,
                                @ModelAttribute RentalDto rentalDto){
         Long id = rentalDto.getId();
-        try{
-            rentalService.inverseClosedFieldById(id);
-        }catch (RentalNotPaidOrNoReclaimProtocol e){
-            model.addAttribute(ERROR,e.getMessage());
-            return showUserRentalDetails(model,id);
-        }
+        rentalService.inverseClosedFieldById(id);
         return REDIRECT_TO_RENTAL+id;
     }
 
@@ -125,13 +110,7 @@ public class ManagerController {
     public String changeConfirmed(Model model,
                                   @ModelAttribute RentalDto rentalDto){
         Long id = rentalDto.getId();
-        try{
-            rentalService.inverseConfirmedFieldById(id);
-        }catch (RentalAlreadyStartedException e){
-            model.addAttribute(ERROR,e.getMessage());
-            return showUserRentalDetails(model,id);
-        }
-
+        rentalService.inverseConfirmedFieldById(id);
         return REDIRECT_TO_RENTAL+id;
     }
 
@@ -154,13 +133,7 @@ public class ManagerController {
             log.debug("Validation error for {}",rejectionRequest);
             return "redirect:/management/manager/rental/rejection/"+id;
         }
-
-        try{
-            rentalService.rejectRentalAccordingToRequest(rejectionRequest);
-        }catch (RentalAlreadyStartedException e){
-            model.addAttribute(ERROR,e.getMessage());
-            return showUserRentalDetails(model,id);
-        }
+        rentalService.rejectRentalAccordingToRequest(rejectionRequest);
         return REDIRECT_TO_RENTAL+id;
     }
 
@@ -168,13 +141,7 @@ public class ManagerController {
     public String deleteRejectionOfRental(Model model,
                                           @ModelAttribute RentalDto rentalDto){
             Long id = rentalDto.getId();
-            try{
-                rentalService.inverseRejectedAndDeleteReason(id);
-            }catch (RentalAlreadyStartedException e){
-                model.addAttribute(ERROR,e.getMessage());
-                return showUserRentalDetails(model,id);
-            }
-
+            rentalService.inverseRejectedAndDeleteReason(id);
             return REDIRECT_TO_RENTAL+id;
     }
 
@@ -184,12 +151,7 @@ public class ManagerController {
                                      @ModelAttribute InvoiceDto invoiceDto){
         Long id = rentalDto.getId();
         PaymentStatus basicPaymentStatus = invoiceDto.getBasicPaymentStatus();
-        try{
-            rentalService.changeBasicPayment(id,basicPaymentStatus);
-        }catch (RentalNotConfirmedOrAlreadyRejectedException e){
-            model.addAttribute(ERROR,e.getMessage());
-            return showUserRentalDetails(model,id);
-        }
+        rentalService.changeBasicPayment(id,basicPaymentStatus);
         return REDIRECT_TO_RENTAL+id;
     }
 
@@ -199,12 +161,7 @@ public class ManagerController {
                                       @ModelAttribute InvoiceDto invoiceDto){
         Long id = rentalDto.getId();
         PaymentStatus damagePaymentStatus = invoiceDto.getDamagePaymentStatus();
-        try{
-            rentalService.changeDamagePayment(id,damagePaymentStatus);
-        }catch (NoReclaimProtocolException e){
-            model.addAttribute(ERROR,e.getMessage());
-            return showUserRentalDetails(model,id);
-        }
+        rentalService.changeDamagePayment(id,damagePaymentStatus);
         return REDIRECT_TO_RENTAL+id;
     }
 
@@ -230,13 +187,7 @@ public class ManagerController {
         }
 
         Long id = reclaimProtocol.getRentalId();
-        try{
-            rentalService.saveReclaimProtocol(id,reclaimProtocol);
-        }catch (RentalNotEndedException e){
-            model.addAttribute(ERROR,e.getMessage());
-            return showUserRentalDetails(model,id);
-        }
-
+        rentalService.saveReclaimProtocol(id,reclaimProtocol);
         return REDIRECT_TO_RENTAL+id;
     }
 
@@ -244,12 +195,7 @@ public class ManagerController {
     public String deleteReclaimProtocol(Model model,
                                         @ModelAttribute RentalDto rentalDto){
         Long id = rentalDto.getId();
-        try{
-            rentalService.deleteReclaimProtocol(id);
-        }catch (NoReclaimProtocolException e){
-            model.addAttribute(ERROR,e.getMessage());
-            return showUserRentalDetails(model,id);
-        }
+        rentalService.deleteReclaimProtocol(id);
         return REDIRECT_TO_RENTAL+id;
     }
 
@@ -266,12 +212,7 @@ public class ManagerController {
     public String changeCarDamagedStatus(Model model,
                                         @ModelAttribute RentalDto rentalDto){
         Long id = rentalDto.getId();
-        try{
-            rentalService.changeCarDamageStatus(id);
-        }catch (Exception e){
-            model.addAttribute(ERROR,e.getMessage());
-            return showUserRentalDetails(model,id);
-        }
+        rentalService.changeCarDamageStatus(id);
         return REDIRECT_TO_RENTAL+id;
     }
 
@@ -280,12 +221,7 @@ public class ManagerController {
                                 @ModelAttribute RentalDto rentalDto,
                                 @ModelAttribute InvoiceDto invoiceDto){
         Long id = rentalDto.getId();
-        try{
-            rentalService.setDamageCost(id,invoiceDto.getDamageCost());
-        }catch (NoReclaimProtocolException e){
-            model.addAttribute(ERROR,e.getMessage());
-            return showUserRentalDetails(model,id);
-        }
+        rentalService.setDamageCost(id,invoiceDto.getDamageCost());
         return REDIRECT_TO_RENTAL+id;
     }
 }

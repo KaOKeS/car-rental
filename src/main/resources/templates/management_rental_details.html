@@ -291,7 +291,7 @@
             <p th:text="${rentalDto.rejected}"></p>
           </div>
           <div class="col mb-1 mt-1">
-            <a th:href = "@{rejection/{id}(id=${rentalDto.id})}"
+            <a th:href = "@{/management/manager/rental/rejection/{id}(id=${rentalDto.id})}"
                th:if="${!rentalDto.rejected}"
                class="btn btn-sm btn-danger">
               Set true

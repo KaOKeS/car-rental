@@ -5,9 +5,9 @@ import org.springframework.stereotype.Component;
 
 @Component
 @NoArgsConstructor
-public class RentalNotPaidOrNoReclaimProtocol extends IllegalStateException{
+public class RentalNotPaidOrNoReclaimProtocol extends RentalStatusException {
 
-    public RentalNotPaidOrNoReclaimProtocol(String msg) {
-        super(msg);
+    public RentalNotPaidOrNoReclaimProtocol(String message, Long rentalId) {
+        super(message, rentalId);
     }
 }

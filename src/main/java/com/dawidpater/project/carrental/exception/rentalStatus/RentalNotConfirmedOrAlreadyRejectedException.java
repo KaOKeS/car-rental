@@ -5,8 +5,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 @NoArgsConstructor
-public class RentalNotConfirmedOrAlreadyRejectedException extends IllegalStateException{
-    public RentalNotConfirmedOrAlreadyRejectedException(String msg) {
-        super(msg);
+public class RentalNotConfirmedOrAlreadyRejectedException extends RentalStatusException{
+    public RentalNotConfirmedOrAlreadyRejectedException(String message, Long rentalId) {
+        super(message, rentalId);
     }
 }

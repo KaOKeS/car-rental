@@ -31,7 +31,7 @@ import java.util.Optional;
 @Service
 @Slf4j
 @AllArgsConstructor
-public class RentalService {
+public class RentalService{
     private final RentalRepository rentalRepository;
     private final CarConverter carConverter;
     private final LocalDateTimeFromStringConverter dateConverter;
@@ -176,7 +176,7 @@ public class RentalService {
         Rental rental = rentalRepository.findById(id).orElseThrow();
         if(!rental.isConfirmed() || rental.isRejected()){
             log.debug("Rental state not changed to started. Rental.isConfirmed={}  OR  Rental.isRejected={}",rental.isConfirmed(),rental.isRejected());
-            throw new RentalNotConfirmedOrAlreadyRejectedException("Rental not confirmed or already rejected!");
+            throw new RentalNotConfirmedOrAlreadyRejectedException("Rental not confirmed or already rejected!",id);
         }
         log.debug("Changing rental state to started");
         rental.setStarted(!rental.isStarted());
@@ -188,7 +188,7 @@ public class RentalService {
         Rental rental = rentalRepository.findById(id).orElseThrow();
         if(!rental.isStarted()){
             log.debug("Rental can not be ended, because rental.isStarted()={}",rental.isStarted());
-            throw new RentalNotEvenStartedException("Not started rental can not be ended");
+            throw new RentalNotEvenStartedException("Not started rental can not be ended",id);
         }
         log.debug("Changing state of rental to ended");
         rental.setEnded(!rental.isEnded());
@@ -204,7 +204,7 @@ public class RentalService {
                 && !rental.isRejected()){
             log.debug("Rental not closed, because rental.getReclaimProtocol={} or rental.getInvoice().getBasicPaymentStatus={}  or rental.getInvoice().getDamagePaymentStatus={}",
                     rental.getReclaimProtocol(), rental.getInvoice().getBasicPaymentStatus(), rental.getInvoice().getDamagePaymentStatus());
-            throw new RentalNotPaidOrNoReclaimProtocol("Rental does not have reclaim protocol or invoice not paid");
+            throw new RentalNotPaidOrNoReclaimProtocol("Rental does not have reclaim protocol or invoice not paid",id);
         }
         log.debug("Setting rental to closed");
         rental.setClosed(!rental.isClosed());
@@ -216,7 +216,7 @@ public class RentalService {
         Rental rental = rentalRepository.findById(id).orElseThrow();
         if(rental.isStarted() || rental.isRejected()){
             log.debug("Not possible to confirm rental, because it is already started or rejected");
-            throw new RentalAlreadyStartedException("Not possible to confirm rental, because it is already started or rejected");
+            throw new RentalAlreadyStartedException("Not possible to confirm rental, because it is already started or rejected",id);
         }
         rental.setConfirmed(!rental.isConfirmed());
         if(rental.isRejected())
@@ -235,7 +235,7 @@ public class RentalService {
         Rental rental = rentalRepository.findById(rejectionRequest.getRentalId()).orElseThrow();
         if(rental.isStarted()){
             log.debug("Not possible to reject rental, because it is already STARTED");
-            throw new RentalAlreadyStartedException("Rental is already started. Can not be rejected");
+            throw new RentalAlreadyStartedException("Rental is already started. Can not be rejected",rejectionRequest.getRentalId());
         }
         log.debug("Rental Rejection True");
         rental.setRejected(true);
@@ -250,7 +250,7 @@ public class RentalService {
     public void changeBasicPayment(Long id, PaymentStatus paymentStatus) throws RentalNotConfirmedOrAlreadyRejectedException{
         Rental rental = rentalRepository.findById(id).orElseThrow();
         if(!rental.isConfirmed() || rental.isRejected()){
-            throw new RentalNotConfirmedOrAlreadyRejectedException("Payment should not be accepted, because rental not confirmed or rejected");
+            throw new RentalNotConfirmedOrAlreadyRejectedException("Payment should not be accepted, because rental not confirmed or rejected",id);
         }
         rental.getInvoice().setBasicPaymentStatus(paymentStatus);
         rentalRepository.save(rental);
@@ -259,7 +259,7 @@ public class RentalService {
     public void changeDamagePayment(Long id, PaymentStatus paymentStatus) throws NoReclaimProtocolException{
         Rental rental = rentalRepository.findById(id).orElseThrow();
         if(rental.getReclaimProtocol()==null || rental.getReclaimProtocol().isEmpty()){
-            throw new NoReclaimProtocolException("Rental reclaim protocol is empty.");
+            throw new NoReclaimProtocolException("Rental reclaim protocol is empty. Costs of damage are not known",id);
         }
         rental.getInvoice().setDamagePaymentStatus(paymentStatus);
         rentalRepository.save(rental);
@@ -269,7 +269,7 @@ public class RentalService {
         Rental rental = rentalRepository.findById(id).orElseThrow();
         if(!rental.isEnded()){
             log.debug("Not ended rental can not accept reclaim protocol");
-            throw new RentalNotEndedException("Not ended rental can not accept reclaim protocol");
+            throw new RentalNotEndedException("Not ended rental can not accept reclaim protocol",id);
         }
         String reclaimText = "Reclaimed by: " + reclaimProtocol.getManagerDetails() + ". \n" + reclaimProtocol.getProtocol();
         log.debug("Setting reclaim protocol to Rental: {}",reclaimProtocol);
@@ -282,7 +282,7 @@ public class RentalService {
         Rental rental = rentalRepository.findById(id).orElseThrow();
         if(rental.getReclaimProtocol()==null || rental.getReclaimProtocol().isEmpty()){
             log.debug("Protocol does not exists, can not be deleted to {}",rental);
-            throw new NoReclaimProtocolException("Protocol does not exists, can not be deleted");
+            throw new NoReclaimProtocolException("Protocol does not exists, can not be deleted",id);
         }
         rental.setReclaimProtocol(null);
         log.debug("Saving rental with NULL reclaim protocol");
@@ -291,6 +291,8 @@ public class RentalService {
 
     public void changeCarDamageStatus(Long id) {
         Rental rental = rentalRepository.findById(id).orElseThrow();
+        if(rental.getReclaimProtocol()==null || rental.getReclaimProtocol().isEmpty())
+            throw new NoReclaimProtocolException("No reclaim protocol. Damage status not known yet",id);
         rental.setCarDamaged(!rental.isCarDamaged());
         rental.getInvoice().setDamagePaymentStatus(PaymentStatus.UNPAID);
         rentalRepository.save(rental);
@@ -299,7 +301,7 @@ public class RentalService {
     public void setDamageCost(Long id, BigDecimal cost) throws NoReclaimProtocolException{
         Rental rental = rentalRepository.findById(id).orElseThrow();
         if(!rental.isEnded())
-            throw new NoReclaimProtocolException("No reclaim protocol to count amount of damage costs");
+            throw new NoReclaimProtocolException("No reclaim protocol to count amount of damage costs",id);
         rental.getInvoice().setDamageCost(cost);
         rentalRepository.save(rental);
     }
