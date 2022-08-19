@@ -10,7 +10,7 @@ import java.util.List;
 @Table(name = "car")
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode
+@EqualsAndHashCode(exclude = "rental")
 @Getter
 @Setter
 @ToString

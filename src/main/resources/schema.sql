@@ -1,3 +1,5 @@
+  DROP SCHEMA IF EXISTS takethatcar;
+  DROP TABLE IF EXISTS car,rental,invoice,user_role,rental_user,feedback;
   CREATE SCHEMA takethatcar;
 
   CREATE TABLE car (

@@ -5,8 +5,7 @@ import com.dawidpater.project.carrental.entity.Car;
 import com.dawidpater.project.carrental.repository.CarRepository;
 import com.dawidpater.project.carrental.service.CarService;
 import com.dawidpater.project.carrental.validator.UserRoleValdation;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -18,8 +17,11 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ConcurrentModel;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -39,6 +41,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class CarControllerTest {
 
     @Autowired
@@ -75,18 +78,34 @@ class CarControllerTest {
     }
 
     @Test
-    void saveCar() {
+//    @Sql("classpath:test-data.sql")
+    void checkIfCarWillNotBeSaved_bindingResultFailure() {
         //given
-        CarDto carDtoToSave = CarDto.builder().brand("Audi").model("RS5").carType("Sport").build();
-        Car expectedResultCar = Car.builder().brand("Audi").model("RS5").carType("Sport").id(1).build();
+        CarDto carDtoToSave = CarDto.builder().brand("Jaguar").model("F-Type").carType("Sport").build();
+        Car expectedResultCar = Car.builder().brand("Jaguar").model("F-Type").carType("Sport").id(4).build();
+        when(result.hasErrors()).thenReturn(true);
         //when
         carController.saveCar(carDtoToSave,result,null,httpServletRequest,attributes);
         //then
-        Car resultCars = carRepository.findById(1l).orElseThrow();
-        assertThat(resultCars).isEqualTo(expectedResultCar);
+        List<Car> resultCars = carRepository.findAll();
+        assertThat(resultCars).doesNotContain(expectedResultCar);
     }
 
     @Test
+    @Order(2)
+    void checkIfCarWillBeSaved() {
+        //given
+        CarDto carDtoToSave = CarDto.builder().brand("Audi").model("RS5").carType("Sport").build();
+        Car expectedResultCar = Car.builder().brand("Audi").model("RS5").carType("Sport").id(3).build();
+        //when
+        carController.saveCar(carDtoToSave,result,null,httpServletRequest,attributes);
+        //then
+        List<Car> resultCars = carRepository.findAll();
+        assertThat(resultCars).contains(expectedResultCar);
+    }
+
+    @Test
+    @Order(1)
     void checkIfCarByIdWillBeDeleted() throws Exception {
         //given
         Car car1 = Car.builder().brand("Ford").model("Focus").carType("Family").deleted(false).build();
