@@ -1,8 +1,6 @@
 package com.dawidpater.project.carrental.dto;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -14,6 +12,8 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
+@Builder
+@AllArgsConstructor
 public class CarDto {
     private static final String DEFAULT_IMAGE_PATH = "/images/cars/no-car-image.png";
 

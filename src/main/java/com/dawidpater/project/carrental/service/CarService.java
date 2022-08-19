@@ -17,6 +17,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -117,12 +118,12 @@ public class CarService {
         log.debug("After selector values which will be fetched to SQL:  brand={}  model={}",brand,model);
 
         String type = emptyFieldsReplacer(reqType);
-        Double minPrice = Double.parseDouble(reqMinPrice);
-        Double maxPrice = Double.parseDouble(reqMaxPrice);
+        BigDecimal minPrice = new BigDecimal(reqMinPrice);
+        BigDecimal maxPrice = new BigDecimal(reqMaxPrice);
         log.debug("After assigning to variables: type={} of car, min={} and maxPrice={} of car.",type,minPrice,maxPrice);
 
 
-        String orderBy= (reqOrderBy==null) ? null : reqOrderBy;
+        String orderBy= reqOrderBy;
         if(!(orderBy == null  || orderBy.isEmpty())){
             log.debug("orderBy was not null and not empty. Regex trying to fetch necessary data from orderBy={}",orderBy);
             Pattern findFieldAndOrderDirection = Pattern.compile("(.+)(Asc|Desc)",Pattern.CASE_INSENSITIVE);
@@ -132,10 +133,10 @@ public class CarService {
             while (getFieldAndOrderDirection.find()){
                 log.debug("Regex found pattern in data.");
                 direction = (getFieldAndOrderDirection.group(2).equals("Asc") ? Sort.Direction.ASC : Sort.Direction.DESC);
-                orderByField = (getFieldAndOrderDirection.group(1).equals("price") ? "rent_price" : "brand");
+                orderByField = (getFieldAndOrderDirection.group(1).equals("price") ? "price" : "brand");
             }
             log.debug("Extracted direction={} and orderByField={} from orderBy={}",direction,orderByField,orderBy);
-            allCarsAccordingToRequest = carRepository.getAllCarsAccordingToRequest(brand,model,type,minPrice,maxPrice,startDate,endDate, PageRequest.of(pageNumber,perPage, Sort.by(direction,orderByField)));
+            allCarsAccordingToRequest = carRepository.getAllCarsAccordingToRequest(brand,model,type,minPrice,maxPrice,startDate,endDate,PageRequest.of(pageNumber,perPage, Sort.by(direction,orderByField)));
         }
         else{
             log.debug("orderBy was null or empty. Fetching cars without ORDER BY");
