@@ -14,6 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @AllArgsConstructor
+@EqualsAndHashCode(exclude = {"rentalDtos","price"})
 public class CarDto {
     private static final String DEFAULT_IMAGE_PATH = "/images/cars/no-car-image.png";
 

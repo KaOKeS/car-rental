@@ -4,10 +4,7 @@ import com.dawidpater.project.carrental.contract.ComparableStringDates;
 import com.dawidpater.project.carrental.validator.annotation.DateIsNotPast;
 import com.dawidpater.project.carrental.validator.annotation.IsPriceRangeOk;
 import com.dawidpater.project.carrental.validator.annotation.StartDateLessThanEndDate;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.springframework.stereotype.Component;
 
 import javax.validation.constraints.NotEmpty;
@@ -19,6 +16,8 @@ import javax.validation.constraints.NotEmpty;
 @StartDateLessThanEndDate
 @IsPriceRangeOk
 @ToString
+@AllArgsConstructor
+@Builder
 public class FilterCarsRequestDto implements ComparableStringDates {
     private String type;
     private String searchBy;

@@ -54,10 +54,6 @@ class CarServiceTest {
     }
 
     @Test
-    void isCarRentedInDates() {
-    }
-
-    @Test
     void canAddCar() {
         //given
         CarDto carDto = CarDto.builder().brand("Ford").model("Focus").carType("Family").carEngine("1999cc")
@@ -104,11 +100,6 @@ class CarServiceTest {
     }
 
     @Test
-    void getBestCarFromEachType() {
-
-    }
-
-    @Test
     void getAllCarsTypes() {
         carService.getAllCarsTypes();
         verify(carRepository).getAllCarTypes();
@@ -118,9 +109,5 @@ class CarServiceTest {
     void getAllCars() {
         carService.getAllCars("1","10");
         verify(carRepository).findAllNotDeletedCars(PageRequest.of(0,10));
-    }
-
-    @Test
-    void getCarsAsRequested() {
     }
 }
