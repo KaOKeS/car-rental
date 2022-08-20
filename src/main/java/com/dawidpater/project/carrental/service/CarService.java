@@ -65,9 +65,9 @@ public class CarService {
 
     public List<CarDto> getBestCarFromEachType(){
         List<Car> topCars = new ArrayList<>();
-        topCars.add(carRepository.findFirstDistinctByCarTypeOrderByRateDesc("family"));
-        topCars.add(carRepository.findFirstDistinctByCarTypeOrderByRateDesc("transport"));
-        topCars.add(carRepository.findFirstDistinctByCarTypeOrderByRateDesc("sport"));
+        topCars.add(carRepository.findFirstDistinctByCarTypeIgnoreCaseOrderByRateDesc("family"));
+        topCars.add(carRepository.findFirstDistinctByCarTypeIgnoreCaseOrderByRateDesc("transport"));
+        topCars.add(carRepository.findFirstDistinctByCarTypeIgnoreCaseOrderByRateDesc("sport"));
         return carConverter.entityToDto(topCars);
     }
 

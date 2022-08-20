@@ -1,5 +1,6 @@
-package com.dawidpater.project.carrental.controller;
+package com.dawidpater.project.carrental.integration.controller;
 
+import com.dawidpater.project.carrental.controller.CarController;
 import com.dawidpater.project.carrental.dto.CarDto;
 import com.dawidpater.project.carrental.entity.Car;
 import com.dawidpater.project.carrental.repository.CarRepository;
@@ -32,6 +33,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
@@ -57,28 +59,8 @@ class CarControllerTest {
     @MockBean
     RedirectAttributes attributes;
 
-    @Test
-    @Disabled
-    void displayCars() {
-    }
 
     @Test
-    @Disabled
-    void testDisplayCars() {
-    }
-
-    @Test
-    @Disabled
-    void showNewCarForm() {
-    }
-
-    @Test
-    @Disabled
-    void showUpdateForm() {
-    }
-
-    @Test
-//    @Sql("classpath:test-data.sql")
     void checkIfCarWillNotBeSaved_bindingResultFailure() {
         //given
         CarDto carDtoToSave = CarDto.builder().brand("Jaguar").model("F-Type").carType("Sport").build();

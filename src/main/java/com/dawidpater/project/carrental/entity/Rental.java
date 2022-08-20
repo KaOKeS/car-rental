@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
+@Builder
 public class Rental {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

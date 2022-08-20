@@ -24,7 +24,7 @@ public interface CarRepository extends JpaRepository<Car,Long> {
             ":startDate BETWEEN r.startDate AND r.endDate OR " +
             ":endDate BETWEEN r.startDate AND r.endDate )";
 
-    Car findFirstDistinctByCarTypeOrderByRateDesc(String type);
+    Car findFirstDistinctByCarTypeIgnoreCaseOrderByRateDesc(String type);
 
     @Query(value = "SELECT DISTINCT LOWER(c.carType) FROM Car c")
     List<String> getAllCarTypes();

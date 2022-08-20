@@ -54,7 +54,6 @@ class CarServiceTest {
     }
 
     @Test
-    @Disabled
     void isCarRentedInDates() {
     }
 
@@ -105,13 +104,8 @@ class CarServiceTest {
     }
 
     @Test
-    @Disabled
-    void deleteCarById() {
-    }
-
-    @Test
-    @Disabled
     void getBestCarFromEachType() {
+
     }
 
     @Test
@@ -127,7 +121,6 @@ class CarServiceTest {
     }
 
     @Test
-    @Disabled
     void getCarsAsRequested() {
     }
 }

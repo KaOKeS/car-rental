@@ -33,7 +33,7 @@ class CarRepositoryTest {
         carRepository.save(carWithLowerRate);
         carRepository.save(carWithHigherRate);
         carRepository.save(carWithHigherRateButDifferentType);
-        Car topSportCar = carRepository.findFirstDistinctByCarTypeOrderByRateDesc("Sport");
+        Car topSportCar = carRepository.findFirstDistinctByCarTypeIgnoreCaseOrderByRateDesc("Sport");
         assertThat(topSportCar).isEqualTo(carWithHigherRate);
     }
 

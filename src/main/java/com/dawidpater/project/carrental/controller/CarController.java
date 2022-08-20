@@ -87,7 +87,7 @@ public class CarController {
 
     @GetMapping("/management/admin/addCar")
     public String showNewCarForm(@ModelAttribute CarDto carDto, Model model, HttpServletRequest request){
-        log.info("Showing add car webpage");
+        log.debug("Showing add car webpage");
         List<String> currentUserRoles = UserRoleValdation.getCurrentUserRoles(request);
         log.debug("Displaying admin add car page for user with role {}", Arrays.toString(currentUserRoles.toArray()));
         return CAR_TEMPLATE;
@@ -95,9 +95,9 @@ public class CarController {
 
     @GetMapping("/management/admin/updateCar/{id}")
     public String showUpdateForm(@PathVariable(value = "id") Long id, Model model,HttpServletRequest request){
-        log.info("Showing car update webpage with carId={}",id);
+        log.debug("Showing car update webpage with carId={}",id);
         CarDto carDto = carService.getCarById(id);
-        log.info("Car with requested id={} is {}",id,carDto);
+        log.debug("Car with requested id={} is {}",id,carDto);
         model.addAttribute("carDto",carDto);
         List<String> currentUserRoles = UserRoleValdation.getCurrentUserRoles(request);
         log.debug("Displaying admin update car page for user with role {}", Arrays.toString(currentUserRoles.toArray()));
