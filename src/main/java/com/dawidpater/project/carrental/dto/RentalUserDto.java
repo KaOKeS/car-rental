@@ -3,10 +3,7 @@ package com.dawidpater.project.carrental.dto;
 import com.dawidpater.project.carrental.validator.annotation.PasswordMatches;
 import com.dawidpater.project.carrental.validator.annotation.ValidEmail;
 import com.dawidpater.project.carrental.validator.annotation.ValidStrongPassword;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.validation.constraints.NotEmpty;
 import java.util.List;
@@ -16,6 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @PasswordMatches
 @ToString
+@EqualsAndHashCode
 public class RentalUserDto {
     private Long id;
     @NotEmpty(message = "Username cannot be empty!")

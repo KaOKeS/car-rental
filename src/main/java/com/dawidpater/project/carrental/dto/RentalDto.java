@@ -1,9 +1,6 @@
 package com.dawidpater.project.carrental.dto;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -11,6 +8,7 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @ToString
+@EqualsAndHashCode
 public class RentalDto {
     private Long id;
     private LocalDateTime startDate;

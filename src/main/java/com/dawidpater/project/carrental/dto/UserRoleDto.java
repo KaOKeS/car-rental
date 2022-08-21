@@ -10,6 +10,7 @@ import java.util.List;
 @AllArgsConstructor
 @ToString
 @Builder
+@EqualsAndHashCode(exclude = "rentalUserDtos")
 public class UserRoleDto {
     private Long id;
     private String role;

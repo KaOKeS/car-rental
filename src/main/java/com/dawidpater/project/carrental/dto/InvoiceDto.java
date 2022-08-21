@@ -1,10 +1,7 @@
 package com.dawidpater.project.carrental.dto;
 
 import com.dawidpater.project.carrental.entity.constant.PaymentStatus;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.math.BigDecimal;
 
@@ -12,6 +9,7 @@ import java.math.BigDecimal;
 @Setter
 @NoArgsConstructor
 @ToString
+@EqualsAndHashCode(exclude = "rental")
 public class InvoiceDto {
     private long id;
     private BigDecimal rentalValue;

@@ -6,9 +6,7 @@ import com.dawidpater.project.carrental.dto.CarDto;
 import com.dawidpater.project.carrental.validator.annotation.CompanyDriverOrLicenseRequired;
 import com.dawidpater.project.carrental.validator.annotation.DateIsNotPast;
 import com.dawidpater.project.carrental.validator.annotation.StartDateLessThanEndDate;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.stereotype.Component;
 
 import javax.validation.constraints.NotEmpty;
@@ -19,6 +17,8 @@ import javax.validation.constraints.NotEmpty;
 @NoArgsConstructor
 @StartDateLessThanEndDate
 @CompanyDriverOrLicenseRequired
+@AllArgsConstructor
+@Builder
 public class RentalRequestDto implements ComparableStringDates {
     @NotEmpty(message = "Start date cannot be empty.")
     @DateIsNotPast
